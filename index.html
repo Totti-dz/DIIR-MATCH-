@@ -672,7 +672,6 @@
       </div>
       <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
         <div id="userQuickLevel" style="font-size:12px; color:#38bdf8;"></div>
-        <span class="db-chip" id="dbStatusChip">قاعدة البيانات: جاري الربط...</span>
       </div>
     </div>
     <div class="hero-banner">
@@ -1361,7 +1360,7 @@ function todayLocal() {
   var m = d.getMonth() + 1, day = d.getDate();
   return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day;
 }
-var APK_URL = ''; /* ضع هنا رابط الـ APK بعد رفعه، مثال: 'https://diir-match.site.je/diir-match.apk' */
+var APK_URL = 'https://github.com/Totti-dz/DIIR-MATCH-/releases/latest/download/diir-match.apk';
 var TIME_SLOTS = ['16:00', '17:00', '18:00', '19:00', '20:00', '21:00'];
 
 /* نظام مستويات تدريجي يستغرق وقتاً طويلاً (Long-term levels) */
@@ -1400,7 +1399,6 @@ function updateDbChip() {
   var chip = document.getElementById('dbStatusChip');
   if (!chip) return;
   chip.innerText = SB_OK ? ('قاعدة البيانات: Supabase' + (SB_LOAD_FAILED.length ? ' ⚠️ ' + SB_LOAD_FAILED.join(',') : '')) : 'قاعدة البيانات: محلية';
-  chip.onclick = diagnoseDb;
   chip.style.borderColor = SB_OK ? 'rgba(16,185,129,0.5)' : 'var(--navy-border)';
   chip.style.color = SB_OK ? 'var(--emerald)' : 'var(--text-sub)';
 }
@@ -1451,7 +1449,7 @@ function sbReportFail(err) {
     el.onclick = function() { el.style.display = 'none'; };
     document.body.appendChild(el);
   }
-  el.innerText = '⚠️ تعذّر الحفظ على الخادم' + (err && err.table ? ' (' + err.table + ' — ' + (err.status || 'شبكة') + ')' : '') + '. بياناتك محفوظة على هاتفك فقط. اضغط على شريط «قاعدة البيانات» للتشخيص.';
+  el.innerText = '⚠️ تعذّر الحفظ على الخادم' + (err && err.table ? ' (' + err.table + ' — ' + (err.status || 'شبكة') + ')' : '') + '. بياناتك محفوظة على هاتفك فقط.';
   el.style.display = 'block';
   setTimeout(function() { el.style.display = 'none'; }, 7000);
 }
@@ -1484,7 +1482,16 @@ function diagnoseDb() {
         .catch(function() { out.push('كتابة ' + tc[0] + ': لا يوجد اتصال'); });
     });
   });
-  chain.then(function() { alert('نتيجة التشخيص:\n\n' + out.join('\n')); });
+  chain.then(function() {
+    var ov = document.createElement('div');
+    ov.style.cssText = 'position:fixed;inset:0;z-index:100001;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;padding:16px';
+    var box = document.createElement('div');
+    box.style.cssText = 'background:#0d1b2e;color:#f8fafc;border:1px solid #10b981;border-radius:14px;padding:16px;max-width:520px;width:100%;max-height:80vh;overflow:auto;font-size:13px;line-height:1.8;direction:rtl;white-space:pre-wrap';
+    box.innerText = 'نتيجة التشخيص:\n\n' + out.join('\n') + '\n\n(اضغط في أي مكان للإغلاق)';
+    ov.appendChild(box);
+    ov.onclick = function() { ov.remove(); };
+    document.body.appendChild(ov);
+  });
 }
 
 function sbDelete(table, filter) {
@@ -3193,7 +3200,99 @@ function pushNotification(userId, item) {
   });
   db.set(key, list);
   refreshNotificationBadges();
+  try {
+    var cu = db.get('user', null);
+    if (cu && cu.id === userId) notifyDevice(list[0].title, list[0].body);
+  } catch (e) {}
 }
+
+
+/* ============ إشعارات الجهاز + مزامنة الإشعارات بين الأجهزة ============ */
+function isNativeApp() {
+  try { return !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()); } catch (e) { return false; }
+}
+function nativeLN(method, opts) {
+  return window.Capacitor.nativePromise('LocalNotifications', method, opts || {});
+}
+var devNotifReady = false;
+function initDeviceNotifications() {
+  if (devNotifReady) return;
+  devNotifReady = true;
+  if (isNativeApp()) {
+    nativeLN('requestPermissions').catch(function() {});
+    nativeLN('createChannel', { id: 'diir', name: 'إشعارات DIIR MATCH', importance: 4, vibration: true, visibility: 1 }).catch(function() {});
+    try {
+      window.Capacitor.nativeCallback('LocalNotifications', 'addListener', { eventName: 'localNotificationActionPerformed' }, function() {
+        try { openNotificationsModal(); } catch (e) {}
+      });
+    } catch (e) {}
+  } else if ('Notification' in window && Notification.permission === 'default') {
+    var ask = function() {
+      document.removeEventListener('click', ask, true);
+      try { Notification.requestPermission(); } catch (e) {}
+    };
+    document.addEventListener('click', ask, true);
+  }
+}
+function notifyDevice(title, body) {
+  try {
+    if (isNativeApp()) {
+      nativeLN('schedule', { notifications: [{ id: Math.floor(Math.random() * 2000000000), title: title, body: body, channelId: 'diir' }] }).catch(function() {});
+      return;
+    }
+    if ('Notification' in window && Notification.permission === 'granted') {
+      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+        navigator.serviceWorker.ready.then(function(reg) {
+          reg.showNotification(title, { body: body, icon: 'brand/logo-192.png', dir: 'rtl', lang: 'ar' });
+        }).catch(function() { new Notification(title, { body: body }); });
+      } else {
+        new Notification(title, { body: body });
+      }
+    }
+  } catch (e) {}
+}
+
+var notifSyncBusy = false;
+function syncNotifications() {
+  var user = db.get('user', null);
+  if (!user || !user.id || !SB_OK || notifSyncBusy) return;
+  initDeviceNotifications();
+  notifSyncBusy = true;
+  sbGet('notifications', 'user_id=eq.' + encodeURIComponent(user.id) + '&order=created_at.desc&limit=50').then(function(rows) {
+    notifSyncBusy = false;
+    var key = 'notifs_' + user.id;
+    var local = db.get(key, []);
+    var known = {};
+    local.forEach(function(n) { known[n.id] = true; });
+    var lsKey = 'sq_notif_last_' + user.id;
+    var last = 0;
+    try { last = parseInt(localStorage.getItem(lsKey) || '0', 10) || 0; } catch (e) {}
+    var firstRun = !last;
+    var maxTs = last, fresh = [];
+    (rows || []).forEach(function(r) {
+      var ts = Number(r.created_at) || 0;
+      if (ts > maxTs) maxTs = ts;
+      if (known[r.id]) return;
+      var n = { id: r.id, read: !!r.is_read, createdAt: ts, type: r.type || 'info', title: r.title || 'تنبيه', body: r.body || '', bookingId: r.booking_id || null };
+      local.push(n);
+      if (!firstRun && !n.read && ts > last) fresh.push(n);
+    });
+    try { localStorage.setItem(lsKey, String(maxTs || 1)); } catch (e) {}
+    if (rows && rows.length && local.length) {
+      local.sort(function(a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+      if (local.length > 100) local.length = 100;
+      db.set(key, local, true);
+    }
+    if (fresh.length) {
+      refreshNotificationBadges();
+      if (fresh.length === 1) notifyDevice(fresh[0].title, fresh[0].body);
+      else notifyDevice('DIIR MATCH', 'لديك ' + fresh.length + ' إشعارات جديدة');
+    }
+  }).catch(function() { notifSyncBusy = false; });
+}
+document.addEventListener('visibilitychange', function() { if (!document.hidden) syncNotifications(); });
+setInterval(syncNotifications, 10000);
+setTimeout(syncNotifications, 3000);
 
 function getUnreadNotifications(userId) {
   return db.get('notifs_' + userId, []).filter(function(n) { return !n.read; });
@@ -4271,6 +4370,8 @@ loadRemoteDb(function() {
   updateDbChip();
   setInterval(refreshNotificationBadges, 4000);
 });
+
+if (location.hash === '#diag') { window.addEventListener('load', function() { setTimeout(diagnoseDb, 1500); }); }
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
