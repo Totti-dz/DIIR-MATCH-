@@ -1,0 +1,6 @@
+{
+  "appId": "dz.sougueur.diirmatch",
+  "appName": "DIIR MATCH",
+  "webDir": "dist",
+  "server": { "androidScheme": "https" }
+}
