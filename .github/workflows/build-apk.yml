@@ -29,7 +29,93 @@ jobs:
       - name: Add Android platform
         run: |
           npx cap add android
-          npx cap sync android
+
+      - name: Generate app icon from logo
+        run: |
+          pip install pillow
+          cat > make_icons.py <<'PYEOF'
+          """يولّد أيقونات أندرويد (عادية + دائرية + Adaptive) من شعار DIIR MATCH.
+          الاستعمال: python3 tools/make_icons.py public/brand/logo-512.png android/app/src/main/res
+          """
+          import os, sys
+          from PIL import Image, ImageDraw, ImageFilter
+
+          logo_path, res = sys.argv[1], sys.argv[2]
+          logo = Image.open(logo_path).convert('RGBA')
+          bg_color = logo.getpixel((6, 6))[:3]
+
+          DENS = {'mdpi': 48, 'hdpi': 72, 'xhdpi': 96, 'xxhdpi': 144, 'xxxhdpi': 192}
+
+          def rounded(img, radius_ratio):
+              s = img.size[0]
+              m = Image.new('L', (s * 4, s * 4), 0)
+              ImageDraw.Draw(m).rounded_rectangle((0, 0, s * 4 - 1, s * 4 - 1), radius=int(s * 4 * radius_ratio), fill=255)
+              m = m.resize((s, s), Image.LANCZOS)
+              out = img.copy(); out.putalpha(m); return out
+
+          def circle(img):
+              s = img.size[0]
+              m = Image.new('L', (s * 4, s * 4), 0)
+              ImageDraw.Draw(m).ellipse((0, 0, s * 4 - 1, s * 4 - 1), fill=255)
+              m = m.resize((s, s), Image.LANCZOS)
+              out = img.copy(); out.putalpha(m); return out
+
+          def adaptive_foreground(size):
+              # الخلفية: الشعار نفسه مموّه ليملأ اللوحة بلا حواف، وفوقه الشعار الحاد داخل المنطقة الآمنة (حوالي 62%)
+              base = logo.resize((size, size), Image.LANCZOS).filter(ImageFilter.GaussianBlur(size * 0.12))
+              inner_s = int(size * 0.62)
+              inner = logo.resize((inner_s, inner_s), Image.LANCZOS)
+              mask = Image.new('L', (inner_s, inner_s), 0)
+              pad = int(inner_s * 0.06)
+              ImageDraw.Draw(mask).rounded_rectangle((pad, pad, inner_s - pad, inner_s - pad), radius=int(inner_s * 0.12), fill=255)
+              mask = mask.filter(ImageFilter.GaussianBlur(inner_s * 0.05))
+              off = (size - inner_s) // 2
+              base.paste(inner, (off, off), mask)
+              return base
+
+          for d, px in DENS.items():
+              folder = os.path.join(res, 'mipmap-' + d)
+              os.makedirs(folder, exist_ok=True)
+              sq = logo.resize((px, px), Image.LANCZOS)
+              rounded(sq, 0.18).save(os.path.join(folder, 'ic_launcher.png'))
+              circle(sq).save(os.path.join(folder, 'ic_launcher_round.png'))
+              adaptive_foreground(int(px * 108 / 48)).save(os.path.join(folder, 'ic_launcher_foreground.png'))
+
+          vals = os.path.join(res, 'values'); os.makedirs(vals, exist_ok=True)
+          hexc = '#%02X%02X%02X' % bg_color
+          open(os.path.join(vals, 'ic_launcher_background.xml'), 'w').write(
+              '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">%s</color>\n</resources>\n' % hexc)
+
+          # أيقونة Adaptive: اجعلها تشير إلى صورنا بدل الرسم الافتراضي (vector) الذي يأتي مع قالب Capacitor
+          adaptive = '''<?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+              <background android:drawable="@color/ic_launcher_background"/>
+              <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+          </adaptive-icon>
+          '''
+          v26 = os.path.join(res, 'mipmap-anydpi-v26'); os.makedirs(v26, exist_ok=True)
+          for n in ('ic_launcher.xml', 'ic_launcher_round.xml'):
+              open(os.path.join(v26, n), 'w').write(adaptive)
+          for old in ('drawable/ic_launcher_background.xml', 'drawable-v24/ic_launcher_foreground.xml'):
+              f = os.path.join(res, old)
+              if os.path.exists(f): os.remove(f)
+
+          # شاشة البداية (Splash): خلفية كحلية وفي وسطها الشعار، بنفس أبعاد ملفات القالب
+          for root, dirs, files in os.walk(res):
+              if 'splash.png' in files and os.path.basename(root).startswith('drawable'):
+                  f = os.path.join(root, 'splash.png')
+                  w, h = Image.open(f).size
+                  canvas = Image.new('RGBA', (w, h), bg_color + (255,))
+                  s = int(min(w, h) * 0.38)
+                  lg = logo.resize((s, s), Image.LANCZOS)
+                  canvas.paste(lg, ((w - s) // 2, (h - s) // 2), lg)
+                  canvas.convert('RGB').save(f)
+          print('icons ok, background', hexc)
+          PYEOF
+          python3 make_icons.py public/brand/logo-512.png android/app/src/main/res
+
+      - name: Sync web assets
+        run: npx cap sync android
 
       - name: Build debug APK
         working-directory: android
