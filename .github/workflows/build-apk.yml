@@ -10,15 +10,19 @@ permissions:
 
 jobs:
   apk:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+
+      - name: Use files uploaded inside github-update folder (if any)
+        run: |
+          if [ -d github-update ]; then cp -r github-update/. . ; echo "تم نسخ ملفات github-update إلى الجذر"; fi
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
@@ -32,8 +36,11 @@ jobs:
 
       - name: Stamp build number into the app
         run: |
+          if ! grep -q "__APP_BUILD__" dist/index.html; then
+            echo "خطأ: ملف index.html في جذر المستودع قديم (ناقص ميزة التحديث). ارفع index.html الجديد."
+            exit 1
+          fi
           sed -i "s/__APP_BUILD__/${{ github.run_number }}/g" dist/index.html
-          grep -q "var APP_BUILD = '${{ github.run_number }}'" dist/index.html
 
       - name: Add Android platform
         run: |
