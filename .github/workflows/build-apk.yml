@@ -77,7 +77,6 @@ jobs:
               out = img.copy(); out.putalpha(m); return out
 
           def adaptive_foreground(size):
-              # الخلفية: الشعار نفسه مموّه ليملأ اللوحة بلا حواف، وفوقه الشعار الحاد داخل المنطقة الآمنة (حوالي 62%)
               base = logo.resize((size, size), Image.LANCZOS).filter(ImageFilter.GaussianBlur(size * 0.12))
               inner_s = int(size * 0.62)
               inner = logo.resize((inner_s, inner_s), Image.LANCZOS)
@@ -102,7 +101,6 @@ jobs:
           open(os.path.join(vals, 'ic_launcher_background.xml'), 'w').write(
               '<?xml version="1.0" encoding="utf-8"?>\n<resources>\n    <color name="ic_launcher_background">%s</color>\n</resources>\n' % hexc)
 
-          # أيقونة Adaptive: اجعلها تشير إلى صورنا بدل الرسم الافتراضي (vector) الذي يأتي مع قالب Capacitor
           adaptive = '''<?xml version="1.0" encoding="utf-8"?>
           <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
               <background android:drawable="@color/ic_launcher_background"/>
@@ -116,7 +114,6 @@ jobs:
               f = os.path.join(res, old)
               if os.path.exists(f): os.remove(f)
 
-          # شاشة البداية (Splash): خلفية كحلية وفي وسطها الشعار، بنفس أبعاد ملفات القالب
           for root, dirs, files in os.walk(res):
               if 'splash.png' in files and os.path.basename(root).startswith('drawable'):
                   f = os.path.join(root, 'splash.png')
@@ -133,10 +130,12 @@ jobs:
       - name: Add notification sound
         run: |
           mkdir -p android/app/src/main/res/raw
-          if [ -f public/sounds/whistle.wav ]; then
-            cp public/sounds/whistle.wav android/app/src/main/res/raw/whistle.wav
+          if [ -f public/sounds/crowdgoal.wav ]; then
+            cp public/sounds/crowdgoal.wav android/app/src/main/res/raw/crowdgoal.wav
+          elif [ -f public/sounds/crowd-goal.wav ]; then
+            cp public/sounds/crowd-goal.wav android/app/src/main/res/raw/crowdgoal.wav
           else
-            echo "تنبيه: ملف الصافرة غير موجود في المستودع، سيُبنى التطبيق بدون صوت الصافرة"
+            echo "تنبيه: ملف صوت الجماهير غير موجود في المستودع، سيُبنى التطبيق بدون صوت الإشعار"
           fi
 
       - name: Sync web assets
