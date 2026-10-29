@@ -114,6 +114,11 @@ jobs:
           PYEOF
           python3 make_icons.py public/brand/logo-512.png android/app/src/main/res
 
+      - name: Add notification sound
+        run: |
+          mkdir -p android/app/src/main/res/raw
+          cp public/sounds/whistle.wav android/app/src/main/res/raw/whistle.wav
+
       - name: Sync web assets
         run: npx cap sync android
 
