@@ -2161,8 +2161,7 @@ function mergeStadiums() {
       if (!s.image || String(s.image).indexOf('unsplash.com') !== -1 || String(s.image).indexOf('photo-') !== -1) {
         s.image = def.image;
       }
-      var rawImg = fieldSvgBack(String(s.image)); /* المسار الأصلي قبل تحويله إلى رسم مضمّن */
-      if (/^fields\/[\w-]+\.svg$/.test(rawImg) && /^fields\/[\w-]+\.webp$/.test(String(def.image))) s.image = def.image;
+      if (/^fields\/[\w-]+\.svg$/.test(String(s.image)) && /^fields\/[\w-]+\.webp$/.test(String(def.image))) s.image = def.image;
       if (!s.pin) s.pin = def.pin;
       if (s.lat === undefined || s.lat === null || s.lat === '') s.lat = def.lat;
       if (s.lng === undefined || s.lng === null || s.lng === '') s.lng = def.lng;
@@ -3519,51 +3518,6 @@ function closeMatchRequest(id) {
   fetch(SB_URL + '/rest/v1/open_matches?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers: sbHeaders({ Prefer: 'return=minimal' }), body: JSON.stringify({ status: 'closed' }) })
     .then(function() { loadMatchRequests(); }).catch(sbReportFail);
 }
-
-
-/* ============ إعلان تحديث تطبيق أندرويد (يقرأ آخر إصدار منشور على GitHub) ============ */
-var APP_BUILD = '__APP_BUILD__'; /* يستبدله بناء GitHub برقم الإصدار، وفي الموقع يبقى كما هو فلا يعمل الفحص */
-var UPDATE_REPO = 'Totti-dz/DIIR-MATCH-';
-var lastUpdateCheck = 0, updateLaterVer = 0;
-function checkForUpdate(force) {
-  if (!isNativeApp() || !/^\d+$/.test(APP_BUILD)) return;
-  var now = Date.now();
-  if (!force && now - lastUpdateCheck < 600000) return;
-  lastUpdateCheck = now;
-  fetch('https://api.github.com/repos/' + UPDATE_REPO + '/releases/latest', { cache: 'no-store', headers: { Accept: 'application/vnd.github+json' } })
-    .then(function(r) { return r.ok ? r.json() : null; })
-    .then(function(rel) {
-      if (!rel || !rel.tag_name) return;
-      var latest = parseInt(String(rel.tag_name).replace(/\D/g, ''), 10);
-      if (!latest || latest <= parseInt(APP_BUILD, 10) || latest === updateLaterVer) return;
-      var apk = (rel.assets || []).filter(function(a) { return /\.apk$/i.test(a.name || ''); })[0];
-      showUpdateBanner(latest, (apk && apk.browser_download_url) || APK_URL, String(rel.body || '').trim());
-    }).catch(function() {});
-}
-function showUpdateBanner(ver, url, notes) {
-  var old = document.getElementById('updateBanner'); if (old) old.remove();
-  var box = document.createElement('div');
-  box.id = 'updateBanner';
-  box.style.cssText = 'position:fixed;left:12px;right:12px;top:calc(12px + env(safe-area-inset-top,0px));z-index:99990;background:linear-gradient(135deg,#0b3b36,#0a2a3f);color:#f8fafc;border:1px solid #22e3a0;border-radius:18px;padding:14px 16px;box-shadow:0 14px 40px rgba(0,0,0,.6);direction:rtl;font-size:13.5px;line-height:1.7';
-  var h = document.createElement('div'); h.style.cssText = 'font-weight:900;font-size:15px;margin-bottom:4px'; h.innerText = '🚀 تحديث جديد متاح (الإصدار ' + ver + ')';
-  var d = document.createElement('div'); d.style.cssText = 'color:#cbd5e1;margin-bottom:10px;white-space:pre-line'; d.innerText = (notes ? notes.slice(0, 180) + '\n' : '') + 'حمّل النسخة الجديدة ثم ثبّتها فوق القديمة (بياناتك محفوظة).';
-  var row = document.createElement('div'); row.style.cssText = 'display:flex;gap:8px';
-  var go = document.createElement('button'); go.className = 'btn btn-emerald btn-sm'; go.innerText = '⬇️ تحميل التحديث';
-  go.onclick = function() { window.open(url, '_blank'); };
-  var later = document.createElement('button'); later.className = 'btn btn-outline btn-sm'; later.innerText = 'لاحقاً';
-  later.onclick = function() { updateLaterVer = ver; box.remove(); };
-  row.appendChild(go); row.appendChild(later); box.appendChild(h); box.appendChild(d); box.appendChild(row);
-  document.body.appendChild(box);
-  try {
-    if (localStorage.getItem('sq_update_notified') !== String(ver)) {
-      localStorage.setItem('sq_update_notified', String(ver));
-      notifyDevice('تحديث جديد لـ DIIR MATCH', 'الإصدار ' + ver + ' جاهز للتحميل.');
-    }
-  } catch (e) {}
-}
-document.addEventListener('visibilitychange', function() { if (!document.hidden) checkForUpdate(false); });
-setInterval(function() { checkForUpdate(false); }, 1800000);
-setTimeout(function() { checkForUpdate(true); }, 5000);
 
 var notifSyncBusy = false;
 function syncNotifications() {
