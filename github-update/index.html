@@ -1339,7 +1339,7 @@ body::before { content:""; position: fixed; inset: -20% -10% auto auto; width: 7
   <div class="modal-box" style="max-width:480px;">
     <span class="close-x" onclick="closeModal('notificationsModal')">✖</span>
     <h3 style="margin-bottom:8px;">مركز الإشعارات</h3>
-    <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">رسائل الدردشة، تغيير المواعيد، وبلاغات المنظمين</p>
+    <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">بحث عن خصم، رسائل الدردشة، تغيير المواعيد، وبلاغات المنظمين</p>
     <div id="notificationsList"></div>
   </div>
 </div>
@@ -1438,19 +1438,19 @@ body::before { content:""; position: fixed; inset: -20% -10% auto auto; width: 7
 
 <script>
 var DEFAULT_STADIUMS = [
-  { id: 'befok', name: 'ملعب بيفوك', pin: '1111', capacity: 9, quarter: 'حي بيفوك',     image: 'fields/befok.webp', lat: 35.1855, lng: 1.4962, mapsUrl: '' },
-  { id: 'wilaya', name: 'ملعب الولاية', pin: '2222', capacity: 9, quarter: 'حي الولاية', image: 'fields/wilaya.webp', lat: 35.1868, lng: 1.5011, mapsUrl: '' },
-  { id: 'douk', name: 'ملعب الدوك', pin: '3333', capacity: 7, quarter: 'حي الدوك', image: 'fields/douk.svg', lat: 35.1812, lng: 1.4924, mapsUrl: '' },
-  { id: 'lacite', name: 'ملعب لاسيتي', pin: '4444', capacity: 7, quarter: 'حي لاسيتي', image: 'fields/lacite.svg', lat: 35.1798, lng: 1.5056, mapsUrl: '' },
-  { id: 'marhala2', name: 'ملعب المرحلة الثانية', pin: '5555', capacity: 7, quarter: 'المرحلة الثانية', image: 'fields/marhala2.svg', lat: 35.1901, lng: 1.4988, mapsUrl: '' },
-  { id: 'karya', name: 'ملعب القرية', pin: '6666', capacity: 7, quarter: 'حي القرية', image: 'fields/karya.svg', lat: 35.1774, lng: 1.4889, mapsUrl: '' },
-  { id: 'binaa', name: 'ملعب البناء الذاتي', pin: '7777', capacity: 7, quarter: 'حي البناء الذاتي', image: 'fields/binaa.webp', lat: 35.1882, lng: 1.5102, mapsUrl: '' },
-  { id: 'baraa', name: 'ملعب البراءة', pin: '8888', capacity: 7, quarter: 'حي البراءة', image: 'fields/baraa.webp', lat: 35.1749, lng: 1.4941, mapsUrl: '' },
-  { id: 'somal', name: 'ملعب الصومال', pin: '9999', capacity: 7, quarter: 'حي الصومال', image: 'fields/somal.svg', lat: 35.1915, lng: 1.4876, mapsUrl: '' },
-  { id: 'mejat', name: 'ملعب مجاط', pin: '1010', capacity: 7, quarter: 'حي مجاط', image: 'fields/mejat.webp', lat: 35.1826, lng: 1.5128, mapsUrl: '' },
-  { id: 'hamri', name: 'ملعب الحمري', pin: '1212', capacity: 7, quarter: 'حي الحمري', image: 'fields/hamri.svg', lat: 35.1761, lng: 1.5033, mapsUrl: '' },
-  { id: 'ikhwa', name: 'ملعب الإخوة (كوسوفو)', pin: '1313', capacity: 9, quarter: 'حي كوسوفو', image: 'fields/ikhwa.webp', lat: 35.1933, lng: 1.5067, mapsUrl: '' },
-  { id: 'csp', name: 'ملعب CSP', pin: '1414', capacity: 9, quarter: 'مركب CSP السوقر', image: 'fields/csp.svg', lat: 35.1844, lng: 1.4992, mapsUrl: '' }
+  { id: 'befok', name: 'ملعب بيفوك', pin: '1111', capacity: 9, quarter: 'حي بيفوك',     image: 'fields/befok.jpg', lat: 35.1855, lng: 1.4962, mapsUrl: '' },
+  { id: 'wilaya', name: 'ملعب الولاية', pin: '2222', capacity: 9, quarter: 'حي الولاية', image: 'fields/wilaya.jpg', lat: 35.1868, lng: 1.5011, mapsUrl: '' },
+  { id: 'douk', name: 'ملعب الدوك', pin: '3333', capacity: 7, quarter: 'حي الدوك', image: 'fields/douk.jpg', lat: 35.1812, lng: 1.4924, mapsUrl: '' },
+  { id: 'lacite', name: 'ملعب لاسيتي', pin: '4444', capacity: 7, quarter: 'حي لاسيتي', image: 'fields/lacite.jpg', lat: 35.1798, lng: 1.5056, mapsUrl: '' },
+  { id: 'marhala2', name: 'ملعب المرحلة الثانية', pin: '5555', capacity: 7, quarter: 'المرحلة الثانية', image: 'fields/marhala2.jpg', lat: 35.1901, lng: 1.4988, mapsUrl: '' },
+  { id: 'karya', name: 'ملعب القرية', pin: '6666', capacity: 7, quarter: 'حي القرية', image: 'fields/karya.jpg', lat: 35.1774, lng: 1.4889, mapsUrl: '' },
+  { id: 'binaa', name: 'ملعب البناء الذاتي', pin: '7777', capacity: 7, quarter: 'حي البناء الذاتي', image: 'fields/binaa.jpg', lat: 35.1882, lng: 1.5102, mapsUrl: '' },
+  { id: 'baraa', name: 'ملعب البراءة', pin: '8888', capacity: 7, quarter: 'حي البراءة', image: 'fields/baraa.jpg', lat: 35.1749, lng: 1.4941, mapsUrl: '' },
+  { id: 'somal', name: 'ملعب الصومال', pin: '9999', capacity: 7, quarter: 'حي الصومال', image: 'fields/somal.jpg', lat: 35.1915, lng: 1.4876, mapsUrl: '' },
+  { id: 'mejat', name: 'ملعب مجاط', pin: '1010', capacity: 7, quarter: 'حي مجاط', image: 'fields/mejat.jpg', lat: 35.1826, lng: 1.5128, mapsUrl: '' },
+  { id: 'hamri', name: 'ملعب الحمري', pin: '1212', capacity: 7, quarter: 'حي الحمري', image: 'fields/hamri.jpg', lat: 35.1761, lng: 1.5033, mapsUrl: '' },
+  { id: 'ikhwa', name: 'ملعب الإخوة (كوسوفو)', pin: '1313', capacity: 9, quarter: 'حي كوسوفو', image: 'fields/ikhwa.jpg', lat: 35.1933, lng: 1.5067, mapsUrl: '' },
+  { id: 'csp', name: 'ملعب CSP', pin: '1414', capacity: 9, quarter: 'مركب CSP السوقر', image: 'fields/csp.jpg', lat: 35.1844, lng: 1.4992, mapsUrl: '' }
 ];
 var STADIUMS = DEFAULT_STADIUMS.slice();
 var API_OK = false;
@@ -1493,19 +1493,27 @@ var FIELD_SVGS = {"baraa": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22htt
 function fieldSvgBack(src) {
   var s = String(src || '');
   if (s.indexOf('data:image/svg+xml') !== 0) return src;
-  for (var k in FIELD_SVGS) { if (FIELD_SVGS[k] === s) return 'fields/' + k + '.svg'; }
+  for (var k in FIELD_SVGS) { if (FIELD_SVGS[k] === s) return 'fields/' + k + '.jpg'; }
   return src;
 }
 
-function fieldFallback(id) { return FIELD_SVGS[id] || 'brand/logo.png'; }
+function fieldJpgPath(id) { return 'fields/' + id + '.jpg'; }
+
+function fieldFallback(id) { return fieldJpgPath(id); }
+
+function hostSafeFieldImage(src) {
+  var s = String(src || '');
+  var m = s.match(/^fields\/([A-Za-z0-9_-]+)\.(webp|svg|png|jpe?g)$/i);
+  if (m) return 'fields/' + m[1] + '.jpg';
+  return s;
+}
 
 function resolveAsset(src) {
   if (!src) return 'brand/logo.png';
   var s = String(src);
   if (s.indexOf('data:') === 0 || s.indexOf('http://') === 0 || s.indexOf('https://') === 0) return s;
   if (s.charAt(0) === '/') s = s.slice(1);
-  var fm = s.match(/^fields\/([A-Za-z0-9_-]+)\.svg$/);
-  if (fm && FIELD_SVGS[fm[1]]) return FIELD_SVGS[fm[1]];
+  s = hostSafeFieldImage(s);
   return s;
 }
 
@@ -1683,7 +1691,7 @@ function mapStadiumsFromSb(rows) {
       pin: s.pin,
       capacity: s.capacity || 7,
       quarter: s.quarter || 'السوقر',
-       image: resolveAsset(s.image || 'fields/befok.svg'),
+        image: resolveAsset(s.image || 'fields/befok.jpg'),
       lat: s.lat || '',
       lng: s.lng || '',
       mapsUrl: s.maps_url || ''
@@ -2127,7 +2135,7 @@ function generateNumericPlayerId() {
         body: 'الملاعب المعشوبة تبقى مفتوحة لمباريات المساء مع ضرورة الالتزام بالحيطة والحذر.',
         isAlert: true,
         date: 'اليوم',
-        image: 'fields/hamri.svg'
+        image: 'fields/hamri.jpg'
       },
       {
         id: 'n_2',
@@ -2136,7 +2144,7 @@ function generateNumericPlayerId() {
         body: 'باب التسجيل مفتوح لجميع الفرق بما فيها مجاط، الحمري، والإخوة كوسوفو.',
         isAlert: false,
         date: 'أمس',
-        image: 'fields/ikhwa.svg'
+        image: 'fields/ikhwa.jpg'
       }
     ]);
   }
@@ -2161,13 +2169,14 @@ function mergeStadiums() {
       if (!s.image || String(s.image).indexOf('unsplash.com') !== -1 || String(s.image).indexOf('photo-') !== -1) {
         s.image = def.image;
       }
-      if (/^fields\/[\w-]+\.svg$/.test(String(s.image)) && /^fields\/[\w-]+\.webp$/.test(String(def.image))) s.image = def.image;
+      var rawImg = hostSafeFieldImage(fieldSvgBack(String(s.image)));
+      if (/^fields\/[\w-]+\.(svg|webp)$/i.test(rawImg) || /^fields\/[\w-]+\.jpg$/i.test(String(def.image))) s.image = def.image;
       if (!s.pin) s.pin = def.pin;
       if (s.lat === undefined || s.lat === null || s.lat === '') s.lat = def.lat;
       if (s.lng === undefined || s.lng === null || s.lng === '') s.lng = def.lng;
       if (!s.mapsUrl) s.mapsUrl = def.mapsUrl || '';
     }
-    if (!s.image) s.image = 'fields/befok.svg';
+    if (!s.image) s.image = 'fields/befok.jpg';
     s.image = resolveAsset(s.image);
     if (!s.mapsUrl) s.mapsUrl = '';
     return s;
@@ -2529,6 +2538,8 @@ function refreshUI() {
   renderNews();
   updateDbChip();
   refreshNotificationBadges();
+  requestNotifPermission();
+  syncMatchRequests();
 }
 
 /* تبديل التبويبات */
@@ -2626,11 +2637,11 @@ function renderFields() {
     card.className = 'field-item';
     card.style.animationDelay = (shown * 0.05) + 's';
     card.onclick = function() { openBookingModal(f); };
-    var img = resolveAsset(f.image || 'fields/befok.svg');
+    var img = resolveAsset(f.image || 'fields/befok.jpg');
     var badge = free > 0 ? '<span class="free-badge">● ' + free + ' متاح اليوم</span>' : '<span class="free-badge none">● لا مواعيد اليوم</span>';
     card.innerHTML =
       '<div class="field-cover">' +
-        '<img src="' + img + '" alt="' + f.name + '" loading="lazy" onerror="this.onerror=null;this.src=fieldFallback(\'' + f.id + '\')">' +
+        '<img src="' + img + '" alt="' + f.name + '" loading="lazy" onerror="this.onerror=null;this.src=\'brand/logo.png\'">' +
         '<span class="field-tag">سعة ' + f.capacity + ' ضد ' + f.capacity + '</span>' +
       '</div>' +
       '<div class="field-body">' +
@@ -3357,9 +3368,10 @@ function pushNotification(userId, item) {
   });
   db.set(key, list);
   refreshNotificationBadges();
+  if (item && item.silent) return;
   try {
     var cu = db.get('user', null);
-    if (cu && cu.id === userId) notifyDevice(list[0].title, list[0].body);
+    if (cu && String(cu.id) === String(userId)) notifyDevice(list[0].title, list[0].body, item);
   } catch (e) {}
 }
 
@@ -3392,24 +3404,28 @@ function setSound(on) { try { localStorage.setItem('sq_sound', on ? '1' : '0'); 
 var whistleAudio = null;
 function playWhistle() {
   try {
-    if (!whistleAudio) whistleAudio = new Audio('sounds/whistle.wav');
+    if (!whistleAudio) whistleAudio = new Audio('sounds/crowd-goal.wav');
     whistleAudio.currentTime = 0;
     var pr = whistleAudio.play(); if (pr && pr.catch) pr.catch(function() {});
   } catch (e) {}
 }
 document.addEventListener('click', function unlockAudio() {
   document.removeEventListener('click', unlockAudio, true);
-  try { whistleAudio = whistleAudio || new Audio('sounds/whistle.wav'); whistleAudio.muted = true; var p = whistleAudio.play(); if (p && p.then) p.then(function() { whistleAudio.pause(); whistleAudio.currentTime = 0; whistleAudio.muted = false; }).catch(function() { whistleAudio.muted = false; }); } catch (e) {}
+  try { whistleAudio = whistleAudio || new Audio('sounds/crowd-goal.wav'); whistleAudio.muted = true; var p = whistleAudio.play(); if (p && p.then) p.then(function() { whistleAudio.pause(); whistleAudio.currentTime = 0; whistleAudio.muted = false; }).catch(function() { whistleAudio.muted = false; }); } catch (e) {}
 }, true);
 function initDeviceNotifications() {
   if (devNotifReady) return;
   devNotifReady = true;
   if (isNativeApp()) {
     nativeLN('requestPermissions').catch(function() {});
-    nativeLN('createChannel', { id: 'diir_whistle', name: 'إشعارات DIIR MATCH (صافرة)', importance: 5, vibration: true, visibility: 1, sound: 'whistle.wav' }).catch(function() {});
+    nativeLN('createChannel', { id: 'diir_crowd', name: 'إشعارات DIIR MATCH (جماهير)', importance: 5, vibration: true, visibility: 1, sound: 'crowdgoal.wav' }).catch(function() {});
     try {
-      window.Capacitor.nativeCallback('LocalNotifications', 'addListener', { eventName: 'localNotificationActionPerformed' }, function() {
-        try { openNotificationsModal(); } catch (e) {}
+      window.Capacitor.nativeCallback('LocalNotifications', 'addListener', { eventName: 'localNotificationActionPerformed' }, function(ev) {
+        try {
+          var extra = (ev && ev.notification && ev.notification.extra) || {};
+          if (extra.action === 'open-matches') openMatchesModal();
+          else openNotificationsModal();
+        } catch (e) {}
       });
     } catch (e) {}
   } else if ('Notification' in window && Notification.permission === 'default') {
@@ -3420,20 +3436,51 @@ function initDeviceNotifications() {
     document.addEventListener('click', ask, true);
   }
 }
-function notifyDevice(title, body) {
+
+function requestNotifPermission() {
+  initDeviceNotifications();
+  if (isNativeApp()) {
+    nativeLN('requestPermissions').catch(function() {});
+    return;
+  }
+  if ('Notification' in window && Notification.permission === 'default') {
+    try { Notification.requestPermission(); } catch (e) {}
+  }
+}
+function notifyDevice(title, body, extra) {
+  extra = extra || {};
+  var action = extra.action || (extra.type === 'match' ? 'open-matches' : 'open-notifs');
   try {
     if (isNativeApp()) {
-      nativeLN('schedule', { notifications: [{ id: Math.floor(Math.random() * 2000000000), title: title, body: body, channelId: 'diir_whistle' }] }).catch(function() {});
+      nativeLN('schedule', {
+        notifications: [{
+          id: Math.floor(Math.random() * 2000000000),
+          title: title,
+          body: body,
+          channelId: 'diir_crowd',
+          extra: { action: action }
+        }]
+      }).catch(function() {});
       return;
     }
     playWhistle();
     if ('Notification' in window && Notification.permission === 'granted') {
+      var opts = {
+        body: body,
+        icon: 'brand/logo-192.png',
+        badge: 'brand/logo-192.png',
+        dir: 'rtl',
+        lang: 'ar',
+        tag: extra.tag || ('diir-' + action + '-' + Date.now()),
+        renotify: true,
+        data: { action: action }
+      };
       if (navigator.serviceWorker && navigator.serviceWorker.ready) {
         navigator.serviceWorker.ready.then(function(reg) {
-          reg.showNotification(title, { body: body, icon: 'brand/logo-192.png', dir: 'rtl', lang: 'ar' });
-        }).catch(function() { new Notification(title, { body: body }); });
+          reg.showNotification(title, opts);
+        }).catch(function() { new Notification(title, opts); });
       } else {
-        new Notification(title, { body: body });
+        new Notification(title, opts);
       }
     }
   } catch (e) {}
@@ -3470,12 +3517,43 @@ function openMatchesModal(field) {
   var tm = document.getElementById('mTime');
   tm.innerHTML = '<option value="">أي وقت</option>' + TIME_SLOTS.map(function(s) { return '<option>' + s + '</option>'; }).join('');
   openModal('matchesModal');
+  requestNotifPermission();
   loadMatchRequests();
 }
+function matchNotifCopy(row, creatorName) {
+  var kind = MATCH_KINDS[row.kind] || 'يبحث عن خصم';
+  var when = (row.match_date || '') + (row.match_time ? ' الساعة ' + row.match_time : '');
+  var place = row.field_name || 'أي ملعب';
+  return {
+    title: kind,
+    body: (creatorName || row.creator_name || 'لاعب') + ' — ' + place + (when ? ' • ' + when : '')
+  };
+}
+
+function broadcastMatchRequest(row) {
+  var copy = matchNotifCopy(row);
+  var me = db.get('user', null);
+  var users = db.get('users', []) || [];
+  var seen = {};
+  users.forEach(function(u) {
+    if (!u || !u.id) return;
+    if (me && String(u.id) === String(me.id)) return;
+    if (seen[u.id]) return;
+    seen[u.id] = true;
+    pushNotification(u.id, {
+      type: 'match',
+      title: copy.title,
+      body: copy.body,
+      silent: true
+    });
+  });
+}
+
 function submitMatchRequest() {
   var user = db.get('user', null);
   if (!user) return;
   if (!SB_OK) { alert('لا يوجد اتصال بالخادم، حاول لاحقاً.'); return; }
+  requestNotifPermission();
   var fid = document.getElementById('mField').value;
   var f = STADIUMS.find(function(x) { return x.id === fid; });
   var date = document.getElementById('mDate').value;
@@ -3490,7 +3568,9 @@ function submitMatchRequest() {
   };
   sbUpsert('open_matches', [row]).then(function() {
     document.getElementById('mNote').value = '';
+    broadcastMatchRequest(row);
     loadMatchRequests();
+    notifyDevice('تم نشر طلبك', 'سيصل إشعار لبقية اللاعبين بأنك تبحث عن خصم.', { type: 'match', tag: 'diir-match-mine-' + row.id });
   }).catch(function(err) { sbReportFail(err); alert('تعذّر نشر الطلب. تأكد أنك شغّلت ملف supabase_matches.sql.'); });
 }
 function loadMatchRequests() {
@@ -3519,6 +3599,86 @@ function closeMatchRequest(id) {
     .then(function() { loadMatchRequests(); }).catch(sbReportFail);
 }
 
+var matchSyncBusy = false;
+function syncMatchRequests() {
+  var user = db.get('user', null);
+  if (!user || !user.id || !SB_OK || matchSyncBusy) return;
+  matchSyncBusy = true;
+  sbGet('open_matches', 'status=eq.open&match_date=gte.' + todayLocal() + '&order=created_at.desc&limit=20').then(function(rows) {
+    matchSyncBusy = false;
+    rows = rows || [];
+    var lsKey = 'sq_match_last_' + user.id;
+    var last = 0;
+    try { last = parseInt(localStorage.getItem(lsKey) || '0', 10) || 0; } catch (e) {}
+    var firstRun = !last;
+    var maxTs = last;
+    var newest = null;
+    rows.forEach(function(r) {
+      var ts = Number(r.created_at) || 0;
+      if (ts > maxTs) maxTs = ts;
+      if (firstRun) return;
+      if (ts <= last) return;
+      if (Number(r.creator_id) === Number(user.id)) return;
+      if (!newest || ts > Number(newest.created_at || 0)) newest = r;
+    });
+    try { localStorage.setItem(lsKey, String(maxTs || Date.now())); } catch (e) {}
+    if (!newest) return;
+    var copy = matchNotifCopy(newest);
+    pushNotification(user.id, {
+      type: 'match',
+      title: copy.title,
+      body: copy.body,
+      silent: true
+    });
+    notifyDevice(copy.title, copy.body, { type: 'match', tag: 'diir-match-' + newest.id });
+  }).catch(function() { matchSyncBusy = false; });
+}
+
+
+/* ============ إعلان تحديث تطبيق أندرويد (يقرأ آخر إصدار منشور على GitHub) ============ */
+var APP_BUILD = '__APP_BUILD__'; /* يستبدله بناء GitHub برقم الإصدار، وفي الموقع يبقى كما هو فلا يعمل الفحص */
+var UPDATE_REPO = 'Totti-dz/DIIR-MATCH-';
+var lastUpdateCheck = 0, updateLaterVer = 0;
+function checkForUpdate(force) {
+  if (!isNativeApp() || !/^\d+$/.test(APP_BUILD)) return;
+  var now = Date.now();
+  if (!force && now - lastUpdateCheck < 600000) return;
+  lastUpdateCheck = now;
+  fetch('https://api.github.com/repos/' + UPDATE_REPO + '/releases/latest', { cache: 'no-store', headers: { Accept: 'application/vnd.github+json' } })
+    .then(function(r) { return r.ok ? r.json() : null; })
+    .then(function(rel) {
+      if (!rel || !rel.tag_name) return;
+      var latest = parseInt(String(rel.tag_name).replace(/\D/g, ''), 10);
+      if (!latest || latest <= parseInt(APP_BUILD, 10) || latest === updateLaterVer) return;
+      var apk = (rel.assets || []).filter(function(a) { return /\.apk$/i.test(a.name || ''); })[0];
+      showUpdateBanner(latest, (apk && apk.browser_download_url) || APK_URL, String(rel.body || '').trim());
+    }).catch(function() {});
+}
+function showUpdateBanner(ver, url, notes) {
+  var old = document.getElementById('updateBanner'); if (old) old.remove();
+  var box = document.createElement('div');
+  box.id = 'updateBanner';
+  box.style.cssText = 'position:fixed;left:12px;right:12px;top:calc(12px + env(safe-area-inset-top,0px));z-index:99990;background:linear-gradient(135deg,#0b3b36,#0a2a3f);color:#f8fafc;border:1px solid #22e3a0;border-radius:18px;padding:14px 16px;box-shadow:0 14px 40px rgba(0,0,0,.6);direction:rtl;font-size:13.5px;line-height:1.7';
+  var h = document.createElement('div'); h.style.cssText = 'font-weight:900;font-size:15px;margin-bottom:4px'; h.innerText = '🚀 تحديث جديد متاح (الإصدار ' + ver + ')';
+  var d = document.createElement('div'); d.style.cssText = 'color:#cbd5e1;margin-bottom:10px;white-space:pre-line'; d.innerText = (notes ? notes.slice(0, 180) + '\n' : '') + 'حمّل النسخة الجديدة ثم ثبّتها فوق القديمة (بياناتك محفوظة).';
+  var row = document.createElement('div'); row.style.cssText = 'display:flex;gap:8px';
+  var go = document.createElement('button'); go.className = 'btn btn-emerald btn-sm'; go.innerText = '⬇️ تحميل التحديث';
+  go.onclick = function() { window.open(url, '_blank'); };
+  var later = document.createElement('button'); later.className = 'btn btn-outline btn-sm'; later.innerText = 'لاحقاً';
+  later.onclick = function() { updateLaterVer = ver; box.remove(); };
+  row.appendChild(go); row.appendChild(later); box.appendChild(h); box.appendChild(d); box.appendChild(row);
+  document.body.appendChild(box);
+  try {
+    if (localStorage.getItem('sq_update_notified') !== String(ver)) {
+      localStorage.setItem('sq_update_notified', String(ver));
+      notifyDevice('تحديث جديد لـ DIIR MATCH', 'الإصدار ' + ver + ' جاهز للتحميل.');
+    }
+  } catch (e) {}
+}
+document.addEventListener('visibilitychange', function() { if (!document.hidden) checkForUpdate(false); });
+setInterval(function() { checkForUpdate(false); }, 1800000);
+setTimeout(function() { checkForUpdate(true); }, 5000);
+
 var notifSyncBusy = false;
 function syncNotifications() {
   var user = db.get('user', null);
@@ -3542,7 +3702,7 @@ function syncNotifications() {
       if (known[r.id]) return;
       var n = { id: r.id, read: !!r.is_read, createdAt: ts, type: r.type || 'info', title: r.title || 'تنبيه', body: r.body || '', bookingId: r.booking_id || null };
       local.push(n);
-      if (!firstRun && !n.read && ts > last) fresh.push(n);
+      if (!firstRun && !n.read && ts > last && n.type !== 'match') fresh.push(n);
     });
     try { localStorage.setItem(lsKey, String(maxTs || 1)); } catch (e) {}
     if (rows && rows.length && local.length) {
@@ -3557,9 +3717,11 @@ function syncNotifications() {
     }
   }).catch(function() { notifSyncBusy = false; });
 }
-document.addEventListener('visibilitychange', function() { if (!document.hidden) syncNotifications(); });
+document.addEventListener('visibilitychange', function() { if (!document.hidden) { syncNotifications(); syncMatchRequests(); } });
 setInterval(syncNotifications, 10000);
+setInterval(syncMatchRequests, 12000);
 setTimeout(syncNotifications, 3000);
+setTimeout(syncMatchRequests, 4000);
 
 function getUnreadNotifications(userId) {
   return db.get('notifs_' + userId, []).filter(function(n) { return !n.read; });
@@ -3610,6 +3772,7 @@ function openNotificationsModal() {
       return '<div class="card" style="padding:12px; margin-bottom:8px; border-color:' + (n.read ? 'var(--navy-border)' : 'rgba(239,68,68,0.45)') + ';">' +
         '<b>' + n.title + '</b>' +
         '<p style="font-size:12.5px; color:var(--text-sub); margin-top:4px;">' + n.body + '</p>' +
+        (n.type === 'match' ? '<button class="btn btn-emerald btn-sm" style="margin-top:8px;" onclick="closeModal(\'notificationsModal\'); openMatchesModal();">عرض الطلب</button>' : '') +
         (n.bookingId ? '<button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="openChatFromNotif(\'' + n.bookingId + '\')">فتح الدردشة</button>' : '') +
         '</div>';
     }).join('');
@@ -3961,7 +4124,7 @@ function addStadiumByAdmin() {
       lat: isNaN(lat) ? '' : lat,
       lng: isNaN(lng) ? '' : lng,
       mapsUrl: mapsUrl,
-      image: data || 'fields/befok.svg'
+      image: data || 'fields/befok.jpg'
     });
     persistStadiums();
     document.getElementById('adminFieldName').value = '';
@@ -4664,6 +4827,14 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('sw.js').catch(function() {});
   });
+  navigator.serviceWorker.addEventListener('message', function(ev) {
+    var t = ev && ev.data && ev.data.type;
+    if (t === 'open-matches') {
+      try { openMatchesModal(); } catch (e) {}
+    } else if (t === 'open-notifs') {
+      try { openNotificationsModal(); } catch (e) {}
+    }
+  });
 }
 </script>
 
@@ -4699,8 +4870,8 @@ function dismissInstall() {
 /* تحديث إجباري مرة واحدة: يمسح النسخ القديمة المحفوظة في الهاتف */
 (function() {
   try {
-    if (localStorage.getItem('sq_build') === '6') return;
-    localStorage.setItem('sq_build', '6');
+    if (localStorage.getItem('sq_build') === '9') return;
+    localStorage.setItem('sq_build', '9');
     var jobs = [];
     if (navigator.serviceWorker) jobs.push(navigator.serviceWorker.getRegistrations().then(function(rs) { return Promise.all(rs.map(function(r) { return r.unregister(); })); }));
     if (window.caches) jobs.push(caches.keys().then(function(ks) { return Promise.all(ks.map(function(k) { return caches.delete(k); })); }));
