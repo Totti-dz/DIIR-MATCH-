@@ -121,7 +121,11 @@ jobs:
       - name: Add notification sound
         run: |
           mkdir -p android/app/src/main/res/raw
-          cp public/sounds/whistle.wav android/app/src/main/res/raw/whistle.wav
+          if [ -f public/sounds/whistle.wav ]; then
+            cp public/sounds/whistle.wav android/app/src/main/res/raw/whistle.wav
+          else
+            echo "تنبيه: ملف الصافرة غير موجود في المستودع، سيُبنى التطبيق بدون صوت الصافرة"
+          fi
 
       - name: Sync web assets
         run: npx cap sync android
