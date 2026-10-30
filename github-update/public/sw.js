@@ -1,4 +1,4 @@
-const CACHE_NAME = 'diir-match-v9';
+const CACHE_NAME = 'diir-match-v6';
 const PRECACHE = ['./', './index.html', './manifest.json', './brand/logo.png'];
 
 self.addEventListener('install', (e) => {
@@ -10,20 +10,6 @@ self.addEventListener('activate', (e) => {
     caches.keys()
       .then((keys) => Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener('notificationclick', (e) => {
-  e.notification.close();
-  var action = (e.notification && e.notification.data && e.notification.data.action) || 'open-matches';
-  e.waitUntil(
-    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(list) {
-      for (var i = 0; i < list.length; i++) {
-        if (list[i].postMessage) list[i].postMessage({ type: action });
-        if (list[i].focus) return list[i].focus();
-      }
-      if (self.clients.openWindow) return self.clients.openWindow('./');
-    })
   );
 });
 

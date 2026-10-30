@@ -455,6 +455,17 @@ body::before { content:""; position: fixed; inset: -20% -10% auto auto; width: 7
 /* تحميل (هيكل متحرك) عندما تكون القائمة فارغة */
 #fieldsGrid:empty::before { content:""; display: block; height: 240px; border-radius: 24px; background: linear-gradient(100deg, rgba(255,255,255,.04) 30%, rgba(255,255,255,.13) 50%, rgba(255,255,255,.04) 70%) 0 0/200% 100%; animation: shimmer 1.3s linear infinite; }
 
+/* ===== أداء: نُبقي شكل التصميم ونوقف ما يستهلك المعالج باستمرار ===== */
+*, *::before, *::after { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+body::before { display: none !important; }
+.pitch-lines, .gate-badge-logo, .online-dot.online { animation: none !important; }
+#fieldsTab .hero-banner { animation: none !important; background-size: 100% 100% !important; }
+#fieldsTab .hero-banner img, .hero-banner img { animation: none !important; filter: none !important; }
+.btn-emerald::after { display: none !important; }
+.slot.selected { animation: pop .3s both !important; }
+.field-item { box-shadow: 0 4px 14px rgba(0,0,0,.35) !important; }
+.modal-box, .bottom-dock, .hero-banner { box-shadow: 0 6px 18px rgba(0,0,0,.45) !important; }
+.btn-emerald { box-shadow: 0 4px 12px var(--emerald-glow) !important; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
 </style>
 </head>
@@ -1339,7 +1350,7 @@ body::before { content:""; position: fixed; inset: -20% -10% auto auto; width: 7
   <div class="modal-box" style="max-width:480px;">
     <span class="close-x" onclick="closeModal('notificationsModal')">✖</span>
     <h3 style="margin-bottom:8px;">مركز الإشعارات</h3>
-    <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">بحث عن خصم، رسائل الدردشة، تغيير المواعيد، وبلاغات المنظمين</p>
+    <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">رسائل الدردشة، تغيير المواعيد، وبلاغات المنظمين</p>
     <div id="notificationsList"></div>
   </div>
 </div>
@@ -1438,19 +1449,19 @@ body::before { content:""; position: fixed; inset: -20% -10% auto auto; width: 7
 
 <script>
 var DEFAULT_STADIUMS = [
-  { id: 'befok', name: 'ملعب بيفوك', pin: '1111', capacity: 9, quarter: 'حي بيفوك',     image: 'fields/befok.jpg', lat: 35.1855, lng: 1.4962, mapsUrl: '' },
-  { id: 'wilaya', name: 'ملعب الولاية', pin: '2222', capacity: 9, quarter: 'حي الولاية', image: 'fields/wilaya.jpg', lat: 35.1868, lng: 1.5011, mapsUrl: '' },
-  { id: 'douk', name: 'ملعب الدوك', pin: '3333', capacity: 7, quarter: 'حي الدوك', image: 'fields/douk.jpg', lat: 35.1812, lng: 1.4924, mapsUrl: '' },
-  { id: 'lacite', name: 'ملعب لاسيتي', pin: '4444', capacity: 7, quarter: 'حي لاسيتي', image: 'fields/lacite.jpg', lat: 35.1798, lng: 1.5056, mapsUrl: '' },
-  { id: 'marhala2', name: 'ملعب المرحلة الثانية', pin: '5555', capacity: 7, quarter: 'المرحلة الثانية', image: 'fields/marhala2.jpg', lat: 35.1901, lng: 1.4988, mapsUrl: '' },
-  { id: 'karya', name: 'ملعب القرية', pin: '6666', capacity: 7, quarter: 'حي القرية', image: 'fields/karya.jpg', lat: 35.1774, lng: 1.4889, mapsUrl: '' },
-  { id: 'binaa', name: 'ملعب البناء الذاتي', pin: '7777', capacity: 7, quarter: 'حي البناء الذاتي', image: 'fields/binaa.jpg', lat: 35.1882, lng: 1.5102, mapsUrl: '' },
-  { id: 'baraa', name: 'ملعب البراءة', pin: '8888', capacity: 7, quarter: 'حي البراءة', image: 'fields/baraa.jpg', lat: 35.1749, lng: 1.4941, mapsUrl: '' },
-  { id: 'somal', name: 'ملعب الصومال', pin: '9999', capacity: 7, quarter: 'حي الصومال', image: 'fields/somal.jpg', lat: 35.1915, lng: 1.4876, mapsUrl: '' },
-  { id: 'mejat', name: 'ملعب مجاط', pin: '1010', capacity: 7, quarter: 'حي مجاط', image: 'fields/mejat.jpg', lat: 35.1826, lng: 1.5128, mapsUrl: '' },
-  { id: 'hamri', name: 'ملعب الحمري', pin: '1212', capacity: 7, quarter: 'حي الحمري', image: 'fields/hamri.jpg', lat: 35.1761, lng: 1.5033, mapsUrl: '' },
-  { id: 'ikhwa', name: 'ملعب الإخوة (كوسوفو)', pin: '1313', capacity: 9, quarter: 'حي كوسوفو', image: 'fields/ikhwa.jpg', lat: 35.1933, lng: 1.5067, mapsUrl: '' },
-  { id: 'csp', name: 'ملعب CSP', pin: '1414', capacity: 9, quarter: 'مركب CSP السوقر', image: 'fields/csp.jpg', lat: 35.1844, lng: 1.4992, mapsUrl: '' }
+  { id: 'befok', name: 'ملعب بيفوك', pin: '1111', capacity: 9, quarter: 'حي بيفوك',     image: 'fields/befok.webp', lat: 35.1855, lng: 1.4962, mapsUrl: '' },
+  { id: 'wilaya', name: 'ملعب الولاية', pin: '2222', capacity: 9, quarter: 'حي الولاية', image: 'fields/wilaya.webp', lat: 35.1868, lng: 1.5011, mapsUrl: '' },
+  { id: 'douk', name: 'ملعب الدوك', pin: '3333', capacity: 7, quarter: 'حي الدوك', image: 'fields/douk.svg', lat: 35.1812, lng: 1.4924, mapsUrl: '' },
+  { id: 'lacite', name: 'ملعب لاسيتي', pin: '4444', capacity: 7, quarter: 'حي لاسيتي', image: 'fields/lacite.svg', lat: 35.1798, lng: 1.5056, mapsUrl: '' },
+  { id: 'marhala2', name: 'ملعب المرحلة الثانية', pin: '5555', capacity: 7, quarter: 'المرحلة الثانية', image: 'fields/marhala2.svg', lat: 35.1901, lng: 1.4988, mapsUrl: '' },
+  { id: 'karya', name: 'ملعب القرية', pin: '6666', capacity: 7, quarter: 'حي القرية', image: 'fields/karya.svg', lat: 35.1774, lng: 1.4889, mapsUrl: '' },
+  { id: 'binaa', name: 'ملعب البناء الذاتي', pin: '7777', capacity: 7, quarter: 'حي البناء الذاتي', image: 'fields/binaa.webp', lat: 35.1882, lng: 1.5102, mapsUrl: '' },
+  { id: 'baraa', name: 'ملعب البراءة', pin: '8888', capacity: 7, quarter: 'حي البراءة', image: 'fields/baraa.webp', lat: 35.1749, lng: 1.4941, mapsUrl: '' },
+  { id: 'somal', name: 'ملعب الصومال', pin: '9999', capacity: 7, quarter: 'حي الصومال', image: 'fields/somal.svg', lat: 35.1915, lng: 1.4876, mapsUrl: '' },
+  { id: 'mejat', name: 'ملعب مجاط', pin: '1010', capacity: 7, quarter: 'حي مجاط', image: 'fields/mejat.webp', lat: 35.1826, lng: 1.5128, mapsUrl: '' },
+  { id: 'hamri', name: 'ملعب الحمري', pin: '1212', capacity: 7, quarter: 'حي الحمري', image: 'fields/hamri.svg', lat: 35.1761, lng: 1.5033, mapsUrl: '' },
+  { id: 'ikhwa', name: 'ملعب الإخوة (كوسوفو)', pin: '1313', capacity: 9, quarter: 'حي كوسوفو', image: 'fields/ikhwa.webp', lat: 35.1933, lng: 1.5067, mapsUrl: '' },
+  { id: 'csp', name: 'ملعب CSP', pin: '1414', capacity: 9, quarter: 'مركب CSP السوقر', image: 'fields/csp.svg', lat: 35.1844, lng: 1.4992, mapsUrl: '' }
 ];
 var STADIUMS = DEFAULT_STADIUMS.slice();
 var API_OK = false;
@@ -1493,27 +1504,19 @@ var FIELD_SVGS = {"baraa": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22htt
 function fieldSvgBack(src) {
   var s = String(src || '');
   if (s.indexOf('data:image/svg+xml') !== 0) return src;
-  for (var k in FIELD_SVGS) { if (FIELD_SVGS[k] === s) return 'fields/' + k + '.jpg'; }
+  for (var k in FIELD_SVGS) { if (FIELD_SVGS[k] === s) return 'fields/' + k + '.svg'; }
   return src;
 }
 
-function fieldJpgPath(id) { return 'fields/' + id + '.jpg'; }
-
-function fieldFallback(id) { return fieldJpgPath(id); }
-
-function hostSafeFieldImage(src) {
-  var s = String(src || '');
-  var m = s.match(/^fields\/([A-Za-z0-9_-]+)\.(webp|svg|png|jpe?g)$/i);
-  if (m) return 'fields/' + m[1] + '.jpg';
-  return s;
-}
+function fieldFallback(id) { return FIELD_SVGS[id] || 'brand/logo.png'; }
 
 function resolveAsset(src) {
   if (!src) return 'brand/logo.png';
   var s = String(src);
   if (s.indexOf('data:') === 0 || s.indexOf('http://') === 0 || s.indexOf('https://') === 0) return s;
   if (s.charAt(0) === '/') s = s.slice(1);
-  s = hostSafeFieldImage(s);
+  var fm = s.match(/^fields\/([A-Za-z0-9_-]+)\.svg$/);
+  if (fm && FIELD_SVGS[fm[1]]) return FIELD_SVGS[fm[1]];
   return s;
 }
 
@@ -1691,7 +1694,7 @@ function mapStadiumsFromSb(rows) {
       pin: s.pin,
       capacity: s.capacity || 7,
       quarter: s.quarter || 'السوقر',
-        image: resolveAsset(s.image || 'fields/befok.jpg'),
+       image: resolveAsset(s.image || 'fields/befok.svg'),
       lat: s.lat || '',
       lng: s.lng || '',
       mapsUrl: s.maps_url || ''
@@ -2135,7 +2138,7 @@ function generateNumericPlayerId() {
         body: 'الملاعب المعشوبة تبقى مفتوحة لمباريات المساء مع ضرورة الالتزام بالحيطة والحذر.',
         isAlert: true,
         date: 'اليوم',
-        image: 'fields/hamri.jpg'
+        image: 'fields/hamri.svg'
       },
       {
         id: 'n_2',
@@ -2144,7 +2147,7 @@ function generateNumericPlayerId() {
         body: 'باب التسجيل مفتوح لجميع الفرق بما فيها مجاط، الحمري، والإخوة كوسوفو.',
         isAlert: false,
         date: 'أمس',
-        image: 'fields/ikhwa.jpg'
+        image: 'fields/ikhwa.svg'
       }
     ]);
   }
@@ -2169,14 +2172,14 @@ function mergeStadiums() {
       if (!s.image || String(s.image).indexOf('unsplash.com') !== -1 || String(s.image).indexOf('photo-') !== -1) {
         s.image = def.image;
       }
-      var rawImg = hostSafeFieldImage(fieldSvgBack(String(s.image)));
-      if (/^fields\/[\w-]+\.(svg|webp)$/i.test(rawImg) || /^fields\/[\w-]+\.jpg$/i.test(String(def.image))) s.image = def.image;
+      var rawImg = fieldSvgBack(String(s.image)); /* المسار الأصلي قبل تحويله إلى رسم مضمّن */
+      if (/^fields\/[\w-]+\.svg$/.test(rawImg) && /^fields\/[\w-]+\.webp$/.test(String(def.image))) s.image = def.image;
       if (!s.pin) s.pin = def.pin;
       if (s.lat === undefined || s.lat === null || s.lat === '') s.lat = def.lat;
       if (s.lng === undefined || s.lng === null || s.lng === '') s.lng = def.lng;
       if (!s.mapsUrl) s.mapsUrl = def.mapsUrl || '';
     }
-    if (!s.image) s.image = 'fields/befok.jpg';
+    if (!s.image) s.image = 'fields/befok.svg';
     s.image = resolveAsset(s.image);
     if (!s.mapsUrl) s.mapsUrl = '';
     return s;
@@ -2538,8 +2541,6 @@ function refreshUI() {
   renderNews();
   updateDbChip();
   refreshNotificationBadges();
-  requestNotifPermission();
-  syncMatchRequests();
 }
 
 /* تبديل التبويبات */
@@ -2637,11 +2638,11 @@ function renderFields() {
     card.className = 'field-item';
     card.style.animationDelay = (shown * 0.05) + 's';
     card.onclick = function() { openBookingModal(f); };
-    var img = resolveAsset(f.image || 'fields/befok.jpg');
+    var img = resolveAsset(f.image || 'fields/befok.svg');
     var badge = free > 0 ? '<span class="free-badge">● ' + free + ' متاح اليوم</span>' : '<span class="free-badge none">● لا مواعيد اليوم</span>';
     card.innerHTML =
       '<div class="field-cover">' +
-        '<img src="' + img + '" alt="' + f.name + '" loading="lazy" onerror="this.onerror=null;this.src=\'brand/logo.png\'">' +
+        '<img src="' + img + '" alt="' + f.name + '" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=fieldFallback(\'' + f.id + '\')">' +
         '<span class="field-tag">سعة ' + f.capacity + ' ضد ' + f.capacity + '</span>' +
       '</div>' +
       '<div class="field-body">' +
@@ -2773,6 +2774,7 @@ function confirmPlayerBooking() {
       body: field.name + ' — ' + date + ' الساعة ' + slot,
       bookingId: newBooking.id
     });
+    pushNotification(orgNotifId(field.id), { type: 'booking', title: 'طلب حجز جديد 🔔', body: user.name + ' — ' + date + ' الساعة ' + slot, bookingId: null });
     bookingInFlight = false;
     alert('تم إرسال طلب الحجز لمنظم ملعب ' + field.name + '!\nتمت إضافة +30 XP إلى رصيدك. ستصلك +100 XP فور تأكيد الحجز.');
     closeModal('bookingModal');
@@ -3129,6 +3131,7 @@ function verifyOrganizerLogin() {
   }
 
   activeOrganizerField = field;
+  try { localStorage.setItem('sq_org_field', field.id); } catch (e) {}
   closeModal('organizerModal');
   document.getElementById('organizerFieldTitle').innerText = 'لوحة تحكم: ' + field.name;
   document.getElementById('orgScheduleDate').value = todayLocal();
@@ -3368,10 +3371,9 @@ function pushNotification(userId, item) {
   });
   db.set(key, list);
   refreshNotificationBadges();
-  if (item && item.silent) return;
   try {
     var cu = db.get('user', null);
-    if (cu && String(cu.id) === String(userId)) notifyDevice(list[0].title, list[0].body, item);
+    if (cu && cu.id === userId) notifyDevice(list[0].title, list[0].body);
   } catch (e) {}
 }
 
@@ -3404,28 +3406,24 @@ function setSound(on) { try { localStorage.setItem('sq_sound', on ? '1' : '0'); 
 var whistleAudio = null;
 function playWhistle() {
   try {
-    if (!whistleAudio) whistleAudio = new Audio('sounds/crowd-goal.wav');
+    if (!whistleAudio) whistleAudio = new Audio('sounds/cheer.wav');
     whistleAudio.currentTime = 0;
     var pr = whistleAudio.play(); if (pr && pr.catch) pr.catch(function() {});
   } catch (e) {}
 }
 document.addEventListener('click', function unlockAudio() {
   document.removeEventListener('click', unlockAudio, true);
-  try { whistleAudio = whistleAudio || new Audio('sounds/crowd-goal.wav'); whistleAudio.muted = true; var p = whistleAudio.play(); if (p && p.then) p.then(function() { whistleAudio.pause(); whistleAudio.currentTime = 0; whistleAudio.muted = false; }).catch(function() { whistleAudio.muted = false; }); } catch (e) {}
+  try { whistleAudio = whistleAudio || new Audio('sounds/cheer.wav'); whistleAudio.muted = true; var p = whistleAudio.play(); if (p && p.then) p.then(function() { whistleAudio.pause(); whistleAudio.currentTime = 0; whistleAudio.muted = false; }).catch(function() { whistleAudio.muted = false; }); } catch (e) {}
 }, true);
 function initDeviceNotifications() {
   if (devNotifReady) return;
   devNotifReady = true;
   if (isNativeApp()) {
     nativeLN('requestPermissions').catch(function() {});
-    nativeLN('createChannel', { id: 'diir_crowd', name: 'إشعارات DIIR MATCH (جماهير)', importance: 5, vibration: true, visibility: 1, sound: 'crowdgoal.wav' }).catch(function() {});
+    nativeLN('createChannel', { id: 'diir_cheer', name: 'إشعارات DIIR MATCH', importance: 5, vibration: true, visibility: 1, sound: 'cheer.wav' }).catch(function() {});
     try {
-      window.Capacitor.nativeCallback('LocalNotifications', 'addListener', { eventName: 'localNotificationActionPerformed' }, function(ev) {
-        try {
-          var extra = (ev && ev.notification && ev.notification.extra) || {};
-          if (extra.action === 'open-matches') openMatchesModal();
-          else openNotificationsModal();
-        } catch (e) {}
+      window.Capacitor.nativeCallback('LocalNotifications', 'addListener', { eventName: 'localNotificationActionPerformed' }, function() {
+        try { openNotificationsModal(); } catch (e) {}
       });
     } catch (e) {}
   } else if ('Notification' in window && Notification.permission === 'default') {
@@ -3436,51 +3434,20 @@ function initDeviceNotifications() {
     document.addEventListener('click', ask, true);
   }
 }
-
-function requestNotifPermission() {
-  initDeviceNotifications();
-  if (isNativeApp()) {
-    nativeLN('requestPermissions').catch(function() {});
-    return;
-  }
-  if ('Notification' in window && Notification.permission === 'default') {
-    try { Notification.requestPermission(); } catch (e) {}
-  }
-}
-function notifyDevice(title, body, extra) {
-  extra = extra || {};
-  var action = extra.action || (extra.type === 'match' ? 'open-matches' : 'open-notifs');
+function notifyDevice(title, body) {
   try {
     if (isNativeApp()) {
-      nativeLN('schedule', {
-        notifications: [{
-          id: Math.floor(Math.random() * 2000000000),
-          title: title,
-          body: body,
-          channelId: 'diir_crowd',
-          extra: { action: action }
-        }]
-      }).catch(function() {});
+      nativeLN('schedule', { notifications: [{ id: Math.floor(Math.random() * 2000000000), title: title, body: body, channelId: 'diir_cheer' }] }).catch(function() {});
       return;
     }
     playWhistle();
     if ('Notification' in window && Notification.permission === 'granted') {
-      var opts = {
-        body: body,
-        icon: 'brand/logo-192.png',
-        badge: 'brand/logo-192.png',
-        dir: 'rtl',
-        lang: 'ar',
-        tag: extra.tag || ('diir-' + action + '-' + Date.now()),
-        renotify: true,
-        data: { action: action }
-      };
       if (navigator.serviceWorker && navigator.serviceWorker.ready) {
         navigator.serviceWorker.ready.then(function(reg) {
-          reg.showNotification(title, opts);
-        }).catch(function() { new Notification(title, opts); });
+          reg.showNotification(title, { body: body, icon: 'brand/logo-192.png', dir: 'rtl', lang: 'ar' });
+        }).catch(function() { new Notification(title, { body: body }); });
       } else {
-        new Notification(title, opts);
+        new Notification(title, { body: body });
       }
     }
   } catch (e) {}
@@ -3504,7 +3471,7 @@ function ensureMatchesModal() {
     '<label>ملاحظة (اختياري)</label><textarea id="mNote" rows="2" placeholder="المستوى، عدد اللاعبين..."></textarea>' +
     '<button class="btn btn-emerald btn-block" onclick="submitMatchRequest()">نشر الطلب</button>' +
     '<h4 style="margin:18px 0 8px;font-size:15px;">الطلبات المفتوحة</h4><div id="mList" style="font-size:13px;color:var(--text-sub);">جاري التحميل...</div></div>';
-  document.body.appendChild(el);
+  document.body.insertBefore(el, document.body.firstChild); /* في أول الصفحة حتى تبقى بقية النوافذ (الإشعارات والدردشة) فوقها */
 }
 function openMatchesModal(field) {
   var user = db.get('user', null);
@@ -3517,43 +3484,12 @@ function openMatchesModal(field) {
   var tm = document.getElementById('mTime');
   tm.innerHTML = '<option value="">أي وقت</option>' + TIME_SLOTS.map(function(s) { return '<option>' + s + '</option>'; }).join('');
   openModal('matchesModal');
-  requestNotifPermission();
   loadMatchRequests();
 }
-function matchNotifCopy(row, creatorName) {
-  var kind = MATCH_KINDS[row.kind] || 'يبحث عن خصم';
-  var when = (row.match_date || '') + (row.match_time ? ' الساعة ' + row.match_time : '');
-  var place = row.field_name || 'أي ملعب';
-  return {
-    title: kind,
-    body: (creatorName || row.creator_name || 'لاعب') + ' — ' + place + (when ? ' • ' + when : '')
-  };
-}
-
-function broadcastMatchRequest(row) {
-  var copy = matchNotifCopy(row);
-  var me = db.get('user', null);
-  var users = db.get('users', []) || [];
-  var seen = {};
-  users.forEach(function(u) {
-    if (!u || !u.id) return;
-    if (me && String(u.id) === String(me.id)) return;
-    if (seen[u.id]) return;
-    seen[u.id] = true;
-    pushNotification(u.id, {
-      type: 'match',
-      title: copy.title,
-      body: copy.body,
-      silent: true
-    });
-  });
-}
-
 function submitMatchRequest() {
   var user = db.get('user', null);
   if (!user) return;
   if (!SB_OK) { alert('لا يوجد اتصال بالخادم، حاول لاحقاً.'); return; }
-  requestNotifPermission();
   var fid = document.getElementById('mField').value;
   var f = STADIUMS.find(function(x) { return x.id === fid; });
   var date = document.getElementById('mDate').value;
@@ -3568,9 +3504,7 @@ function submitMatchRequest() {
   };
   sbUpsert('open_matches', [row]).then(function() {
     document.getElementById('mNote').value = '';
-    broadcastMatchRequest(row);
     loadMatchRequests();
-    notifyDevice('تم نشر طلبك', 'سيصل إشعار لبقية اللاعبين بأنك تبحث عن خصم.', { type: 'match', tag: 'diir-match-mine-' + row.id });
   }).catch(function(err) { sbReportFail(err); alert('تعذّر نشر الطلب. تأكد أنك شغّلت ملف supabase_matches.sql.'); });
 }
 function loadMatchRequests() {
@@ -3579,6 +3513,7 @@ function loadMatchRequests() {
   var me = db.get('user', null);
   sbGet('open_matches', 'status=eq.open&match_date=gte.' + todayLocal() + '&order=match_date.asc,match_time.asc&limit=40').then(function(rows) {
     if (!rows || !rows.length) { box.innerText = 'لا توجد طلبات مفتوحة الآن. كن أول من ينشر!'; return; }
+    rows.forEach(function(r) { matchCache[r.id] = r; });
     box.innerHTML = rows.map(function(r) {
       var mine = me && Number(r.creator_id) === Number(me.id);
       var msg = encodeURIComponent('مرحباً ' + r.creator_name + '، رأيت طلبك في DIIR MATCH (' + (MATCH_KINDS[r.kind] || '') + ' — ' + r.match_date + ' ' + (r.match_time || '') + '). هل ما زال متاحاً؟');
@@ -3588,50 +3523,52 @@ function loadMatchRequests() {
         '<div style="font-size:12.5px;color:var(--text-sub);">' + mEsc(r.field_name) + ' • ' + mEsc(r.match_date) + (r.match_time ? ' • ' + mEsc(r.match_time) : '') + '</div>' +
         '<div style="font-size:12.5px;">' + mEsc(r.creator_name) + (r.note ? ' — ' + mEsc(r.note) : '') + '</div>' +
         '<div style="display:flex;gap:8px;margin-top:8px;">' +
+        (!mine && me ? '<button class="btn btn-emerald btn-sm" data-id="' + mEsc(r.id) + '" onclick="requestMatch(this.dataset.id)">⚔️ أريد اللعب</button>' : '') +
         (wa && !mine ? '<a class="btn btn-emerald btn-sm" style="text-decoration:none;" target="_blank" rel="noopener" href="' + wa + '?text=' + msg + '">💬 تواصل</a>' : '') +
-        (mine ? '<button class="btn btn-outline btn-sm" onclick="closeMatchRequest(\'' + mEsc(r.id) + '\')">إغلاق الطلب</button>' : '') +
+        (mine ? '<button class="btn btn-outline btn-sm" data-id="' + mEsc(r.id) + '" onclick="closeMatchRequest(this.dataset.id)">إغلاق الطلب</button>' : '') +
         '</div></div>';
     }).join('');
   }).catch(function() { box.innerText = 'تعذّر تحميل الطلبات. تأكد أنك شغّلت ملف supabase_matches.sql.'; });
 }
+var matchCache = {};
+function requestMatch(mid) {
+  var m = matchCache[mid], me = db.get('user', null);
+  if (!m || !me || Number(m.creator_id) === Number(me.id)) return;
+  pushNotification(Number(m.creator_id), {
+    type: 'match_request', title: 'طلب مواجهة 🔥',
+    body: me.name + ' يريد اللعب معك — ' + m.match_date + (m.match_time ? ' ' + m.match_time : '') + (m.field_name ? ' — ' + m.field_name : ''),
+    bookingId: ['mreq', m.id, me.id, String(me.name || 'لاعب').replace(/\|/g, ' ')].join('|')
+  });
+  alert('✅ وصل طلبك لصاحب الإعلان. ستصلك رسالة وإشعار عند قبوله، وتدخلان الدردشة للاتفاق.');
+}
+function acceptMatchRequest(matchId, rid, rname, n) {
+  var me = db.get('user', null); if (!me) return;
+  var room = 'mc_' + matchId + '_' + me.id + '_' + rid;
+  pushNotification(Number(rid), { type: 'match_ok', title: 'تم قبول طلبك ✅', body: me.name + ' قبل التحدي. ادخل الدردشة للاتفاق على الموعد والتفاصيل.', bookingId: room });
+  if (SB_OK) fetch(SB_URL + '/rest/v1/open_matches?id=eq.' + encodeURIComponent(matchId) + '&kind=in.(opponent,team)', { method: 'PATCH', headers: sbHeaders({ Prefer: 'return=minimal' }), body: JSON.stringify({ status: 'matched' }) }).catch(sbReportFail);
+  var items = db.get('notifs_' + me.id, []);
+  items.forEach(function(x) { if (n && x.id === n.id) { x.bookingId = room; x.title = 'طلب مواجهة (تم القبول ✅)'; } });
+  db.set('notifs_' + me.id, items);
+  openChat(room, rname || 'لاعب', rid);
+}
+function openMatchRoom(room) {
+  var me = db.get('user', null); if (!me) return;
+  var p = String(room).split('_'), a = p[p.length - 2], b = p[p.length - 1];
+  openChat(room, 'لاعب', String(me.id) === String(a) ? b : a);
+}
+function notifAction(id) {
+  var me = db.get('user', null); if (!me) return;
+  var n = db.get('notifs_' + me.id, []).find(function(x) { return String(x.id) === String(id); });
+  if (!n) return;
+  var bid = String(n.bookingId || '');
+  closeModal('notificationsModal');
+  if (bid.indexOf('mreq|') === 0) { var p = bid.split('|'); acceptMatchRequest(p[1], p[2], p[3], n); }
+  else if (bid.indexOf('mc_') === 0) openMatchRoom(bid);
+  else openChatFromNotif(bid);
+}
 function closeMatchRequest(id) {
   fetch(SB_URL + '/rest/v1/open_matches?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers: sbHeaders({ Prefer: 'return=minimal' }), body: JSON.stringify({ status: 'closed' }) })
     .then(function() { loadMatchRequests(); }).catch(sbReportFail);
-}
-
-var matchSyncBusy = false;
-function syncMatchRequests() {
-  var user = db.get('user', null);
-  if (!user || !user.id || !SB_OK || matchSyncBusy) return;
-  matchSyncBusy = true;
-  sbGet('open_matches', 'status=eq.open&match_date=gte.' + todayLocal() + '&order=created_at.desc&limit=20').then(function(rows) {
-    matchSyncBusy = false;
-    rows = rows || [];
-    var lsKey = 'sq_match_last_' + user.id;
-    var last = 0;
-    try { last = parseInt(localStorage.getItem(lsKey) || '0', 10) || 0; } catch (e) {}
-    var firstRun = !last;
-    var maxTs = last;
-    var newest = null;
-    rows.forEach(function(r) {
-      var ts = Number(r.created_at) || 0;
-      if (ts > maxTs) maxTs = ts;
-      if (firstRun) return;
-      if (ts <= last) return;
-      if (Number(r.creator_id) === Number(user.id)) return;
-      if (!newest || ts > Number(newest.created_at || 0)) newest = r;
-    });
-    try { localStorage.setItem(lsKey, String(maxTs || Date.now())); } catch (e) {}
-    if (!newest) return;
-    var copy = matchNotifCopy(newest);
-    pushNotification(user.id, {
-      type: 'match',
-      title: copy.title,
-      body: copy.body,
-      silent: true
-    });
-    notifyDevice(copy.title, copy.body, { type: 'match', tag: 'diir-match-' + newest.id });
-  }).catch(function() { matchSyncBusy = false; });
 }
 
 
@@ -3680,48 +3617,89 @@ setInterval(function() { checkForUpdate(false); }, 1800000);
 setTimeout(function() { checkForUpdate(true); }, 5000);
 
 var notifSyncBusy = false;
+function orgNotifId(fid) { var h = 0, s = String(fid); for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 1000000007; return -(h + 1); }
+function getOrgFieldId() {
+  if (typeof activeOrganizerField !== 'undefined' && activeOrganizerField) return activeOrganizerField.id;
+  try { return localStorage.getItem('sq_org_field') || ''; } catch (e) { return ''; }
+}
+/* يجلب إشعارات حساب معيّن، ويُرجع الجديد فقط (الاعتماد على أرقام الإشعارات المرئية سابقاً وليس على الوقت، فلا يضيع إشعار بسبب فرق ساعة الأجهزة) */
+function pollNotifsFor(uid, localList) {
+  return sbGet('notifications', 'user_id=eq.' + encodeURIComponent(uid) + '&order=created_at.desc&limit=50').then(function(rows) {
+    rows = rows || [];
+    var key = 'sq_seen_' + uid, seen = null;
+    try { seen = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) {}
+    var first = !seen; seen = seen || [];
+    var known = {}; (localList || []).forEach(function(n) { known[n.id] = true; });
+    var fresh = [];
+    rows.forEach(function(r) {
+      if (seen.indexOf(r.id) !== -1) return;
+      seen.push(r.id);
+      if (!first && !known[r.id] && !r.is_read) fresh.push(r);
+    });
+    if (seen.length > 300) seen = seen.slice(-300);
+    try { localStorage.setItem(key, JSON.stringify(seen)); } catch (e) {}
+    return { rows: rows, fresh: fresh };
+  });
+}
+function syncRemoteBookings() {
+  if (!SB_OK) return;
+  var user = db.get('user', null), fid = getOrgFieldId(), qs = [];
+  if (fid) qs.push('field_id=eq.' + encodeURIComponent(fid) + '&order=created_at.desc&limit=200');
+  if (user && user.id) qs.push('user_id=eq.' + encodeURIComponent(user.id) + '&order=created_at.desc&limit=100');
+  qs.forEach(function(q) {
+    sbGet('bookings', q).then(function(rows) {
+      var remote = mapBookingsFromSb(rows), local = db.get('bookings', []), by = {}, changed = false;
+      local.forEach(function(b) { by[b.id] = b; });
+      remote.forEach(function(r) {
+        var l = by[r.id];
+        if (!l) { local.push(r); changed = true; }
+        else if (l.status !== r.status) { l.status = r.status; changed = true; }
+      });
+      if (!changed) return;
+      db.set('bookings', local, true);
+      var dash = document.getElementById('organizerDashModal');
+      if (activeOrganizerField && dash && dash.classList.contains('show')) renderOrgRequests();
+      refreshUI();
+    }).catch(function() {});
+  });
+}
 function syncNotifications() {
-  var user = db.get('user', null);
-  if (!user || !user.id || !SB_OK || notifSyncBusy) return;
+  if (!SB_OK || notifSyncBusy) return;
+  var user = db.get('user', null), fid = getOrgFieldId(), tasks = [];
+  if (!user && !fid) return;
   initDeviceNotifications();
   notifSyncBusy = true;
-  sbGet('notifications', 'user_id=eq.' + encodeURIComponent(user.id) + '&order=created_at.desc&limit=50').then(function(rows) {
+  if (user && user.id) {
+    var key = 'notifs_' + user.id, local = db.get(key, []);
+    tasks.push(pollNotifsFor(user.id, local).then(function(res) {
+      var known = {}; local.forEach(function(n) { known[n.id] = true; });
+      res.rows.forEach(function(r) {
+        if (known[r.id]) return;
+        local.push({ id: r.id, read: !!r.is_read, createdAt: Number(r.created_at) || 0, type: r.type || 'info', title: r.title || 'تنبيه', body: r.body || '', bookingId: r.booking_id || null });
+      });
+      if (res.rows.length) {
+        local.sort(function(a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+        if (local.length > 100) local.length = 100;
+        db.set(key, local, true);
+      }
+      return res.fresh;
+    }));
+  }
+  if (fid) tasks.push(pollNotifsFor(orgNotifId(fid), []).then(function(res) { return res.fresh; }));
+  Promise.all(tasks.map(function(p) { return p.catch(function() { return []; }); })).then(function(lists) {
     notifSyncBusy = false;
-    var key = 'notifs_' + user.id;
-    var local = db.get(key, []);
-    var known = {};
-    local.forEach(function(n) { known[n.id] = true; });
-    var lsKey = 'sq_notif_last_' + user.id;
-    var last = 0;
-    try { last = parseInt(localStorage.getItem(lsKey) || '0', 10) || 0; } catch (e) {}
-    var firstRun = !last;
-    var maxTs = last, fresh = [];
-    (rows || []).forEach(function(r) {
-      var ts = Number(r.created_at) || 0;
-      if (ts > maxTs) maxTs = ts;
-      if (known[r.id]) return;
-      var n = { id: r.id, read: !!r.is_read, createdAt: ts, type: r.type || 'info', title: r.title || 'تنبيه', body: r.body || '', bookingId: r.booking_id || null };
-      local.push(n);
-      if (!firstRun && !n.read && ts > last && n.type !== 'match') fresh.push(n);
-    });
-    try { localStorage.setItem(lsKey, String(maxTs || 1)); } catch (e) {}
-    if (rows && rows.length && local.length) {
-      local.sort(function(a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
-      if (local.length > 100) local.length = 100;
-      db.set(key, local, true);
-    }
+    var fresh = [].concat.apply([], lists);
     if (fresh.length) {
       refreshNotificationBadges();
-      if (fresh.length === 1) notifyDevice(fresh[0].title, fresh[0].body);
+      if (fresh.length === 1) notifyDevice(fresh[0].title || 'تنبيه', fresh[0].body || '');
       else notifyDevice('DIIR MATCH', 'لديك ' + fresh.length + ' إشعارات جديدة');
     }
-  }).catch(function() { notifSyncBusy = false; });
+    syncRemoteBookings();
+  });
 }
-document.addEventListener('visibilitychange', function() { if (!document.hidden) { syncNotifications(); syncMatchRequests(); } });
-setInterval(syncNotifications, 10000);
-setInterval(syncMatchRequests, 12000);
+document.addEventListener('visibilitychange', function() { if (!document.hidden) syncNotifications(); });
+setInterval(syncNotifications, 8000);
 setTimeout(syncNotifications, 3000);
-setTimeout(syncMatchRequests, 4000);
 
 function getUnreadNotifications(userId) {
   return db.get('notifs_' + userId, []).filter(function(n) { return !n.read; });
@@ -3769,12 +3747,12 @@ function openNotificationsModal() {
     list.innerHTML = '<p style="color:var(--text-sub); text-align:center; padding:16px;">لا توجد إشعارات حالياً.</p>';
   } else {
     list.innerHTML = items.map(function(n) {
+      var bid = String(n.bookingId || ''), btn = '';
+      if (bid.indexOf('mreq|') === 0) btn = '<button class="btn btn-emerald btn-sm" style="margin-top:8px;" data-id="' + mEsc(n.id) + '" onclick="notifAction(this.dataset.id)">✅ قبول والدخول للدردشة</button>';
+      else if (bid) btn = '<button class="btn btn-outline btn-sm" style="margin-top:8px;" data-id="' + mEsc(n.id) + '" onclick="notifAction(this.dataset.id)">💬 فتح الدردشة</button>';
       return '<div class="card" style="padding:12px; margin-bottom:8px; border-color:' + (n.read ? 'var(--navy-border)' : 'rgba(239,68,68,0.45)') + ';">' +
-        '<b>' + n.title + '</b>' +
-        '<p style="font-size:12.5px; color:var(--text-sub); margin-top:4px;">' + n.body + '</p>' +
-        (n.type === 'match' ? '<button class="btn btn-emerald btn-sm" style="margin-top:8px;" onclick="closeModal(\'notificationsModal\'); openMatchesModal();">عرض الطلب</button>' : '') +
-        (n.bookingId ? '<button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="openChatFromNotif(\'' + n.bookingId + '\')">فتح الدردشة</button>' : '') +
-        '</div>';
+        '<b>' + mEsc(n.title) + '</b>' +
+        '<p style="font-size:12.5px; color:var(--text-sub); margin-top:4px;">' + mEsc(n.body) + '</p>' + btn + '</div>';
     }).join('');
     items.forEach(function(n) { n.read = true; });
     db.set('notifs_' + user.id, items);
@@ -4124,7 +4102,7 @@ function addStadiumByAdmin() {
       lat: isNaN(lat) ? '' : lat,
       lng: isNaN(lng) ? '' : lng,
       mapsUrl: mapsUrl,
-      image: data || 'fields/befok.jpg'
+      image: data || 'fields/befok.svg'
     });
     persistStadiums();
     document.getElementById('adminFieldName').value = '';
@@ -4771,6 +4749,10 @@ function sendChat() {
       body: txt,
       bookingId: booking.id
     });
+  } else if (booking && booking.userId === user.id) {
+    pushNotification(orgNotifId(booking.fieldId), { type: 'chat', title: 'رسالة من ' + (user.name || 'لاعب'), body: txt.slice(0, 120), bookingId: null });
+  } else if (!booking && String(activeChatBookingId).indexOf('mc_') === 0 && activeChatPartnerId) {
+    pushNotification(Number(activeChatPartnerId), { type: 'chat', title: 'رسالة من ' + (user.name || 'لاعب'), body: txt.slice(0, 120), bookingId: activeChatBookingId });
   }
 }
 
@@ -4827,14 +4809,6 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
     navigator.serviceWorker.register('sw.js').catch(function() {});
   });
-  navigator.serviceWorker.addEventListener('message', function(ev) {
-    var t = ev && ev.data && ev.data.type;
-    if (t === 'open-matches') {
-      try { openMatchesModal(); } catch (e) {}
-    } else if (t === 'open-notifs') {
-      try { openNotificationsModal(); } catch (e) {}
-    }
-  });
 }
 </script>
 
@@ -4870,8 +4844,8 @@ function dismissInstall() {
 /* تحديث إجباري مرة واحدة: يمسح النسخ القديمة المحفوظة في الهاتف */
 (function() {
   try {
-    if (localStorage.getItem('sq_build') === '9') return;
-    localStorage.setItem('sq_build', '9');
+    if (localStorage.getItem('sq_build') === '6') return;
+    localStorage.setItem('sq_build', '6');
     var jobs = [];
     if (navigator.serviceWorker) jobs.push(navigator.serviceWorker.getRegistrations().then(function(rs) { return Promise.all(rs.map(function(r) { return r.unregister(); })); }));
     if (window.caches) jobs.push(caches.keys().then(function(ks) { return Promise.all(ks.map(function(k) { return caches.delete(k); })); }));
