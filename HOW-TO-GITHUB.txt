@@ -1,0 +1,4 @@
+DIIR MATCH — حزمة GitHub
+ارفع محتويات هذا المجلد إلى مستودع GitHub (الجذر).
+لا ترفع node_modules ولا ACCESS_CODES.txt.
+بعد الرفع: تبويب Actions يبني APK تلقائياً.
