@@ -1,2 +1,10 @@
 import { defineConfig } from 'vite';
-export default defineConfig({ base: './', build: { outDir: 'dist', emptyOutDir: true } });
+export default defineConfig({
+  base: './',
+  build: { outDir: 'dist', emptyOutDir: true },
+  server: {
+    host: '0.0.0.0',
+    port: 3000,
+    allowedHosts: ['.monkeycode-ai.live']
+  }
+});
