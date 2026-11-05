@@ -112,6 +112,18 @@
 
   /* بطاقات عصرية */
   .card { background: var(--navy-card); border: 1px solid var(--navy-border); border-radius: 16px; padding: 18px; backdrop-filter: blur(12px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); margin-bottom: 16px; }
+  .opp-board { background: linear-gradient(180deg, rgba(16,185,129,0.14), rgba(13,27,46,0.9)); border: 1px solid rgba(16,185,129,0.35); border-radius: 18px; padding: 14px; margin-bottom: 16px; }
+  .opp-board-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .opp-board-head h3 { font-size: 16px; font-weight: 900; margin: 0 0 4px; }
+  .opp-board-head p { font-size: 12px; color: var(--text-sub); margin: 0; }
+  .opp-card { background: rgba(255,255,255,0.04); border: 1px solid var(--navy-border); border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; }
+  .opp-card:last-child { margin-bottom: 0; }
+  .opp-name { font-weight: 800; font-size: 14px; }
+  .opp-meta { font-size: 12.5px; color: var(--text-sub); margin-top: 2px; }
+  .opp-note { font-size: 12px; color: #cbd5e1; margin-top: 4px; }
+  .opp-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .opp-empty { text-align: center; color: var(--text-sub); font-size: 13px; padding: 8px 0; margin: 0; }
+  .opp-tag { display: inline-block; font-size: 11px; font-weight: 800; color: #022c22; background: var(--emerald); border-radius: 999px; padding: 2px 8px; }
 
   /* بطاقة اللاعب الإحصائية مع ID */
   .player-card { background: linear-gradient(135deg, #0d1e38, #07101f); border: 1px solid rgba(16,185,129,0.3); border-radius: 18px; padding: 18px; position: relative; overflow: hidden; margin-bottom: 18px; }
@@ -137,6 +149,29 @@
   .field-body { padding: 14px 16px 16px; }
   .field-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .field-tag { background: rgba(16,185,129,0.15); color: var(--emerald); font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+
+
+  /* ===== تحسينات التصميم ===== */
+  .field-cover { height: 112px; }
+  .field-body { padding: 10px 14px 14px; }
+  @media (min-width: 640px) { .field-cover { height: 148px; } }
+  #fieldsTab .hero-banner { height: 150px; background: linear-gradient(135deg, #0b2644 0%, #07131f 100%); }
+  #fieldsTab .hero-banner img { border-radius: 14px; position: absolute; left: 10px; right: auto; top: 50%; width: auto; max-width: 34%; height: 86%; transform: translateY(-50%); object-fit: contain; animation: none; filter: drop-shadow(0 6px 18px rgba(16,185,129,.35)); }
+  #fieldsTab .hero-overlay { background: linear-gradient(270deg, rgba(7,13,24,0) 40%, rgba(7,13,24,0.25) 100%); justify-content: center; padding-left: 38%; }
+  #fieldsTab .hero-overlay h2 { font-size: 21px; }
+  #fieldsTab .hero-overlay p { font-size: 12px; }
+  .fields-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; }
+  #userQuickLevel { white-space: nowrap; background: rgba(56,189,248,.12); padding: 3px 10px; border-radius: 999px; font-weight: 700; }
+  .fields-search { width: 100%; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--navy-border); background: #0f1c30; color: inherit; font-size: 14px; margin-bottom: 10px; }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 12px; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: 0 0 auto; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--navy-border); background: #0f1c30; color: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; }
+  .chip.on { background: var(--emerald); border-color: var(--emerald); color: #022c22; }
+  .free-badge { font-weight: 700; color: var(--emerald); }
+  .free-badge.none { color: #fca5a5; }
+  .slot small { display: block; font-size: 11px; font-weight: 600; opacity: .9; margin-top: 2px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 11.5px; color: var(--text-sub); margin: 4px 0 8px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-left: 5px; vertical-align: -1px; }
 
   /* المواعيد */
   .slots-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 12px 0; }
@@ -374,7 +409,6 @@
     .dock-btn span { display: none; }
     .dock-btn { padding: 10px 2px; }
   }
-
   .fx-overlay {
     position: fixed; inset: 0; z-index: 4000;
     display: none; align-items: center; justify-content: center;
@@ -553,6 +587,76 @@
   .fx-overlay.show .fx-meta { animation: fxUpIn .4s ease 1.05s forwards; }
   .fx-meta b { color: #fff; }
 </style>
+<style id="design-v2">
+/* ===== DIIR MATCH — تصميم "ليلة الملعب" v2 (طبقة تصميم فوق التطبيق، لا تغيّر المنطق) ===== */
+:root { --emerald: #22e3a0; --emerald-dark: #0fb57d; --emerald-glow: rgba(34,227,160,.38); --navy-card: rgba(16,30,52,.62); --navy-border: rgba(255,255,255,.09); --lime: #c6ff3d; }
+body { background: radial-gradient(900px 500px at 85% -10%, rgba(34,227,160,.16), transparent 60%), radial-gradient(700px 500px at -10% 110%, rgba(59,130,246,.16), transparent 60%), #060b14 !important; font-family: 'Tajawal','Cairo','Segoe UI',system-ui,sans-serif; }
+body::before { content:""; position: fixed; inset: -20% -10% auto auto; width: 70vw; height: 60vh; background: conic-gradient(from 200deg at 50% 0, transparent 0 40%, rgba(198,255,61,.08) 50%, transparent 60%); pointer-events: none; animation: sweep 9s ease-in-out infinite alternate; z-index: 0; }
+.tab-pane.show { animation: tabIn .42s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes tabIn { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(26px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes sweep { from { transform: rotate(-6deg); opacity: .5; } to { transform: rotate(8deg); opacity: 1; } }
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes pop { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+@keyframes shine { to { transform: translateX(-220%) skewX(-20deg); } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes glowPulse { 0%,100% { box-shadow: 0 0 0 0 var(--emerald-glow); } 50% { box-shadow: 0 0 0 9px transparent; } }
+
+/* الشعار واللافتة */
+#fieldsTab .hero-banner { background: linear-gradient(120deg, #0a2a3f, #0b3b36 55%, #153a1c); background-size: 200% 200%; animation: gradMove 8s ease infinite; border: 1px solid rgba(198,255,61,.25); border-radius: 26px; }
+@keyframes gradMove { 50% { background-position: 100% 50%; } }
+#fieldsTab .hero-overlay h2 { background: linear-gradient(90deg, #fff, var(--lime)); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 900; }
+
+/* بطاقات الملاعب: صورة كبيرة والاسم فوقها */
+.fields-grid { gap: 18px; }
+.field-item { position: relative; border-radius: 24px; background: var(--navy-card); backdrop-filter: blur(10px); border: 1px solid var(--navy-border); overflow: hidden; animation: rise .6s cubic-bezier(.2,.8,.2,1) both; transition: transform .3s, box-shadow .3s; }
+.field-item:active { transform: scale(.97); }
+.field-cover { height: 170px !important; }
+.field-cover::after { content:""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, rgba(6,11,20,.92)); }
+.field-body { position: relative; z-index: 2; margin-top: -62px; background: none; padding: 0 16px 16px; }
+.field-head h3 { font-size: 19px !important; font-weight: 900; text-shadow: 0 2px 10px #000; }
+.field-cover .field-tag { z-index: 3; background: rgba(6,11,20,.55); border: 1px solid rgba(255,255,255,.15); color: var(--lime); }
+.free-badge { color: var(--lime); }
+
+/* الأزرار */
+.btn { position: relative; overflow: hidden; transition: transform .15s, box-shadow .25s; }
+.btn:active { transform: scale(.94); }
+.btn-emerald { background: linear-gradient(135deg, var(--emerald), #12c78a) !important; color: #032a1e !important; font-weight: 900; box-shadow: 0 8px 22px var(--emerald-glow); }
+.btn-emerald::after { content:""; position: absolute; top: 0; right: -60%; width: 40%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent); transform: skewX(-20deg); animation: shine 3.6s ease-in-out infinite; }
+.ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,.45); transform: scale(0); animation: rippleA .6s ease-out forwards; pointer-events: none; }
+@keyframes rippleA { to { transform: scale(2.6); opacity: 0; } }
+
+/* الأشرطة السفلية العائمة */
+.bottom-dock { background: rgba(10,20,36,.72) !important; backdrop-filter: blur(18px) saturate(1.4); border: 1px solid rgba(255,255,255,.12) !important; border-radius: 30px !important; box-shadow: 0 14px 40px rgba(0,0,0,.55); }
+.dock-btn { transition: all .35s cubic-bezier(.2,.9,.3,1.2); }
+.dock-btn.active { background: linear-gradient(135deg, var(--emerald), var(--lime)) !important; transform: translateY(-6px) scale(1.06); box-shadow: 0 10px 22px var(--emerald-glow) !important; }
+.dock-btn.active svg { animation: pop .4s both; }
+
+/* الحجز: ورقة تنزلق من الأسفل مع شريط سحب */
+.modal-overlay { align-items: flex-end !important; backdrop-filter: blur(6px); }
+.modal-box { width: 100%; max-width: 560px; margin: 0 auto; border-radius: 30px 30px 0 0 !important; border-bottom: 0 !important; background: linear-gradient(180deg, #0f2036, #08111d) !important; animation: sheetUp .45s cubic-bezier(.2,.9,.3,1) both; }
+.modal-box::before { content:""; display: block; width: 46px; height: 5px; border-radius: 9px; background: rgba(255,255,255,.25); margin: -6px auto 12px; }
+.slot { border-radius: 14px; animation: pop .35s cubic-bezier(.2,.9,.3,1.3) both; transition: transform .15s, background .2s; }
+.slot:nth-child(2){animation-delay:.04s}.slot:nth-child(3){animation-delay:.08s}.slot:nth-child(4){animation-delay:.12s}.slot:nth-child(5){animation-delay:.16s}.slot:nth-child(6){animation-delay:.2s}
+.slot:active { transform: scale(.92); }
+.slot.selected { background: linear-gradient(135deg, var(--emerald), var(--lime)); animation: pop .3s both, glowPulse 1.6s infinite; }
+
+/* تحميل (هيكل متحرك) عندما تكون القائمة فارغة */
+#fieldsGrid:empty::before { content:""; display: block; height: 240px; border-radius: 24px; background: linear-gradient(100deg, rgba(255,255,255,.04) 30%, rgba(255,255,255,.13) 50%, rgba(255,255,255,.04) 70%) 0 0/200% 100%; animation: shimmer 1.3s linear infinite; }
+
+/* ===== أداء: نُبقي شكل التصميم ونوقف ما يستهلك المعالج باستمرار ===== */
+*, *::before, *::after { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+body::before { display: none !important; }
+.pitch-lines, .gate-badge-logo, .online-dot.online { animation: none !important; }
+#fieldsTab .hero-banner { animation: none !important; background-size: 100% 100% !important; }
+#fieldsTab .hero-banner img, .hero-banner img { animation: none !important; filter: none !important; }
+.btn-emerald::after { display: none !important; }
+.slot.selected { animation: pop .3s both !important; }
+.field-item { box-shadow: 0 4px 14px rgba(0,0,0,.35) !important; }
+.modal-box, .bottom-dock, .hero-banner { box-shadow: 0 6px 18px rgba(0,0,0,.45) !important; }
+.btn-emerald { box-shadow: 0 4px 12px var(--emerald-glow) !important; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+</style>
 </head>
 <body>
 <div class="pitch-lines"></div>
@@ -624,6 +728,7 @@
     <div class="fx-meta" id="fxAcceptMeta"></div>
   </div>
 </div>
+
 
 <!-- ================== بوابة الترحيب والدخول المستقلة (لا يمكن رؤية الموقع قبل التسجيل) ================== -->
 <div id="authGateScreen" class="gate-screen">
@@ -911,7 +1016,7 @@
 
   <!-- تبويب 1: الملاعب والحجز -->
   <div id="fieldsTab" class="tab-pane show">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+    <div class="fields-head">
       <div>
         <h2 style="font-size:18px; font-weight:800;">ملاعب بلدية السوقر المتاحة</h2>
         <p style="font-size:12.5px; color:var(--text-sub);">اختر الملعب واطلع على المواقيت المتاحة من 16:00 إلى 22:00</p>
@@ -921,11 +1026,29 @@
       </div>
     </div>
     <div class="hero-banner">
-      <img src="brand/diir-match-poster.webp" alt="DIIR MATCH" onerror="this.onerror=null;this.src='brand/logo.png';">
+      <img src="brand/logo.png" alt="DIIR MATCH">
       <div class="hero-overlay">
         <h2>احجز مبارياتك في أي وقت</h2>
         <p>مجاط • الحمري • الإخوة كوسوفو • بيفوك وأكثر — بلدية السوقر ولاية تيارت</p>
       </div>
+    </div>
+    <input type="search" class="fields-search" id="fieldsSearch" placeholder="🔍 ابحث عن ملعب أو حي..." oninput="setFieldFilter('q', this.value)">
+    <div class="chips" id="fieldChips">
+      <button class="chip on" data-k="all" onclick="setFieldFilter('reset')">الكل</button>
+      <button class="chip" data-k="today" onclick="setFieldFilter('today')">متاح اليوم</button>
+      <button class="chip" data-k="7" onclick="setFieldFilter('cap', 7)">سعة 7</button>
+      <button class="chip" data-k="9" onclick="setFieldFilter('cap', 9)">سعة 9</button>
+    </div>
+    <button class="btn btn-outline btn-block" style="margin-bottom:12px;" onclick="openMatchesModal()">🤝 ابحث عن خصم أو فريق (بدون حجز)</button>
+    <div class="opp-board" id="opponentBoard">
+      <div class="opp-board-head">
+        <div>
+          <h3>باحثون عن خصم بعد الحجز</h3>
+          <p>لاعب حجز ملعباً وفعّل خيار البحث عن خصم. تواصل معه أو اقبل التحدي.</p>
+        </div>
+        <span class="opp-tag" id="opponentBoardCount">0</span>
+      </div>
+      <div id="opponentBoardList"><p class="opp-empty">لا يوجد باحثون عن خصم حالياً.</p></div>
     </div>
     <div class="fields-grid" id="fieldsGrid"></div>
   </div>
@@ -955,6 +1078,15 @@
     <div style="display:flex; gap:10px; margin-bottom:16px;">
       <button class="btn btn-emerald btn-sm" id="btnReportSection" onclick="switchFeedbackSection('report')">🚨 إبلاغ عن مشكلة / لاعب</button>
       <button class="btn btn-outline btn-sm" id="btnSuggestSection" onclick="switchFeedbackSection('suggest')">💡 تقديم اقتراح (+200 XP)</button>
+    </div>
+
+    <div class="card" id="contactCard" style="margin-bottom:14px;">
+      <h3 style="font-size:16px; margin-bottom:6px;">📞 اتصل بنا</h3>
+      <p style="font-size:12.5px; color:var(--text-sub); margin-bottom:12px;">لأي استفسار أو مشكلة أو اقتراح، راسلنا مباشرة على واتساب أو اتصل بنا.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <a class="btn btn-emerald btn-sm" style="text-decoration:none;" href="https://wa.me/213551933373" target="_blank" rel="noopener">💬 واتساب 0551933373</a>
+        <a class="btn btn-outline btn-sm" style="text-decoration:none;" href="tel:0551933373">📞 اتصال هاتفي</a>
+      </div>
     </div>
 
     <!-- قسم الإبلاغ -->
@@ -1092,6 +1224,8 @@
     <input type="date" id="bookDate" onchange="renderBookingSlots()">
 
     <label>المواعيد المتاحة (16:00 إلى 22:00)</label>
+    <div class="legend"><span><i style="background:#132742;border:1px solid var(--emerald)"></i>متاح</span><span><i style="background:rgba(245,158,11,.5)"></i>قيد الموافقة</span><span><i style="background:rgba(239,68,68,.5)"></i>محجوز / انتهى</span></div>
+    <a href="#" onclick="event.preventDefault(); closeModal('bookingModal'); openMatchesModal(currentField);" style="display:block; font-size:12.5px; color:var(--emerald); margin:2px 0 10px; font-weight:700;">الموعد محجوز؟ ابحث عن فريق ينافسك ←</a>
     <div class="slots-grid" id="bookingSlots"></div>
 
     <div style="display:flex; align-items:center; gap:8px; margin-top:10px;">
@@ -1583,18 +1717,18 @@
 
 <script>
 var DEFAULT_STADIUMS = [
-  { id: 'befok', name: 'ملعب بيفوك', pin: '1111', capacity: 9, quarter: 'حي بيفوك',     image: 'fields/befok.svg', lat: 35.1855, lng: 1.4962, mapsUrl: '' },
-  { id: 'wilaya', name: 'ملعب الولاية', pin: '2222', capacity: 9, quarter: 'حي الولاية', image: 'fields/wilaya.svg', lat: 35.1868, lng: 1.5011, mapsUrl: '' },
+  { id: 'befok', name: 'ملعب بيفوك', pin: '1111', capacity: 9, quarter: 'حي بيفوك',     image: 'fields/befok.webp', lat: 35.1855, lng: 1.4962, mapsUrl: '' },
+  { id: 'wilaya', name: 'ملعب الولاية', pin: '2222', capacity: 9, quarter: 'حي الولاية', image: 'fields/wilaya.webp', lat: 35.1868, lng: 1.5011, mapsUrl: '' },
   { id: 'douk', name: 'ملعب الدوك', pin: '3333', capacity: 7, quarter: 'حي الدوك', image: 'fields/douk.svg', lat: 35.1812, lng: 1.4924, mapsUrl: '' },
   { id: 'lacite', name: 'ملعب لاسيتي', pin: '4444', capacity: 7, quarter: 'حي لاسيتي', image: 'fields/lacite.svg', lat: 35.1798, lng: 1.5056, mapsUrl: '' },
   { id: 'marhala2', name: 'ملعب المرحلة الثانية', pin: '5555', capacity: 7, quarter: 'المرحلة الثانية', image: 'fields/marhala2.svg', lat: 35.1901, lng: 1.4988, mapsUrl: '' },
   { id: 'karya', name: 'ملعب القرية', pin: '6666', capacity: 7, quarter: 'حي القرية', image: 'fields/karya.svg', lat: 35.1774, lng: 1.4889, mapsUrl: '' },
-  { id: 'binaa', name: 'ملعب البناء الذاتي', pin: '7777', capacity: 7, quarter: 'حي البناء الذاتي', image: 'fields/binaa.svg', lat: 35.1882, lng: 1.5102, mapsUrl: '' },
-  { id: 'baraa', name: 'ملعب البراءة', pin: '8888', capacity: 7, quarter: 'حي البراءة', image: 'fields/baraa.svg', lat: 35.1749, lng: 1.4941, mapsUrl: '' },
+  { id: 'binaa', name: 'ملعب البناء الذاتي', pin: '7777', capacity: 7, quarter: 'حي البناء الذاتي', image: 'fields/binaa.webp', lat: 35.1882, lng: 1.5102, mapsUrl: '' },
+  { id: 'baraa', name: 'ملعب البراءة', pin: '8888', capacity: 7, quarter: 'حي البراءة', image: 'fields/baraa.webp', lat: 35.1749, lng: 1.4941, mapsUrl: '' },
   { id: 'somal', name: 'ملعب الصومال', pin: '9999', capacity: 7, quarter: 'حي الصومال', image: 'fields/somal.svg', lat: 35.1915, lng: 1.4876, mapsUrl: '' },
-  { id: 'mejat', name: 'ملعب مجاط', pin: '1010', capacity: 7, quarter: 'حي مجاط', image: 'fields/mejat.svg', lat: 35.1826, lng: 1.5128, mapsUrl: '' },
+  { id: 'mejat', name: 'ملعب مجاط', pin: '1010', capacity: 7, quarter: 'حي مجاط', image: 'fields/mejat.webp', lat: 35.1826, lng: 1.5128, mapsUrl: '' },
   { id: 'hamri', name: 'ملعب الحمري', pin: '1212', capacity: 7, quarter: 'حي الحمري', image: 'fields/hamri.svg', lat: 35.1761, lng: 1.5033, mapsUrl: '' },
-  { id: 'ikhwa', name: 'ملعب الإخوة (كوسوفو)', pin: '1313', capacity: 9, quarter: 'حي كوسوفو', image: 'fields/ikhwa.svg', lat: 35.1933, lng: 1.5067, mapsUrl: '' },
+  { id: 'ikhwa', name: 'ملعب الإخوة (كوسوفو)', pin: '1313', capacity: 9, quarter: 'حي كوسوفو', image: 'fields/ikhwa.webp', lat: 35.1933, lng: 1.5067, mapsUrl: '' },
   { id: 'csp', name: 'ملعب CSP', pin: '1414', capacity: 9, quarter: 'مركب CSP السوقر', image: 'fields/csp.svg', lat: 35.1844, lng: 1.4992, mapsUrl: '' }
 ];
 var STADIUMS = DEFAULT_STADIUMS.slice();
@@ -1633,11 +1767,24 @@ var SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJl
 var SB_OK = false;
 var persistEnabled = true;
 
+/* رسومات الملاعب مضمّنة داخل الملف حتى لا تختفي إن لم يُرفع مجلد fields */
+var FIELD_SVGS = {"baraa": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%23166534%22/%3E %3Cstop offset=%221%22 stop-color=%22%234ade80%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D8%A7%D9%84%D8%A8%D8%B1%D8%A7%D8%A1%D8%A9%3C/text%3E %3C/svg%3E", "befok": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%2314532d%22/%3E %3Cstop offset=%221%22 stop-color=%22%2322c55e%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D8%A8%D9%8A%D9%81%D9%88%D9%83%3C/text%3E %3C/svg%3E", "binaa": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%230f766e%22/%3E %3Cstop offset=%221%22 stop-color=%22%2334d399%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D8%A7%D9%84%D8%A8%D9%86%D8%A7%D8%A1 %D8%A7%D9%84%D8%B0%D8%A7%D8%AA%D9%8A%3C/text%3E %3C/svg%3E", "csp": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%230f766e%22/%3E %3Cstop offset=%221%22 stop-color=%22%2334d399%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 CSP%3C/text%3E %3C/svg%3E", "douk": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%233f2b15%22/%3E %3Cstop offset=%221%22 stop-color=%22%23f59e0b%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D8%A7%D9%84%D8%AF%D9%88%D9%83%3C/text%3E %3C/svg%3E", "hamri": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%237c2d12%22/%3E %3Cstop offset=%221%22 stop-color=%22%23fb923c%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D8%A7%D9%84%D8%AD%D9%85%D8%B1%D9%8A%3C/text%3E %3C/svg%3E", "ikhwa": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%23064e3b%22/%3E %3Cstop offset=%221%22 stop-color=%22%2310b981%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D8%A7%D9%84%D8%A5%D8%AE%D9%88%D8%A9 %D9%83%D9%88%D8%B3%D9%88%D9%81%D9%88%3C/text%3E %3C/svg%3E", "karya": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%2314532d%22/%3E %3Cstop offset=%221%22 stop-color=%22%2384cc16%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D8%A7%D9%84%D9%82%D8%B1%D9%8A%D8%A9%3C/text%3E %3C/svg%3E", "lacite": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%23134e4a%22/%3E %3Cstop offset=%221%22 stop-color=%22%2314b8a6%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D9%84%D8%A7%D8%B3%D9%8A%D8%AA%D9%8A%3C/text%3E %3C/svg%3E", "marhala2": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%231e1b4b%22/%3E %3Cstop offset=%221%22 stop-color=%22%23818cf8%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D8%A7%D9%84%D9%85%D8%B1%D8%AD%D9%84%D8%A9 2%3C/text%3E %3C/svg%3E", "mejat": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%23365314%22/%3E %3Cstop offset=%221%22 stop-color=%22%23a3e635%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D9%85%D8%AC%D8%A7%D8%B7%3C/text%3E %3C/svg%3E", "somal": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%231e40af%22/%3E %3Cstop offset=%221%22 stop-color=%22%2360a5fa%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D8%A7%D9%84%D8%B5%D9%88%D9%85%D8%A7%D9%84%3C/text%3E %3C/svg%3E", "wilaya": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22900%22 height=%22540%22 viewBox=%220 0 900 540%22%3E %3Cdefs%3E %3ClinearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%221%22 y2=%221%22%3E %3Cstop offset=%220%22 stop-color=%22%231e3a5f%22/%3E %3Cstop offset=%221%22 stop-color=%22%2338bdf8%22/%3E %3C/linearGradient%3E %3C/defs%3E %3Crect width=%22900%22 height=%22540%22 fill=%22url%28%23g%29%22/%3E %3Crect x=%2240%22 y=%2240%22 width=%22820%22 height=%22460%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%226%22 opacity=%220.55%22 rx=%228%22/%3E %3Cline x1=%22450%22 y1=%2240%22 x2=%22450%22 y2=%22500%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Ccircle cx=%22450%22 cy=%22270%22 r=%2270%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.45%22/%3E %3Crect x=%2240%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Crect x=%22750%22 y=%22165%22 width=%22110%22 height=%22210%22 fill=%22none%22 stroke=%22%23ffffff%22 stroke-width=%224%22 opacity=%220.4%22/%3E %3Ctext x=%22450%22 y=%22290%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-size=%2236%22 font-family=%22Cairo, Arial%22 font-weight=%22800%22%3E%D9%85%D9%84%D8%B9%D8%A8 %D8%A7%D9%84%D9%88%D9%84%D8%A7%D9%8A%D8%A9%3C/text%3E %3C/svg%3E"};
+function fieldSvgBack(src) {
+  var s = String(src || '');
+  if (s.indexOf('data:image/svg+xml') !== 0) return src;
+  for (var k in FIELD_SVGS) { if (FIELD_SVGS[k] === s) return 'fields/' + k + '.svg'; }
+  return src;
+}
+
+function fieldFallback(id) { return FIELD_SVGS[id] || 'brand/logo.png'; }
+
 function resolveAsset(src) {
   if (!src) return 'brand/logo.png';
   var s = String(src);
   if (s.indexOf('data:') === 0 || s.indexOf('http://') === 0 || s.indexOf('https://') === 0) return s;
   if (s.charAt(0) === '/') s = s.slice(1);
+  var fm = s.match(/^fields\/([A-Za-z0-9_-]+)\.svg$/);
+  if (fm && FIELD_SVGS[fm[1]]) return FIELD_SVGS[fm[1]];
   return s;
 }
 
@@ -1830,7 +1977,7 @@ function mapStadiumsToSb(rows) {
       pin: String(s.pin || '0000').slice(0, 4),
       capacity: s.capacity || 7,
       quarter: s.quarter || 'السوقر',
-      image: s.image || '',
+      image: fieldSvgBack(s.image) || '',
       lat: s.lat == null ? '' : String(s.lat),
       lng: s.lng == null ? '' : String(s.lng),
       maps_url: s.mapsUrl || ''
@@ -1976,6 +2123,19 @@ function mapNoticesToSb(rows) {
   });
 }
 
+function saveStadiumsSafe(v) {
+  var isDef = function(x) { return !x || /^fields\/[\w-]+\.(svg|webp)$/.test(x); };
+  var rows = mapStadiumsToSb(v);
+  sbGet('stadiums', 'select=id,image').then(function(remote) {
+    var cur = {};
+    (remote || []).forEach(function(r) { cur[r.id] = r.image || ''; });
+    rows.forEach(function(r) {
+      if (isDef(r.image) && cur[r.id] && !isDef(cur[r.id])) r.image = cur[r.id]; /* لا نستبدل صورة حقيقية برسم افتراضي */
+    });
+    return sbUpsert('stadiums', rows);
+  }).catch(sbReportFail);
+}
+
 function persistKeyToSupabase(k, v) {
   if (!SB_OK) return;
   if (k === 'users') {
@@ -1987,7 +2147,7 @@ function persistKeyToSupabase(k, v) {
     return;
   }
   if (k === 'stadiums') {
-    sbUpsert('stadiums', mapStadiumsToSb(v)).catch(sbReportFail);
+    saveStadiumsSafe(v);
     return;
   }
   if (k === 'bookings') {
@@ -2012,7 +2172,7 @@ function persistKeyToSupabase(k, v) {
   }
   if (k.indexOf('notifs_') === 0) {
     var uid = parseInt(k.slice(7), 10);
-    var rows = (v || []).map(function(n) {
+    var rows = (v || []).filter(function(n) { return String(n.id).indexOf('mo_') !== 0; }).map(function(n) {
       return {
         id: n.id,
         user_id: uid,
@@ -2267,7 +2427,8 @@ function mergeStadiums() {
   var saved = db.get('stadiums', null);
   if (!saved || !saved.length) {
     STADIUMS = DEFAULT_STADIUMS.slice();
-    db.set('stadiums', STADIUMS, SB_OK ? false : true);
+    /* لا نكتب الملاعب الافتراضية على الخادم إذا فشل تحميلها (كان هذا يمسح الصور الحقيقية) */
+    db.set('stadiums', STADIUMS, (SB_OK && SB_LOAD_FAILED.indexOf('stadiums') === -1) ? false : true);
     return;
   }
   var extra = DEFAULT_STADIUMS.filter(function(def) {
@@ -2279,6 +2440,8 @@ function mergeStadiums() {
       if (!s.image || String(s.image).indexOf('unsplash.com') !== -1 || String(s.image).indexOf('photo-') !== -1) {
         s.image = def.image;
       }
+      var rawImg = fieldSvgBack(String(s.image)); /* المسار الأصلي قبل تحويله إلى رسم مضمّن */
+      if (/^fields\/[\w-]+\.svg$/.test(rawImg) && /^fields\/[\w-]+\.webp$/.test(String(def.image))) s.image = def.image;
       if (!s.pin) s.pin = def.pin;
       if (s.lat === undefined || s.lat === null || s.lat === '') s.lat = def.lat;
       if (s.lng === undefined || s.lng === null || s.lng === '') s.lng = def.lng;
@@ -2643,6 +2806,8 @@ function refreshUI() {
   renderRewards();
   renderFields();
   renderBookings();
+  renderOpponentBoard();
+  refreshOpponentBoard();
   renderNews();
   updateDbChip();
   refreshNotificationBadges();
@@ -2709,26 +2874,52 @@ function toWhatsappLink(num) {
 }
 
 /* الملاعب */
+var fieldFilter = { q: '', cap: 0, today: false };
+function setFieldFilter(k, v) {
+  if (k === 'reset') { fieldFilter = { q: '', cap: 0, today: false }; var si = document.getElementById('fieldsSearch'); if (si) si.value = ''; }
+  else if (k === 'q') fieldFilter.q = String(v || '').trim();
+  else if (k === 'today') fieldFilter.today = !fieldFilter.today;
+  else if (k === 'cap') fieldFilter.cap = fieldFilter.cap === v ? 0 : v;
+  var on = { all: !fieldFilter.cap && !fieldFilter.today && !fieldFilter.q, today: fieldFilter.today, 7: fieldFilter.cap === 7, 9: fieldFilter.cap === 9 };
+  var chips = document.querySelectorAll('#fieldChips .chip');
+  for (var i = 0; i < chips.length; i++) chips[i].classList.toggle('on', !!on[chips[i].getAttribute('data-k')]);
+  renderFields();
+}
+function freeSlotsToday(f) {
+  var today = todayLocal(), hour = new Date().getHours(), bookings = db.get('bookings', []);
+  return TIME_SLOTS.filter(function(slot) {
+    if (parseInt(slot.split(':')[0], 10) <= hour) return false;
+    return !bookings.some(function(b) { return b.fieldId === f.id && b.date === today && b.time === slot && b.status !== 'rejected'; });
+  }).length;
+}
 function renderFields() {
   var grid = document.getElementById('fieldsGrid');
   if (!grid) return;
   grid.innerHTML = '';
+  var shown = 0;
   STADIUMS.forEach(function(f, idx) {
+    var free = freeSlotsToday(f);
+    var q = fieldFilter.q.toLowerCase();
+    if (q && (String(f.name) + ' ' + String(f.quarter)).toLowerCase().indexOf(q) === -1) return;
+    if (fieldFilter.cap && Number(f.capacity) !== fieldFilter.cap) return;
+    if (fieldFilter.today && free === 0) return;
+    shown++;
     var card = document.createElement('div');
     card.className = 'field-item';
-    card.style.animationDelay = (idx * 0.05) + 's';
+    card.style.animationDelay = (shown * 0.05) + 's';
     card.onclick = function() { openBookingModal(f); };
     var img = resolveAsset(f.image || 'fields/befok.svg');
+    var badge = free > 0 ? '<span class="free-badge">● ' + free + ' متاح اليوم</span>' : '<span class="free-badge none">● لا مواعيد اليوم</span>';
     card.innerHTML =
       '<div class="field-cover">' +
-        '<img src="' + img + '" alt="' + f.name + '">' +
+        '<img src="' + img + '" alt="' + f.name + '" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=fieldFallback(\'' + f.id + '\')">' +
         '<span class="field-tag">سعة ' + f.capacity + ' ضد ' + f.capacity + '</span>' +
       '</div>' +
       '<div class="field-body">' +
         '<div class="field-head">' +
           '<h3 style="font-size:16px;">' + f.name + '</h3>' +
         '</div>' +
-        '<p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">' + f.quarter + ' • 16:00 إلى 22:00</p>' +
+        '<p style="font-size:12px; color:var(--text-sub); margin-bottom:10px;">' + f.quarter + ' • ' + badge + '</p>' +
         '<div style="display:flex; gap:8px;">' +
           '<button class="btn btn-emerald btn-sm btn-block">احجز موعدك الآن</button>' +
           '<button class="btn btn-sm maps-btn" onclick="event.stopPropagation(); openStadiumMaps(STADIUMS[' + idx + '])">خرائط</button>' +
@@ -2736,6 +2927,7 @@ function renderFields() {
       '</div>';
     grid.appendChild(card);
   });
+  if (!shown) grid.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:var(--text-sub); padding:24px 0;">لا توجد ملاعب مطابقة. جرّب تغيير البحث أو الفلتر.</p>';
 }
 
 var currentField = null;
@@ -2786,15 +2978,16 @@ function renderBookingSlots() {
 
     if (isPast) {
       div.classList.add('taken-app');
-      div.innerText += ' (انتهى الوقت)';
+      div.innerHTML += '<small>انتهى الوقت</small>';
     } else if (isApproved) {
       div.classList.add('taken-app');
-      div.innerText += ' (محجوز 🔴)';
+      div.innerHTML += '<small>محجوز</small>';
     } else if (isPending) {
       div.classList.add('taken-pending');
-      div.innerText += ' (قيد الموافقة 🟡)';
+      div.innerHTML += '<small>قيد الموافقة</small>';
     } else {
       div.classList.add('available');
+      div.innerHTML += '<small>متاح</small>';
       div.onclick = function() {
         var all = document.querySelectorAll('#bookingSlots .slot');
         for (var k = 0; k < all.length; k++) all[k].classList.remove('selected');
@@ -2847,10 +3040,19 @@ function confirmPlayerBooking() {
     db.set('user', user);
     pushNotification(user.id, {
       type: 'booking',
-      title: 'تم إرسال طلب الحجز',
-      body: field.name + ' — ' + date + ' الساعة ' + slot,
+      title: 'طلبك قيد الانتظار',
+      body: 'في انتظار موافقة المنظم على حجز ' + field.name + ' — ' + date + ' الساعة ' + slot,
       bookingId: newBooking.id
     });
+    pushNotification(orgNotifId(field.id), { type: 'booking', title: 'طلب حجز جديد 🔔', body: user.name + ' — ' + date + ' الساعة ' + slot, bookingId: null });
+    if (looking) {
+      notifyOtherPlayers(user.id, {
+        type: 'match_open',
+        title: 'فريق يبحث عن خصم',
+        body: user.name + ' أرسل طلب حجز ' + field.name + ' — ' + date + ' الساعة ' + slot + ' ويبحث عن خصم. في انتظار موافقة المنظم.',
+        bookingId: 'mopen|mb_' + newBooking.id + '|1'
+      });
+    }
     bookingInFlight = false;
     alert('تم إرسال طلب الحجز لمنظم ملعب ' + field.name + '!\nتمت إضافة +30 XP إلى رصيدك. ستصلك +100 XP فور تأكيد الحجز.');
     closeModal('bookingModal');
@@ -3207,6 +3409,7 @@ function verifyOrganizerLogin() {
   }
 
   activeOrganizerField = field;
+  try { localStorage.setItem('sq_org_field', field.id); } catch (e) {}
   closeModal('organizerModal');
   document.getElementById('organizerFieldTitle').innerText = 'لوحة تحكم: ' + field.name;
   document.getElementById('orgScheduleDate').value = todayLocal();
@@ -3278,19 +3481,29 @@ function setBookingStatus(id, st) {
   }
   db.set('bookings', bookings);
   if (target && target.userId) {
+    var when = target.fieldName + ' — ' + target.date + ' الساعة ' + target.time;
     pushNotification(target.userId, {
       type: st === 'approved' ? 'booking' : 'alert',
       title: st === 'approved' ? 'تم قبول حجزك' : 'تم رفض حجزك',
-      body: target.fieldName + ' — ' + target.date + ' الساعة ' + target.time,
+      body: st === 'approved' ? 'المنظم قبل الحجز: ' + when : when,
       bookingId: target.id
     });
-    try {
-      var cu = db.get('user', null);
-      if (st === 'approved' && cu && cu.id === target.userId) {
-        playAcceptFx({ fieldName: target.fieldName, date: target.date, time: target.time });
-      }
-    } catch (e) {}
+    if (st === 'approved' && target.lookingForTeam) {
+      notifyOtherPlayers(target.userId, {
+        type: 'match_open',
+        title: 'المنظم قبل الحجز',
+        body: (target.userName || 'لاعب') + ' — ' + when + ' — يمكنك قبول التحدي الآن.',
+        bookingId: 'mopen|mb_' + target.id + '|1'
+      });
+    }
+    if (st === 'approved') {
+      try {
+        playAcceptFx({ fieldName: target.fieldName, date: target.date, time: target.time, title: 'المنظم قبل الحجز', message: when });
+      } catch (e) {}
+    }
   }
+  if (target && st === 'approved' && target.lookingForTeam) publishOpponentSearch(target);
+  if (target && st === 'rejected') closeOpponentSearchForBooking(target.id);
   renderOrgRequests();
   refreshUI();
 }
@@ -3467,25 +3680,8 @@ function nativeLN(method, opts) {
   return window.Capacitor.nativePromise('LocalNotifications', method, opts || {});
 }
 var devNotifReady = false;
-function initDeviceNotifications() {
-  if (devNotifReady) return;
-  devNotifReady = true;
-  if (isNativeApp()) {
-    nativeLN('requestPermissions').catch(function() {});
-    nativeLN('createChannel', { id: 'diir', name: 'إشعارات DIIR MATCH', importance: 4, vibration: true, visibility: 1 }).catch(function() {});
-    try {
-      window.Capacitor.nativeCallback('LocalNotifications', 'addListener', { eventName: 'localNotificationActionPerformed' }, function() {
-        try { openNotificationsModal(); } catch (e) {}
-      });
-    } catch (e) {}
-  } else if ('Notification' in window && Notification.permission === 'default') {
-    var ask = function() {
-      document.removeEventListener('click', ask, true);
-      try { Notification.requestPermission(); } catch (e) {}
-    };
-    document.addEventListener('click', ask, true);
-  }
-}
+
+/* صوت ضربة الكرة عند الضغط على الأزرار والأيقونات والتنقل بين الصفحات */
 var clickPool = [], clickIdx = 0;
 function playClick() {
   try {
@@ -3500,6 +3696,76 @@ document.addEventListener('click', function(e) {
   if (e.target.closest && e.target.closest('.dock-btn, .btn, .chip, .slot, .field-item, .modal-close, .lang-btn, [onclick]')) playClick();
 }, true);
 function setSound(on) { try { localStorage.setItem('sq_sound', on ? '1' : '0'); } catch (e) {} }
+
+var whistleAudio = null;
+function playWhistle() {
+  try {
+    if (!whistleAudio) whistleAudio = new Audio('sounds/cheer.wav');
+    whistleAudio.currentTime = 0;
+    var pr = whistleAudio.play(); if (pr && pr.catch) pr.catch(function() {});
+  } catch (e) {}
+}
+document.addEventListener('click', function unlockAudio() {
+  document.removeEventListener('click', unlockAudio, true);
+  try { whistleAudio = whistleAudio || new Audio('sounds/cheer.wav'); whistleAudio.muted = true; var p = whistleAudio.play(); if (p && p.then) p.then(function() { whistleAudio.pause(); whistleAudio.currentTime = 0; whistleAudio.muted = false; }).catch(function() { whistleAudio.muted = false; }); } catch (e) {}
+}, true);
+function initDeviceNotifications() {
+  if (devNotifReady) return;
+  devNotifReady = true;
+  if (isNativeApp()) {
+    nativeLN('requestPermissions').catch(function() {});
+    nativeLN('createChannel', { id: 'diir_cheer', name: 'إشعارات DIIR MATCH', importance: 5, vibration: true, visibility: 1, sound: 'cheer.wav' }).catch(function() {});
+    try {
+      window.Capacitor.nativeCallback('LocalNotifications', 'addListener', { eventName: 'localNotificationActionPerformed' }, function() {
+        try { openNotificationsModal(); } catch (e) {}
+      });
+    } catch (e) {}
+  } else if ('Notification' in window && Notification.permission === 'default') {
+    var ask = function() {
+      document.removeEventListener('click', ask, true);
+      try { Notification.requestPermission(); } catch (e) {}
+    };
+    document.addEventListener('click', ask, true);
+  }
+}
+
+/* ============ FCM Push (أندرويد): إشعارات والتطبيق مغلق ============ */
+var pushListenersReady = false, pushLastToken = null, pushSentSig = '';
+function nativePush(method, opts) {
+  return window.Capacitor.nativePromise('PushNotifications', method, opts || {});
+}
+function sendTokenToServer() {
+  if (!pushLastToken || !SB_OK) return;
+  var user = db.get('user', null), fid = getOrgFieldId(), ids = [];
+  if (user && user.id) ids.push({ user_id: Number(user.id), field_id: null });
+  if (fid) ids.push({ user_id: orgNotifId(fid), field_id: String(fid) });
+  if (!ids.length) return;
+  var sig = pushLastToken + '|' + ids.map(function(i) { return i.user_id; }).join(',');
+  if (sig === pushSentSig) return;
+  fetch(SB_URL + '/functions/v1/register-token', {
+    method: 'POST',
+    headers: sbHeaders(),
+    body: JSON.stringify({ token: pushLastToken, platform: 'android', identities: ids })
+  }).then(function(r) { if (r.ok) pushSentSig = sig; }).catch(function() {});
+}
+function initPushNotifications() {
+  if (!isNativeApp() || pushListenersReady) { sendTokenToServer(); return; }
+  pushListenersReady = true;
+  try {
+    window.Capacitor.nativeCallback('PushNotifications', 'addListener', { eventName: 'registration' }, function(t) {
+      if (t && t.value) { pushLastToken = t.value; sendTokenToServer(); }
+    });
+    window.Capacitor.nativeCallback('PushNotifications', 'addListener', { eventName: 'registrationError' }, function(e) {
+      try { console.error('push registration error', e); } catch (x) {}
+    });
+    window.Capacitor.nativeCallback('PushNotifications', 'addListener', { eventName: 'pushNotificationActionPerformed' }, function() {
+      try { openNotificationsModal(); } catch (e) {}
+    });
+  } catch (e) {}
+  nativePush('requestPermissions').then(function(p) {
+    if (p && p.receive === 'granted') return nativePush('register');
+  }).catch(function() {});
+}
 
 var fxAudio = null;
 var fxTimer = null;
@@ -3593,8 +3859,8 @@ function playAcceptFx(info) {
   var meta = document.getElementById('fxAcceptMeta');
   var seal = document.getElementById('fxAcceptSeal');
   if (seal) seal.textContent = currentLang === 'en' ? 'CONFIRMED' : 'مؤكد';
-  if (title) title.textContent = currentLang === 'en' ? 'Booking accepted' : 'تم قبول الحجز';
-  if (body) body.textContent = currentLang === 'en' ? 'The organizer confirmed your slot. The pitch is reserved in your name.' : 'المنظم أكّد موعدك. الملعب محجوز باسمك.';
+  if (title) title.textContent = (info && info.title) || (currentLang === 'en' ? 'Booking accepted' : 'المنظم قبل الحجز');
+  if (body) body.textContent = (info && info.message) || (currentLang === 'en' ? 'The organizer confirmed the booking.' : 'المنظم أكّد الحجز للطرفين.');
   if (meta) {
     if (info && info.fieldName) {
       meta.innerHTML = (info.fieldName || '') + (info.date ? ' · ' + info.date : '') + (info.time ? ' · <b>' + info.time + '</b>' : '');
@@ -3608,14 +3874,14 @@ function playAcceptFx(info) {
 }
 function isAcceptNotif(title) {
   var t = String(title || '');
-  return t.indexOf('قبول') !== -1 || t.toLowerCase().indexOf('accepted') !== -1;
+  return t.indexOf('قبول') !== -1 || t.indexOf('قبل الحجز') !== -1 || t.toLowerCase().indexOf('accepted') !== -1;
 }
 
 function notifyDevice(title, body) {
   playNotifySound();
   try {
     if (isNativeApp()) {
-      nativeLN('schedule', { notifications: [{ id: Math.floor(Math.random() * 2000000000), title: title, body: body, channelId: 'diir' }] }).catch(function() {});
+      nativeLN('schedule', { notifications: [{ id: Math.floor(Math.random() * 2000000000), title: title, body: body, channelId: 'diir_cheer' }] }).catch(function() {});
       return;
     }
     if ('Notification' in window && Notification.permission === 'granted') {
@@ -3630,50 +3896,460 @@ function notifyDevice(title, body) {
   } catch (e) {}
 }
 
-var notifSyncBusy = false;
-function syncNotifications() {
+
+/* ================== البحث عن خصم أو فريق (بدون حجز) ================== */
+var MATCH_KINDS = { opponent: '⚔️ يبحث عن خصم', players: '👥 يبحث عن لاعبين', team: '🙋 يبحث عن فريق' };
+function mEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function ensureMatchesModal() {
+  if (document.getElementById('matchesModal')) return;
+  var el = document.createElement('div');
+  el.id = 'matchesModal'; el.className = 'modal-overlay';
+  el.innerHTML = '<div class="modal-box"><button class="modal-close" onclick="closeModal(\'matchesModal\')" style="background:none;border:0;color:inherit;font-size:20px;float:left;">✖</button>' +
+    '<h3 style="font-size:18px;margin-bottom:4px;">🤝 ابحث عن خصم أو فريق</h3>' +
+    '<p style="font-size:12.5px;color:var(--text-sub);margin-bottom:12px;">انشر طلبك ليراه اللاعبون، ويتواصلون معك مباشرة على واتساب. لا يلزم أن يكون لديك حجز.</p>' +
+    '<label>نوع الطلب</label><select id="mKind"><option value="opponent">أبحث عن خصم (لدي فريق)</option><option value="players">أبحث عن لاعبين لإكمال فريقي</option><option value="team">أبحث عن فريق للانضمام إليه</option></select>' +
+    '<label>الملعب</label><select id="mField"></select>' +
+    '<label>التاريخ</label><input type="date" id="mDate">' +
+    '<label>الوقت</label><select id="mTime"></select>' +
+    '<label>ملاحظة (اختياري)</label><textarea id="mNote" rows="2" placeholder="المستوى، عدد اللاعبين..."></textarea>' +
+    '<button class="btn btn-emerald btn-block" onclick="submitMatchRequest()">نشر الطلب</button>' +
+    '<h4 style="margin:18px 0 8px;font-size:15px;">الطلبات المفتوحة</h4><div id="mList" style="font-size:13px;color:var(--text-sub);">جاري التحميل...</div></div>';
+  document.body.insertBefore(el, document.body.firstChild); /* في أول الصفحة حتى تبقى بقية النوافذ (الإشعارات والدردشة) فوقها */
+}
+function openMatchesModal(field) {
   var user = db.get('user', null);
-  if (!user || !user.id || !SB_OK || notifSyncBusy) return;
-  initDeviceNotifications();
-  notifSyncBusy = true;
-  sbGet('notifications', 'user_id=eq.' + encodeURIComponent(user.id) + '&order=created_at.desc&limit=50').then(function(rows) {
-    notifSyncBusy = false;
-    var key = 'notifs_' + user.id;
-    var local = db.get(key, []);
-    var known = {};
-    local.forEach(function(n) { known[n.id] = true; });
-    var lsKey = 'sq_notif_last_' + user.id;
-    var last = 0;
-    try { last = parseInt(localStorage.getItem(lsKey) || '0', 10) || 0; } catch (e) {}
-    var firstRun = !last;
-    var maxTs = last, fresh = [];
-    (rows || []).forEach(function(r) {
-      var ts = Number(r.created_at) || 0;
-      if (ts > maxTs) maxTs = ts;
-      if (known[r.id]) return;
-      var n = { id: r.id, read: !!r.is_read, createdAt: ts, type: r.type || 'info', title: r.title || 'تنبيه', body: r.body || '', bookingId: r.booking_id || null };
-      local.push(n);
-      if (!firstRun && !n.read && ts > last) fresh.push(n);
-    });
-    try { localStorage.setItem(lsKey, String(maxTs || 1)); } catch (e) {}
-    if (rows && rows.length && local.length) {
-      local.sort(function(a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
-      if (local.length > 100) local.length = 100;
-      db.set(key, local, true);
+  if (!user) { alert('سجّل الدخول أولاً'); return; }
+  ensureMatchesModal();
+  var fs = document.getElementById('mField');
+  fs.innerHTML = '<option value="">أي ملعب</option>' + STADIUMS.map(function(f) { return '<option value="' + mEsc(f.id) + '">' + mEsc(f.name) + '</option>'; }).join('');
+  if (field && field.id) fs.value = field.id;
+  var d = document.getElementById('mDate'); d.min = todayLocal(); if (!d.value) d.value = todayLocal();
+  var tm = document.getElementById('mTime');
+  tm.innerHTML = '<option value="">أي وقت</option>' + TIME_SLOTS.map(function(s) { return '<option>' + s + '</option>'; }).join('');
+  openModal('matchesModal');
+  loadMatchRequests();
+}
+function submitMatchRequest() {
+  var user = db.get('user', null);
+  if (!user) return;
+  if (!SB_OK) { alert('لا يوجد اتصال بالخادم، حاول لاحقاً.'); return; }
+  var fid = document.getElementById('mField').value;
+  var f = STADIUMS.find(function(x) { return x.id === fid; });
+  var date = document.getElementById('mDate').value;
+  if (!date || date < todayLocal()) { alert('اختر تاريخاً صحيحاً'); return; }
+  var row = {
+    id: 'm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+    field_id: fid, field_name: f ? f.name : 'أي ملعب',
+    creator_id: Number(user.id) || 0, creator_name: user.name, creator_phone: user.whatsapp || user.phone || '',
+    match_date: date, match_time: document.getElementById('mTime').value || '',
+    kind: document.getElementById('mKind').value, note: document.getElementById('mNote').value.trim().slice(0, 200),
+    status: 'open', created_at: Date.now()
+  };
+  sbUpsert('open_matches', [row]).then(function() {
+    document.getElementById('mNote').value = '';
+    loadMatchRequests();
+  }).catch(function(err) { sbReportFail(err); alert('تعذّر نشر الطلب. تأكد أنك شغّلت ملف supabase_matches.sql.'); });
+}
+function loadMatchRequests() {
+  var box = document.getElementById('mList');
+  if (!box || !SB_OK) { if (box) box.innerText = 'لا يوجد اتصال.'; return; }
+  var me = db.get('user', null);
+  sbGet('open_matches', 'status=eq.open&match_date=gte.' + todayLocal() + '&order=match_date.asc,match_time.asc&limit=40').then(function(rows) {
+    rows = (rows || []).filter(function(r) { return !(Number(r.expires_at) && Number(r.expires_at) < Date.now()); });
+    if (!rows || !rows.length) { box.innerText = 'لا توجد طلبات مفتوحة الآن. كن أول من ينشر!'; return; }
+    rows.forEach(function(r) { matchCache[r.id] = r; });
+    box.innerHTML = rows.map(function(r) {
+      var mine = me && Number(r.creator_id) === Number(me.id);
+      var msg = encodeURIComponent('مرحباً ' + r.creator_name + '، رأيت طلبك في DIIR MATCH (' + (MATCH_KINDS[r.kind] || '') + ' — ' + r.match_date + ' ' + (r.match_time || '') + '). هل ما زال متاحاً؟');
+      var wa = toWhatsappLink(r.creator_phone);
+      return '<div style="background:rgba(255,255,255,.05);border:1px solid var(--navy-border);border-radius:14px;padding:10px 12px;margin-bottom:8px;color:var(--text-pure);">' +
+        '<div style="font-weight:800;">' + (MATCH_KINDS[r.kind] || '') + '</div>' +
+        '<div style="font-size:12.5px;color:var(--text-sub);">' + mEsc(r.field_name) + ' • ' + mEsc(r.match_date) + (r.match_time ? ' • ' + mEsc(r.match_time) : '') + '</div>' +
+        '<div style="font-size:12.5px;">' + mEsc(r.creator_name) + (r.note ? ' — ' + mEsc(r.note) : '') + '</div>' +
+        '<div style="display:flex;gap:8px;margin-top:8px;">' +
+        (!mine && me ? (r.booking_id ? '<button class="btn btn-emerald btn-sm" data-id="' + mEsc(r.id) + '" onclick="acceptOpenMatch(this.dataset.id)">⚔️ أقبل التحدي</button>' : '<button class="btn btn-emerald btn-sm" data-id="' + mEsc(r.id) + '" onclick="requestMatch(this.dataset.id)">⚔️ أريد اللعب</button>') : '') +
+        (wa && !mine ? '<a class="btn btn-emerald btn-sm" style="text-decoration:none;" target="_blank" rel="noopener" href="' + wa + '?text=' + msg + '">💬 تواصل</a>' : '') +
+        (mine ? '<button class="btn btn-outline btn-sm" data-id="' + mEsc(r.id) + '" onclick="closeMatchRequest(this.dataset.id)">إغلاق الطلب</button>' : '') +
+        '</div></div>';
+    }).join('');
+  }).catch(function() { box.innerText = 'تعذّر تحميل الطلبات. تأكد أنك شغّلت ملف supabase_matches.sql.'; });
+}
+var matchCache = {};
+function requestMatch(mid) {
+  var m = matchCache[mid], me = db.get('user', null);
+  if (!m || !me || Number(m.creator_id) === Number(me.id)) return;
+  pushNotification(Number(m.creator_id), {
+    type: 'match_request', title: 'طلب مواجهة 🔥',
+    body: me.name + ' يريد اللعب معك — ' + m.match_date + (m.match_time ? ' ' + m.match_time : '') + (m.field_name ? ' — ' + m.field_name : ''),
+    bookingId: ['mreq', m.id, me.id, String(me.name || 'لاعب').replace(/\|/g, ' ')].join('|')
+  });
+  alert('✅ وصل طلبك لصاحب الإعلان. ستصلك رسالة وإشعار عند قبوله، وتدخلان الدردشة للاتفاق.');
+}
+function acceptMatchRequest(matchId, rid, rname, n) {
+  var me = db.get('user', null); if (!me) return;
+  var room = 'mc_' + matchId + '_' + me.id + '_' + rid;
+  pushNotification(Number(rid), { type: 'match_ok', title: 'تم قبول طلبك ✅', body: me.name + ' قبل التحدي. ادخل الدردشة للاتفاق على الموعد والتفاصيل.', bookingId: room });
+  if (SB_OK) fetch(SB_URL + '/rest/v1/open_matches?id=eq.' + encodeURIComponent(matchId) + '&kind=in.(opponent,team)', { method: 'PATCH', headers: sbHeaders({ Prefer: 'return=minimal' }), body: JSON.stringify({ status: 'matched' }) }).catch(sbReportFail);
+  var items = db.get('notifs_' + me.id, []);
+  items.forEach(function(x) { if (n && x.id === n.id) { x.bookingId = room; x.title = 'طلب مواجهة (تم القبول ✅)'; } });
+  db.set('notifs_' + me.id, items);
+  openChat(room, rname || 'لاعب', rid);
+}
+function openMatchRoom(room) {
+  var me = db.get('user', null); if (!me) return;
+  var p = String(room).split('_'), a = p[p.length - 2], b = p[p.length - 1];
+  openChat(room, 'لاعب', String(me.id) === String(a) ? b : a);
+}
+function notifAction(id) {
+  var me = db.get('user', null); if (!me) return;
+  var n = db.get('notifs_' + me.id, []).find(function(x) { return String(x.id) === String(id); });
+  if (!n) return;
+  var bid = String(n.bookingId || '');
+  closeModal('notificationsModal');
+  if (bid.indexOf('mopen|') === 0) { var q = bid.split('|'); if (q[2] === '1') acceptOpenMatch(q[1]); else requestMatchRemote(q[1]); }
+  else if (bid.indexOf('mreq|') === 0) { var p = bid.split('|'); acceptMatchRequest(p[1], p[2], p[3], n); }
+  else if (bid.indexOf('mc_') === 0) openMatchRoom(bid);
+  else openChatFromNotif(bid);
+}
+function closeMatchRequest(id) {
+  fetch(SB_URL + '/rest/v1/open_matches?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers: sbHeaders({ Prefer: 'return=minimal' }), body: JSON.stringify({ status: 'closed' }) })
+    .then(function() { loadMatchRequests(); }).catch(sbReportFail);
+}
+
+
+/* ============ إعلان تحديث تطبيق أندرويد (يقرأ آخر إصدار منشور على GitHub) ============ */
+var APP_BUILD = '__APP_BUILD__'; /* يستبدله بناء GitHub برقم الإصدار، وفي الموقع يبقى كما هو فلا يعمل الفحص */
+var UPDATE_REPO = 'Totti-dz/DIIR-MATCH-';
+var lastUpdateCheck = 0, updateLaterVer = 0;
+function checkForUpdate(force) {
+  if (!isNativeApp() || !/^\d+$/.test(APP_BUILD)) return;
+  var now = Date.now();
+  if (!force && now - lastUpdateCheck < 600000) return;
+  lastUpdateCheck = now;
+  fetch('https://api.github.com/repos/' + UPDATE_REPO + '/releases/latest', { cache: 'no-store', headers: { Accept: 'application/vnd.github+json' } })
+    .then(function(r) { return r.ok ? r.json() : null; })
+    .then(function(rel) {
+      if (!rel || !rel.tag_name) return;
+      var latest = parseInt(String(rel.tag_name).replace(/\D/g, ''), 10);
+      if (!latest || latest <= parseInt(APP_BUILD, 10) || latest === updateLaterVer) return;
+      var apk = (rel.assets || []).filter(function(a) { return /\.apk$/i.test(a.name || ''); })[0];
+      showUpdateBanner(latest, (apk && apk.browser_download_url) || APK_URL, String(rel.body || '').trim());
+    }).catch(function() {});
+}
+function showUpdateBanner(ver, url, notes) {
+  var old = document.getElementById('updateBanner'); if (old) old.remove();
+  var box = document.createElement('div');
+  box.id = 'updateBanner';
+  box.style.cssText = 'position:fixed;left:12px;right:12px;top:calc(12px + env(safe-area-inset-top,0px));z-index:99990;background:linear-gradient(135deg,#0b3b36,#0a2a3f);color:#f8fafc;border:1px solid #22e3a0;border-radius:18px;padding:14px 16px;box-shadow:0 14px 40px rgba(0,0,0,.6);direction:rtl;font-size:13.5px;line-height:1.7';
+  var h = document.createElement('div'); h.style.cssText = 'font-weight:900;font-size:15px;margin-bottom:4px'; h.innerText = '🚀 تحديث جديد متاح (الإصدار ' + ver + ')';
+  var d = document.createElement('div'); d.style.cssText = 'color:#cbd5e1;margin-bottom:10px;white-space:pre-line'; d.innerText = (notes ? notes.slice(0, 180) + '\n' : '') + 'حمّل النسخة الجديدة ثم ثبّتها فوق القديمة (بياناتك محفوظة).';
+  var row = document.createElement('div'); row.style.cssText = 'display:flex;gap:8px';
+  var go = document.createElement('button'); go.className = 'btn btn-emerald btn-sm'; go.innerText = '⬇️ تحميل التحديث';
+  go.onclick = function() { window.open(url, '_blank'); };
+  var later = document.createElement('button'); later.className = 'btn btn-outline btn-sm'; later.innerText = 'لاحقاً';
+  later.onclick = function() { updateLaterVer = ver; box.remove(); };
+  row.appendChild(go); row.appendChild(later); box.appendChild(h); box.appendChild(d); box.appendChild(row);
+  document.body.appendChild(box);
+  try {
+    if (localStorage.getItem('sq_update_notified') !== String(ver)) {
+      localStorage.setItem('sq_update_notified', String(ver));
+      notifyDevice('تحديث جديد لـ DIIR MATCH', 'الإصدار ' + ver + ' جاهز للتحميل.');
     }
+  } catch (e) {}
+}
+document.addEventListener('visibilitychange', function() { if (!document.hidden) checkForUpdate(false); });
+setInterval(function() { checkForUpdate(false); }, 1800000);
+setTimeout(function() { checkForUpdate(true); }, 5000);
+
+
+/* ============ إعلان "فريق يبحث عن خصم" لكل الحسابات ============ */
+var OPPONENT_WAIT_MS = 2 * 3600 * 1000;     /* مدة الانتظار قبل إلغاء الحجز: ساعتان */
+var CANCEL_BOOKING_ON_TIMEOUT = true;       /* غيّرها إلى false إن أردت إغلاق الإعلان فقط دون إلغاء الحجز */
+function slotStartMs(date, time) { return new Date(date + 'T' + (time || '00:00') + ':00').getTime(); }
+function restPatch(path, body, wantRows) {
+  return fetch(SB_URL + '/rest/v1/' + path, { method: 'PATCH', headers: sbHeaders({ Prefer: wantRows ? 'return=representation' : 'return=minimal' }), body: JSON.stringify(body) })
+    .then(function(r) { return wantRows ? r.json() : null; });
+}
+function notifyOtherPlayers(exceptId, item) {
+  var users = db.get('users', []) || [];
+  var n = 0, skip = Number(exceptId);
+  users.forEach(function(u) {
+    if (!u || !u.id || Number(u.id) === skip || n >= 40) return;
+    n += 1;
+    pushNotification(u.id, item);
+  });
+}
+function publishOpponentSearch(b) {
+  if (!SB_OK) return;
+  var now = Date.now(), start = slotStartMs(b.date, b.time), byWait = now + OPPONENT_WAIT_MS;
+  var exp = Math.min(byWait, start);
+  if (exp <= now) return;
+  var row = {
+    id: 'mb_' + b.id, field_id: b.fieldId, field_name: b.fieldName,
+    creator_id: Number(b.userId) || 0, creator_name: b.userName, creator_phone: b.userPhone || '',
+    match_date: b.date, match_time: b.time, kind: 'opponent', note: String(b.notes || '').slice(0, 200),
+    status: 'open', created_at: now, booking_id: b.id, expires_at: exp, auto_cancel: byWait < start
+  };
+  sbUpsert('open_matches', [row]).then(function() { renderOpponentBoard(); }).catch(sbReportFail);
+}
+function closeOpponentSearchForBooking(bid) {
+  if (SB_OK) restPatch('open_matches?booking_id=eq.' + encodeURIComponent(bid) + '&status=eq.open', { status: 'closed' }).catch(function() {});
+  renderOpponentBoard();
+}
+function opponentListingsFromBookings() {
+  var today = todayLocal();
+  return (db.get('bookings', []) || []).filter(function(b) {
+    return b && b.lookingForTeam && b.status !== 'rejected' && String(b.date || '') >= today;
+  }).map(function(b) {
+    return {
+      id: 'mb_' + b.id,
+      booking_id: b.id,
+      field_id: b.fieldId,
+      field_name: b.fieldName,
+      creator_id: Number(b.userId) || 0,
+      creator_name: b.userName,
+      creator_phone: b.userPhone || '',
+      match_date: b.date,
+      match_time: b.time,
+      kind: 'opponent',
+      note: b.notes || '',
+      status: b.status === 'approved' ? 'open' : 'pending',
+      created_at: b.createdAt || 0
+    };
+  });
+}
+function renderOpponentBoard(remoteRows) {
+  var box = document.getElementById('opponentBoardList');
+  var countEl = document.getElementById('opponentBoardCount');
+  if (!box) return;
+  var me = db.get('user', null);
+  var by = {};
+  opponentListingsFromBookings().forEach(function(r) { by[r.booking_id || r.id] = r; });
+  (remoteRows || []).forEach(function(r) {
+    if (!r || (r.status && r.status !== 'open')) return;
+    if (Number(r.expires_at) && Number(r.expires_at) < Date.now()) return;
+    if (String(r.match_date || '') < todayLocal()) return;
+    var key = r.booking_id || r.id;
+    var cur = by[key] || {};
+    by[key] = {
+      id: r.id || cur.id,
+      booking_id: r.booking_id || cur.booking_id || '',
+      field_id: r.field_id || cur.field_id,
+      field_name: r.field_name || cur.field_name,
+      creator_id: Number(r.creator_id != null ? r.creator_id : cur.creator_id) || 0,
+      creator_name: r.creator_name || cur.creator_name,
+      creator_phone: r.creator_phone || cur.creator_phone || '',
+      match_date: r.match_date || cur.match_date,
+      match_time: r.match_time || cur.match_time,
+      kind: r.kind || cur.kind || 'opponent',
+      note: r.note || cur.note || '',
+      status: 'open',
+      created_at: Number(r.created_at) || cur.created_at || 0
+    };
+  });
+  var rows = Object.keys(by).map(function(k) { return by[k]; }).sort(function(a, b) {
+    return String(a.match_date || '').localeCompare(String(b.match_date || '')) || String(a.match_time || '').localeCompare(String(b.match_time || ''));
+  });
+  if (countEl) countEl.innerText = String(rows.length);
+  if (!rows.length) {
+    box.innerHTML = '<p class="opp-empty">لا يوجد باحثون عن خصم حالياً. عند الحجز فعّل خيار «أبحث عن فريق منافس».</p>';
+    return;
+  }
+  box.innerHTML = rows.map(function(r) {
+    matchCache[r.id] = r;
+    var mine = me && Number(r.creator_id) === Number(me.id);
+    var pending = r.status === 'pending';
+    var msg = encodeURIComponent('مرحباً ' + (r.creator_name || '') + '، رأيت إعلانك في DIIR MATCH بعد حجز ' + (r.field_name || '') + ' يوم ' + (r.match_date || '') + (r.match_time ? ' الساعة ' + r.match_time : '') + '. هل ما زال البحث عن خصم متاحاً؟');
+    var wa = toWhatsappLink(r.creator_phone);
+    var action = '';
+    if (!mine && me && !pending) {
+      action = r.booking_id
+        ? '<button class="btn btn-emerald btn-sm" data-id="' + mEsc(r.id) + '" onclick="acceptOpenMatch(this.dataset.id)">أقبل التحدي</button>'
+        : '<button class="btn btn-emerald btn-sm" data-id="' + mEsc(r.id) + '" onclick="requestMatch(this.dataset.id)">أريد اللعب</button>';
+    }
+    return '<div class="opp-card">' +
+      '<div class="opp-name">' + mEsc(r.creator_name || 'لاعب') + (mine ? ' (أنت)' : '') + (pending ? ' — بانتظار موافقة المنظم' : '') + '</div>' +
+      '<div class="opp-meta">' + mEsc(r.field_name || '') + ' • ' + mEsc(r.match_date || '') + (r.match_time ? ' • ' + mEsc(r.match_time) : '') + '</div>' +
+      (r.note ? '<div class="opp-note">' + mEsc(r.note) + '</div>' : '') +
+      '<div class="opp-actions">' + action +
+      (wa && !mine ? '<a class="btn btn-outline btn-sm" style="text-decoration:none;" target="_blank" rel="noopener" href="' + wa + '?text=' + msg + '">تواصل واتساب</a>' : '') +
+      (mine ? '<span class="opp-tag">إعلانك ظاهر للاعبين</span>' : '') +
+      '</div></div>';
+  }).join('');
+}
+function refreshOpponentBoard() {
+  if (!SB_OK) { renderOpponentBoard(); return; }
+  sbGet('open_matches', 'status=eq.open&match_date=gte.' + todayLocal() + '&order=match_date.asc,match_time.asc&limit=40').then(function(rows) {
+    renderOpponentBoard(rows || []);
+  }).catch(function() { renderOpponentBoard(); });
+}
+/* ينفّذه أول جهاز يلاحظ انتهاء المهلة: الشرط status=open يضمن أن ينفَّذ مرة واحدة فقط */
+function expireMatch(r) {
+  restPatch('open_matches?id=eq.' + encodeURIComponent(r.id) + '&status=eq.open', { status: 'expired' }, true).then(function(done) {
+    if (!done || !done.length || !r.booking_id) return;
+    var what = r.field_name + ' — ' + r.match_date + ' ' + (r.match_time || '');
+    if (r.auto_cancel && CANCEL_BOOKING_ON_TIMEOUT) {
+      restPatch('bookings?id=eq.' + encodeURIComponent(r.booking_id), { status: 'rejected' }).catch(sbReportFail);
+      pushNotification(Number(r.creator_id), { type: 'alert', title: 'أُلغي حجزك ⏱️', body: 'لم يقبل أحد التحدي خلال ساعتين، فأُلغي حجز ' + what + '.', bookingId: r.booking_id });
+      pushNotification(orgNotifId(r.field_id), { type: 'alert', title: 'أُلغي حجز بدون خصم', body: what + ' — ' + r.creator_name, bookingId: null });
+      var bs = db.get('bookings', []);
+      bs.forEach(function(b) { if (b.id === r.booking_id) b.status = 'rejected'; });
+      db.set('bookings', bs, true); refreshUI();
+    } else {
+      pushNotification(Number(r.creator_id), { type: 'info', title: 'انتهى البحث عن خصم', body: 'لم يُعثر على خصم لمباراة ' + what + '.', bookingId: null });
+    }
+  }).catch(function() {});
+}
+function syncOpenMatches() {
+  var me = db.get('user', null);
+  if (!me || !me.id || !SB_OK) return;
+  sbGet('open_matches', 'status=eq.open&match_date=gte.' + todayLocal() + '&order=created_at.desc&limit=30').then(function(rows) {
+    rows = rows || [];
+    var now = Date.now(), live = [];
+    rows.forEach(function(r) { if (Number(r.expires_at) && Number(r.expires_at) < now) expireMatch(r); else live.push(r); });
+    var key = 'notifs_' + me.id, list = db.get(key, []), liveIds = {}, changed = false;
+    live.forEach(function(r) { liveIds['mo_' + r.id] = true; });
+    var kept = list.filter(function(n) { return String(n.id).indexOf('mo_') !== 0 || liveIds[n.id]; });
+    if (kept.length !== list.length) { list = kept; changed = true; }          /* أُغلق الإعلان: يختفي من التنبيهات */
+    var sk = 'sq_mseen_' + me.id, seen = null;
+    try { seen = JSON.parse(localStorage.getItem(sk) || 'null'); } catch (e) {}
+    var first = !seen; seen = seen || [];
+    var have = {}; list.forEach(function(n) { have[n.id] = true; });
+    var fresh = [];
+    live.forEach(function(r) {
+      if (Number(r.creator_id) === Number(me.id)) return;
+      var nid = 'mo_' + r.id;
+      if (!have[nid]) {
+        list.push({ id: nid, read: false, createdAt: Number(r.created_at) || now, type: 'match_open',
+          title: '🔥 فريق يبحث عن خصم',
+          body: r.creator_name + ' — ' + r.field_name + ' — ' + r.match_date + (r.match_time ? ' ' + r.match_time : '') + (r.note ? ' — ' + r.note : ''),
+          bookingId: 'mopen|' + r.id + '|' + (r.booking_id ? '1' : '0') });
+        changed = true;
+        if (!first && seen.indexOf(r.id) === -1) fresh.push(r);
+      }
+      if (seen.indexOf(r.id) === -1) seen.push(r.id);
+    });
+    if (seen.length > 200) seen = seen.slice(-200);
+    try { localStorage.setItem(sk, JSON.stringify(seen)); } catch (e) {}
+    if (changed) {
+      list.sort(function(a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+      if (list.length > 100) list.length = 100;
+      db.set(key, list, true);
+      refreshNotificationBadges();
+    }
+    if (fresh.length === 1) notifyDevice('🔥 فريق يبحث عن خصم', fresh[0].creator_name + ' — ' + fresh[0].field_name + ' — ' + fresh[0].match_date + ' ' + (fresh[0].match_time || ''));
+    else if (fresh.length > 1) notifyDevice('🔥 فرق تبحث عن خصم', fresh.length + ' إعلانات جديدة');
+    renderOpponentBoard(live);
+  }).catch(function() {});
+}
+function acceptOpenMatch(mid) {
+  var me = db.get('user', null); if (!me || !SB_OK) return;
+  restPatch('open_matches?id=eq.' + encodeURIComponent(mid) + '&status=eq.open', { status: 'matched', matched_by: Number(me.id) }, true).then(function(rows) {
+    if (!rows || !rows.length) { alert('سبقك لاعب آخر، تم العثور على خصم لهذا الحجز.'); syncOpenMatches(); return; }
+    var m = rows[0], room = 'mc_' + m.id + '_' + m.creator_id + '_' + me.id;
+    pushNotification(Number(m.creator_id), { type: 'match_ok', title: 'تم العثور على خصم ✅', body: me.name + ' قبل تحدّيك في ' + m.field_name + ' ' + m.match_date + ' ' + (m.match_time || '') + '. ادخل الدردشة للاتفاق.', bookingId: room });
+    var key = 'notifs_' + me.id;
+    db.set(key, db.get(key, []).filter(function(n) { return n.id !== 'mo_' + m.id; }), true);
+    refreshNotificationBadges();
+    closeModal('matchesModal');
+    openChat(room, m.creator_name || 'لاعب', m.creator_id);
+    refreshOpponentBoard();
+  }).catch(function(e) { sbReportFail(e); alert('تعذّر تنفيذ القبول، حاول مجدداً.'); });
+}
+function requestMatchRemote(mid) {
+  sbGet('open_matches', 'id=eq.' + encodeURIComponent(mid)).then(function(rows) {
+    if (!rows || !rows[0] || rows[0].status !== 'open') { alert('هذا الطلب لم يعد متاحاً.'); return; }
+    matchCache[mid] = rows[0]; requestMatch(mid);
+  }).catch(function() {});
+}
+
+var notifSyncBusy = false;
+function orgNotifId(fid) { var h = 0, s = String(fid); for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 1000000007; return -(h + 1); }
+function getOrgFieldId() {
+  if (typeof activeOrganizerField !== 'undefined' && activeOrganizerField) return activeOrganizerField.id;
+  try { return localStorage.getItem('sq_org_field') || ''; } catch (e) { return ''; }
+}
+/* يجلب إشعارات حساب معيّن، ويُرجع الجديد فقط (الاعتماد على أرقام الإشعارات المرئية سابقاً وليس على الوقت، فلا يضيع إشعار بسبب فرق ساعة الأجهزة) */
+function pollNotifsFor(uid, localList) {
+  return sbGet('notifications', 'user_id=eq.' + encodeURIComponent(uid) + '&order=created_at.desc&limit=50').then(function(rows) {
+    rows = rows || [];
+    var key = 'sq_seen_' + uid, seen = null;
+    try { seen = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) {}
+    var first = !seen; seen = seen || [];
+    var known = {}; (localList || []).forEach(function(n) { known[n.id] = true; });
+    var fresh = [];
+    rows.forEach(function(r) {
+      if (seen.indexOf(r.id) !== -1) return;
+      seen.push(r.id);
+      if (!first && !known[r.id] && !r.is_read) fresh.push(r);
+    });
+    if (seen.length > 300) seen = seen.slice(-300);
+    try { localStorage.setItem(key, JSON.stringify(seen)); } catch (e) {}
+    return { rows: rows, fresh: fresh };
+  });
+}
+function syncRemoteBookings() {
+  if (!SB_OK) return;
+  var user = db.get('user', null), fid = getOrgFieldId(), qs = [];
+  if (fid) qs.push('field_id=eq.' + encodeURIComponent(fid) + '&order=created_at.desc&limit=200');
+  if (user && user.id) qs.push('user_id=eq.' + encodeURIComponent(user.id) + '&order=created_at.desc&limit=100');
+  qs.forEach(function(q) {
+    sbGet('bookings', q).then(function(rows) {
+      var remote = mapBookingsFromSb(rows), local = db.get('bookings', []), by = {}, changed = false;
+      local.forEach(function(b) { by[b.id] = b; });
+      remote.forEach(function(r) {
+        var l = by[r.id];
+        if (!l) { local.push(r); changed = true; }
+        else if (l.status !== r.status) { l.status = r.status; changed = true; }
+      });
+      if (!changed) return;
+      db.set('bookings', local, true);
+      var dash = document.getElementById('organizerDashModal');
+      if (activeOrganizerField && dash && dash.classList.contains('show')) renderOrgRequests();
+      refreshUI();
+    }).catch(function() {});
+  });
+}
+function syncNotifications() {
+  if (!SB_OK || notifSyncBusy) return;
+  var user = db.get('user', null), fid = getOrgFieldId(), tasks = [];
+  if (!user && !fid) return;
+  initDeviceNotifications();
+  initPushNotifications();
+  notifSyncBusy = true;
+  if (user && user.id) {
+    var key = 'notifs_' + user.id, local = db.get(key, []);
+    tasks.push(pollNotifsFor(user.id, local).then(function(res) {
+      var known = {}; local.forEach(function(n) { known[n.id] = true; });
+      res.rows.forEach(function(r) {
+        if (known[r.id] || String(r.id).indexOf('mo_') === 0) return;
+        local.push({ id: r.id, read: !!r.is_read, createdAt: Number(r.created_at) || 0, type: r.type || 'info', title: r.title || 'تنبيه', body: r.body || '', bookingId: r.booking_id || null });
+      });
+      if (res.rows.length) {
+        local.sort(function(a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+        if (local.length > 100) local.length = 100;
+        db.set(key, local, true);
+      }
+      return res.fresh;
+    }));
+  }
+  if (fid) tasks.push(pollNotifsFor(orgNotifId(fid), []).then(function(res) { return res.fresh; }));
+  Promise.all(tasks.map(function(p) { return p.catch(function() { return []; }); })).then(function(lists) {
+    notifSyncBusy = false;
+    var fresh = [].concat.apply([], lists);
     if (fresh.length) {
       refreshNotificationBadges();
       if (fresh.length === 1) {
-        notifyDevice(fresh[0].title, fresh[0].body);
-        if (isAcceptNotif(fresh[0].title)) playAcceptFx({ body: fresh[0].body });
-      } else {
-        notifyDevice('DIIR MATCH', 'لديك ' + fresh.length + ' إشعارات جديدة');
-      }
+        notifyDevice(fresh[0].title || 'تنبيه', fresh[0].body || '');
+        if (isAcceptNotif(fresh[0].title)) playAcceptFx({ title: fresh[0].title, message: fresh[0].body, body: fresh[0].body });
+      } else notifyDevice('DIIR MATCH', 'لديك ' + fresh.length + ' إشعارات جديدة');
     }
-  }).catch(function() { notifSyncBusy = false; });
+    syncRemoteBookings();
+    syncOpenMatches();
+  });
 }
 document.addEventListener('visibilitychange', function() { if (!document.hidden) syncNotifications(); });
-setInterval(syncNotifications, 10000);
+setInterval(syncNotifications, 8000);
 setTimeout(syncNotifications, 3000);
 
 function getUnreadNotifications(userId) {
@@ -3722,11 +4398,13 @@ function openNotificationsModal() {
     list.innerHTML = '<p style="color:var(--text-sub); text-align:center; padding:16px;">لا توجد إشعارات حالياً.</p>';
   } else {
     list.innerHTML = items.map(function(n) {
+      var bid = String(n.bookingId || ''), btn = '';
+      if (bid.indexOf('mopen|') === 0) btn = '<button class="btn btn-emerald btn-sm" style="margin-top:8px;" data-id="' + mEsc(n.id) + '" onclick="notifAction(this.dataset.id)">⚔️ أقبل التحدي</button>';
+      else if (bid.indexOf('mreq|') === 0) btn = '<button class="btn btn-emerald btn-sm" style="margin-top:8px;" data-id="' + mEsc(n.id) + '" onclick="notifAction(this.dataset.id)">✅ قبول والدخول للدردشة</button>';
+      else if (bid) btn = '<button class="btn btn-outline btn-sm" style="margin-top:8px;" data-id="' + mEsc(n.id) + '" onclick="notifAction(this.dataset.id)">💬 فتح الدردشة</button>';
       return '<div class="card" style="padding:12px; margin-bottom:8px; border-color:' + (n.read ? 'var(--navy-border)' : 'rgba(239,68,68,0.45)') + ';">' +
-        '<b>' + n.title + '</b>' +
-        '<p style="font-size:12.5px; color:var(--text-sub); margin-top:4px;">' + n.body + '</p>' +
-        (n.bookingId ? '<button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="openChatFromNotif(\'' + n.bookingId + '\')">فتح الدردشة</button>' : '') +
-        '</div>';
+        '<b>' + mEsc(n.title) + '</b>' +
+        '<p style="font-size:12.5px; color:var(--text-sub); margin-top:4px;">' + mEsc(n.body) + '</p>' + btn + '</div>';
     }).join('');
     items.forEach(function(n) { n.read = true; });
     db.set('notifs_' + user.id, items);
@@ -3974,7 +4652,27 @@ function readFileAsDataUrl(input, cb) {
   var file = input && input.files && input.files[0];
   if (!file) { cb(null); return; }
   var reader = new FileReader();
-  reader.onload = function() { cb(reader.result); };
+  reader.onload = function() {
+    var raw = reader.result;
+    if (!/^image\/(jpeg|png|webp)/.test(file.type || '')) { cb(raw); return; }
+    /* تصغير الصورة قبل حفظها في قاعدة البيانات (حد أقصى 1000px) حتى لا يثقل التطبيق */
+    var img = new Image();
+    img.onload = function() {
+      try {
+        var k = Math.min(1, 1000 / Math.max(img.width, img.height));
+        var c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(img.width * k));
+        c.height = Math.max(1, Math.round(img.height * k));
+        var ctx = c.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, c.width, c.height);
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        cb(c.toDataURL('image/jpeg', 0.82));
+      } catch (e) { cb(raw); }
+    };
+    img.onerror = function() { cb(raw); };
+    img.src = raw;
+  };
   reader.readAsDataURL(file);
 }
 
@@ -4701,6 +5399,10 @@ function sendChat() {
       body: txt,
       bookingId: booking.id
     });
+  } else if (booking && booking.userId === user.id) {
+    pushNotification(orgNotifId(booking.fieldId), { type: 'chat', title: 'رسالة من ' + (user.name || 'لاعب'), body: txt.slice(0, 120), bookingId: null });
+  } else if (!booking && String(activeChatBookingId).indexOf('mc_') === 0 && activeChatPartnerId) {
+    pushNotification(Number(activeChatPartnerId), { type: 'chat', title: 'رسالة من ' + (user.name || 'لاعب'), body: txt.slice(0, 120), bookingId: activeChatBookingId });
   }
 }
 
@@ -4788,6 +5490,28 @@ function dismissInstall() {
   document.getElementById('installBanner').style.display = 'none';
   try { localStorage.setItem('sq_install_dismissed', '1'); } catch (e) {}
 }
+</script>
+<script id="design-v2-js">
+/* تحديث إجباري مرة واحدة: يمسح النسخ القديمة المحفوظة في الهاتف */
+(function() {
+  try {
+    if (localStorage.getItem('sq_build') === '6') return;
+    localStorage.setItem('sq_build', '6');
+    var jobs = [];
+    if (navigator.serviceWorker) jobs.push(navigator.serviceWorker.getRegistrations().then(function(rs) { return Promise.all(rs.map(function(r) { return r.unregister(); })); }));
+    if (window.caches) jobs.push(caches.keys().then(function(ks) { return Promise.all(ks.map(function(k) { return caches.delete(k); })); }));
+    if (jobs.length) Promise.all(jobs).then(function() { location.reload(); });
+  } catch (e) {}
+})();
+/* تأثير الموجة عند لمس الأزرار */
+document.addEventListener('pointerdown', function(e) {
+  var b = e.target.closest && e.target.closest('.btn, .dock-btn, .chip');
+  if (!b) return;
+  var r = b.getBoundingClientRect(), s = Math.max(r.width, r.height), d = document.createElement('span');
+  d.className = 'ripple'; d.style.cssText = 'width:' + s + 'px;height:' + s + 'px;left:' + (e.clientX - r.left - s / 2) + 'px;top:' + (e.clientY - r.top - s / 2) + 'px';
+  if (getComputedStyle(b).position === 'static') b.style.position = 'relative';
+  b.style.overflow = 'hidden'; b.appendChild(d); setTimeout(function() { d.remove(); }, 650);
+}, { passive: true });
 </script>
 </body>
 </html>
