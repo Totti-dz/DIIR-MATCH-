@@ -14,9 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use files uploaded inside github-update folder (if any)
+      - name: Copy asset files from github-update (index.html is always taken from the repo root)
         run: |
-          if [ -d github-update ]; then cp -r github-update/. . ; echo "تم نسخ ملفات github-update إلى الجذر"; fi
+          if [ -d github-update ]; then
+            if [ -f github-update/index.html ] && ! cmp -s github-update/index.html index.html; then
+              echo "::warning::github-update/index.html differs from the root index.html and is IGNORED. Update index.html in the repo root."
+            fi
+            rsync -a --exclude 'index.html' github-update/ ./
+            echo "تم نسخ باقي ملفات github-update إلى الجذر (بدون index.html)"
+          fi
 
       - uses: actions/setup-node@v4
         with:
@@ -178,6 +184,18 @@ jobs:
 
       - name: Sync web assets
         run: npx cap sync android
+
+      - name: Use a fixed signing key (so new versions install over the old app)
+        env:
+          DEBUG_KEYSTORE_BASE64: ${{ secrets.DEBUG_KEYSTORE_BASE64 }}
+        run: |
+          if [ -z "$DEBUG_KEYSTORE_BASE64" ]; then
+            echo "::warning::DEBUG_KEYSTORE_BASE64 is not set. APK is signed with a random key, so updates will conflict with the installed app."
+            exit 0
+          fi
+          mkdir -p ~/.android
+          printf '%s' "$DEBUG_KEYSTORE_BASE64" | base64 -d > ~/.android/debug.keystore
+          keytool -list -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey > /dev/null
 
       - name: Build debug APK
         working-directory: android
