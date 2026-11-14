@@ -1174,6 +1174,16 @@ body::before { display: none !important; }
         <button class="btn btn-danger btn-block" onclick="handleUserLogout()">🚪 تسجيل الخروج</button>
       </div>
     </div>
+
+    <div class="card">
+      <h3 style="font-size:15px; margin-bottom:6px;">🔔 تأكد من وصول الإشعارات</h3>
+      <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">بعض الهواتف توقف إشعارات التطبيقات في الخلفية لتوفير البطارية. اضغط الأزرار التالية بالترتيب وفعّل كل خيار لصالح DIIR MATCH.</p>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <button class="btn btn-outline btn-block" onclick="openNativeSettings('battery_optimization', 'البطارية')">1) إعدادات البطارية (استثناء DIIR MATCH)</button>
+        <button class="btn btn-outline btn-block" onclick="openNativeSettings('app_notification', 'الإشعارات')">2) إعدادات الإشعارات</button>
+        <button class="btn btn-outline btn-block" onclick="openNativeSettings('application', 'التطبيق')">3) صفحة معلومات التطبيق (بحث عن خيارات إضافية مثل بدء التشغيل التلقائي)</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -3727,6 +3737,13 @@ function pushDbg(msg) {
 }
 function nativePush(method, opts) {
   return window.Capacitor.nativePromise('PushNotifications', method, opts || {});
+}
+/* يفتح شاشة إعدادات أندرويد مباشرة (بطارية/إشعارات/معلومات التطبيق) بدل تركه يبحث يدوياً */
+function openNativeSettings(optionAndroid, label) {
+  if (!isNativeApp()) { alert('هذا الزر يعمل فقط داخل تطبيق الأندرويد.'); return; }
+  window.Capacitor.nativePromise('NativeSettings', 'open', { optionAndroid: optionAndroid }).catch(function() {
+    alert('تعذّر فتح إعدادات ' + (label || '') + ' تلقائياً. افتحها يدوياً من إعدادات الهاتف ← التطبيقات ← DIIR MATCH.');
+  });
 }
 function sendTokenToServer() {
   if (!pushLastToken) return;
