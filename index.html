@@ -1811,7 +1811,7 @@ function sbGet(table, query) {
 
 function sbUpsert(table, rows) {
   if (!rows || !rows.length) return Promise.resolve();
-  return fetch(SB_URL + '/rest/v1/' + table, {
+  return fetch(SB_URL + '/rest/v1/' + table + '?on_conflict=id', {
     method: 'POST',
     headers: sbHeaders({ Prefer: 'resolution=merge-duplicates,return=minimal' }),
     body: JSON.stringify(rows)
@@ -4321,7 +4321,7 @@ function ensureOpenMatchRow(mid) {
 var acceptBusy = {};
 function acceptOpenMatch(mid) {
   var me = db.get('user', null); if (!me || !SB_OK) return;
-  if (acceptBusy[mid]) return;                                   /* يمنع الضغط المزدوج الذي كان يُظهر رسالة "سبقك لاعب" خطأً */
+  if (acceptBusy[mid]) return;                                   /* يمنع الضغط المزدوج */
   var cached = matchCache[mid];
   if (cached && Number(cached.creator_id) === Number(me.id)) { alert('هذا إعلانك أنت، لا يمكنك قبول تحدّي حجزك.'); return; }
   acceptBusy[mid] = true;
@@ -4334,22 +4334,31 @@ function acceptOpenMatch(mid) {
     openChat('mc_' + m.id + '_' + m.creator_id + '_' + me.id, m.creator_name || 'لاعب', m.creator_id);
     refreshOpponentBoard();
   };
-  ensureOpenMatchRow(mid).then(function() {
-    return restPatch('open_matches?id=eq.' + encodeURIComponent(mid) + '&status=eq.open', { status: 'matched', matched_by: Number(me.id) }, true);
+  /* دالة واحدة في قاعدة البيانات (atomic) تنشئ الإعلان من الحجز عند الحاجة وتقبله في خطوة شبكة واحدة،
+     بدل إرسال-ثم-تحديث المنفصلَين اللي كانا يسببان "هذا الطلب لم يعد متاحاً" بالخطأ */
+  fetch(SB_URL + '/rest/v1/rpc/accept_open_match', {
+    method: 'POST',
+    headers: sbHeaders({ Prefer: 'return=representation' }),
+    body: JSON.stringify({ p_mid: mid, p_user_id: Number(me.id) })
+  }).then(function(r) {
+    return r.text().then(function(t) {
+      var data; try { data = t ? JSON.parse(t) : []; } catch (e) { data = null; }
+      if (!r.ok || !Array.isArray(data)) { var e = new Error((data && (data.message || data.hint)) || t || ('http_' + r.status)); throw e; }
+      return data;
+    });
   }).then(function(rows) {
-    if (!Array.isArray(rows)) { throw new Error((rows && (rows.message || rows.error)) || 'bad_response'); }
     if (!rows.length) {
       return sbGet('open_matches', 'id=eq.' + encodeURIComponent(mid)).then(function(cur) {
         var c = cur && cur[0];
-        if (c && c.status === 'matched' && Number(c.matched_by) === Number(me.id)) { openRoom(c); return; }   /* قبلتَه أنت سابقاً: نفتح الدردشة فقط */
-        alert(c && c.status === 'matched' ? 'سبقك لاعب آخر، تم العثور على خصم لهذا الحجز.' : 'هذا الطلب لم يعد متاحاً.');
+        if (c && c.status === 'matched' && Number(c.matched_by) === Number(me.id)) { openRoom(c); return; }
+        alert(c && c.status === 'matched' ? 'سبقك لاعب آخر، تم العثور على خصم لهذا الحجز.' : 'هذا الطلب لم يعد متاحاً. اضغط "إلغاء البحث عن خصم" ثم "ابحث عن خصم" من جديد على هذا الحجز وحاول مجدداً.');
         syncOpenMatches();
       });
     }
     var m = rows[0], room = 'mc_' + m.id + '_' + m.creator_id + '_' + me.id;
     pushNotification(Number(m.creator_id), { type: 'match_ok', title: 'تم العثور على خصم ✅', body: me.name + ' قبل تحدّيك في ' + m.field_name + ' ' + m.match_date + ' ' + (m.match_time || '') + '. ادخل الدردشة للاتفاق.', bookingId: room });
     openRoom(m);
-  }).catch(function(e) { sbReportFail(e); alert('تعذّر تنفيذ القبول: ' + String((e && e.message) || e).slice(0, 120)); }).then(release);
+  }).catch(function(e) { sbReportFail(e); alert('تعذّر تنفيذ القبول: ' + String((e && e.message) || e).slice(0, 160)); }).then(release);
 }
 function requestMatchRemote(mid) {
   sbGet('open_matches', 'id=eq.' + encodeURIComponent(mid)).then(function(rows) {
