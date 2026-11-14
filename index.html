@@ -3729,7 +3729,7 @@ function initDeviceNotifications() {
 /* ============ FCM Push (أندرويد): إشعارات والتطبيق مغلق ============ */
 var pushListenersReady = false, pushLastToken = null, pushSentSig = '';
 /* وضع التشخيص: اجعله true فقط لعرض سبب أي فشل في تسجيل الإشعارات */
-var PUSH_DEBUG = true, pushDbgSeen = {};
+var PUSH_DEBUG = false, pushDbgSeen = {};
 function pushDbg(msg) {
   if (!PUSH_DEBUG || pushDbgSeen[msg]) return;
   pushDbgSeen[msg] = true;
