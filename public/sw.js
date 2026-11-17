@@ -1,4 +1,4 @@
-const CACHE_NAME = 'diir-match-v5';
+const CACHE_NAME = 'diir-match-v6';
 const PRECACHE = ['./', './index.html', './manifest.json', './brand/logo.png'];
 
 self.addEventListener('install', (e) => {

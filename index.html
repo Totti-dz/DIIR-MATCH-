@@ -112,18 +112,6 @@
 
   /* بطاقات عصرية */
   .card { background: var(--navy-card); border: 1px solid var(--navy-border); border-radius: 16px; padding: 18px; backdrop-filter: blur(12px); box-shadow: 0 8px 24px rgba(0,0,0,0.25); margin-bottom: 16px; }
-  .opp-board { background: linear-gradient(180deg, rgba(16,185,129,0.14), rgba(13,27,46,0.9)); border: 1px solid rgba(16,185,129,0.35); border-radius: 18px; padding: 14px; margin-bottom: 16px; }
-  .opp-board-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
-  .opp-board-head h3 { font-size: 16px; font-weight: 900; margin: 0 0 4px; }
-  .opp-board-head p { font-size: 12px; color: var(--text-sub); margin: 0; }
-  .opp-card { background: rgba(255,255,255,0.04); border: 1px solid var(--navy-border); border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; }
-  .opp-card:last-child { margin-bottom: 0; }
-  .opp-name { font-weight: 800; font-size: 14px; }
-  .opp-meta { font-size: 12.5px; color: var(--text-sub); margin-top: 2px; }
-  .opp-note { font-size: 12px; color: #cbd5e1; margin-top: 4px; }
-  .opp-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-  .opp-empty { text-align: center; color: var(--text-sub); font-size: 13px; padding: 8px 0; margin: 0; }
-  .opp-tag { display: inline-block; font-size: 11px; font-weight: 800; color: #022c22; background: var(--emerald); border-radius: 999px; padding: 2px 8px; }
 
   /* بطاقة اللاعب الإحصائية مع ID */
   .player-card { background: linear-gradient(135deg, #0d1e38, #07101f); border: 1px solid rgba(16,185,129,0.3); border-radius: 18px; padding: 18px; position: relative; overflow: hidden; margin-bottom: 18px; }
@@ -1039,16 +1027,7 @@ body::before { display: none !important; }
       <button class="chip" data-k="7" onclick="setFieldFilter('cap', 7)">سعة 7</button>
       <button class="chip" data-k="9" onclick="setFieldFilter('cap', 9)">سعة 9</button>
     </div>
-    <div class="opp-board" id="opponentBoard">
-      <div class="opp-board-head">
-        <div>
-          <h3>حجوزات مقبولة تبحث عن خصم</h3>
-          <p>حجوزات قبلها المنظم وأصحابها يبحثون عن فريق منافس. اقبل التحدي أو تواصل معهم.</p>
-        </div>
-        <span class="opp-tag" id="opponentBoardCount">0</span>
-      </div>
-      <div id="opponentBoardList"><p class="opp-empty">لا يوجد باحثون عن خصم حالياً.</p></div>
-    </div>
+    <button class="btn btn-outline btn-block" style="margin-bottom:12px;" onclick="openMatchesModal()">🤝 ابحث عن خصم أو فريق (بدون حجز)</button>
     <div class="fields-grid" id="fieldsGrid"></div>
   </div>
 
@@ -1174,16 +1153,6 @@ body::before { display: none !important; }
         <button class="btn btn-danger btn-block" onclick="handleUserLogout()">🚪 تسجيل الخروج</button>
       </div>
     </div>
-
-    <div class="card">
-      <h3 style="font-size:15px; margin-bottom:6px;">🔔 تأكد من وصول الإشعارات</h3>
-      <p style="font-size:12px; color:var(--text-sub); margin-bottom:12px;">بعض الهواتف توقف إشعارات التطبيقات في الخلفية لتوفير البطارية. اضغط الأزرار التالية بالترتيب وفعّل كل خيار لصالح DIIR MATCH.</p>
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <button class="btn btn-outline btn-block" onclick="openNativeSettings('battery_optimization', 'البطارية')">1) إعدادات البطارية (استثناء DIIR MATCH)</button>
-        <button class="btn btn-outline btn-block" onclick="openNativeSettings('app_notification', 'الإشعارات')">2) إعدادات الإشعارات</button>
-        <button class="btn btn-outline btn-block" onclick="openNativeSettings('application', 'التطبيق')">3) صفحة معلومات التطبيق (بحث عن خيارات إضافية مثل بدء التشغيل التلقائي)</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1234,6 +1203,7 @@ body::before { display: none !important; }
 
     <label>المواعيد المتاحة (16:00 إلى 22:00)</label>
     <div class="legend"><span><i style="background:#132742;border:1px solid var(--emerald)"></i>متاح</span><span><i style="background:rgba(245,158,11,.5)"></i>قيد الموافقة</span><span><i style="background:rgba(239,68,68,.5)"></i>محجوز / انتهى</span></div>
+    <a href="#" onclick="event.preventDefault(); closeModal('bookingModal'); openMatchesModal(currentField);" style="display:block; font-size:12.5px; color:var(--emerald); margin:2px 0 10px; font-weight:700;">الموعد محجوز؟ ابحث عن فريق ينافسك ←</a>
     <div class="slots-grid" id="bookingSlots"></div>
 
     <div style="display:flex; align-items:center; gap:8px; margin-top:10px;">
@@ -1821,7 +1791,7 @@ function sbGet(table, query) {
 
 function sbUpsert(table, rows) {
   if (!rows || !rows.length) return Promise.resolve();
-  return fetch(SB_URL + '/rest/v1/' + table + '?on_conflict=id', {
+  return fetch(SB_URL + '/rest/v1/' + table, {
     method: 'POST',
     headers: sbHeaders({ Prefer: 'resolution=merge-duplicates,return=minimal' }),
     body: JSON.stringify(rows)
@@ -2814,8 +2784,6 @@ function refreshUI() {
   renderRewards();
   renderFields();
   renderBookings();
-  renderOpponentBoard();
-  refreshOpponentBoard();
   renderNews();
   updateDbChip();
   refreshNotificationBadges();
@@ -3048,8 +3016,8 @@ function confirmPlayerBooking() {
     db.set('user', user);
     pushNotification(user.id, {
       type: 'booking',
-      title: 'طلبك قيد الانتظار',
-      body: 'في انتظار موافقة المنظم على حجز ' + field.name + ' — ' + date + ' الساعة ' + slot,
+      title: 'تم إرسال طلب الحجز',
+      body: field.name + ' — ' + date + ' الساعة ' + slot,
       bookingId: newBooking.id
     });
     pushNotification(orgNotifId(field.id), { type: 'booking', title: 'طلب حجز جديد 🔔', body: user.name + ' — ' + date + ' الساعة ' + slot, bookingId: null });
@@ -3114,11 +3082,6 @@ function renderBookings() {
       (b.changedFrom ? '<p style="font-size:12px; color:#fbbf24; margin-top:8px;">تم تعديل الموعد من ' + b.changedFrom + '</p>' : '') +
       '<div style="margin-top:12px; display:flex; gap:8px;">' +
         '<button class="btn btn-outline btn-sm notif-btn" onclick="openChat(\'' + b.id + '\', \'' + b.fieldName + '\', \'' + (b.fieldId || 'org_main') + '\')">دردشة مع المنظم<span class="notif-dot' + (function(){ var m=db.get('chat_'+b.id,[]); var last=m[m.length-1]; return (last && last.senderId !== user.id && !last.isMe) ? ' show' : ''; })() + '">!</span></button>' +
-        (b.status === 'approved' && slotStartMs(b.date, b.time) > Date.now()
-          ? (b.lookingForTeam
-              ? '<button class="btn btn-outline btn-sm" data-id="' + mEsc(b.id) + '" onclick="toggleOpponentSearch(this.dataset.id, false)">إلغاء البحث عن خصم</button>'
-              : '<button class="btn btn-outline btn-sm" data-id="' + mEsc(b.id) + '" onclick="toggleOpponentSearch(this.dataset.id, true)">🤝 ابحث عن خصم</button>')
-          : '') +
       '</div>';
     list.appendChild(div);
   });
@@ -3486,18 +3449,18 @@ function setBookingStatus(id, st) {
   }
   db.set('bookings', bookings);
   if (target && target.userId) {
-    var when = target.fieldName + ' — ' + target.date + ' الساعة ' + target.time;
     pushNotification(target.userId, {
       type: st === 'approved' ? 'booking' : 'alert',
       title: st === 'approved' ? 'تم قبول حجزك' : 'تم رفض حجزك',
-      body: st === 'approved' ? 'المنظم قبل الحجز: ' + when : when,
+      body: target.fieldName + ' — ' + target.date + ' الساعة ' + target.time,
       bookingId: target.id
     });
-    if (st === 'approved') {
-      try {
-        playAcceptFx({ fieldName: target.fieldName, date: target.date, time: target.time, title: 'المنظم قبل الحجز', message: when });
-      } catch (e) {}
-    }
+    try {
+      var cu = db.get('user', null);
+      if (st === 'approved' && cu && cu.id === target.userId) {
+        playAcceptFx({ fieldName: target.fieldName, date: target.date, time: target.time });
+      }
+    } catch (e) {}
   }
   if (target && st === 'approved' && target.lookingForTeam) publishOpponentSearch(target);
   if (target && st === 'rejected') closeOpponentSearchForBooking(target.id);
@@ -3725,82 +3688,6 @@ function initDeviceNotifications() {
     document.addEventListener('click', ask, true);
   }
 }
-
-/* ============ FCM Push (أندرويد): إشعارات والتطبيق مغلق ============ */
-var pushListenersReady = false, pushLastToken = null, pushSentSig = '';
-/* وضع التشخيص: اجعله true فقط لعرض سبب أي فشل في تسجيل الإشعارات */
-var PUSH_DEBUG = false, pushDbgSeen = {};
-function pushDbg(msg) {
-  if (!PUSH_DEBUG || pushDbgSeen[msg]) return;
-  pushDbgSeen[msg] = true;
-  try { alert('Push: ' + msg); } catch (e) {}
-}
-function nativePush(method, opts) {
-  return window.Capacitor.nativePromise('PushNotifications', method, opts || {});
-}
-/* يفتح شاشة إعدادات أندرويد مباشرة (بطارية/إشعارات/معلومات التطبيق) بدل تركه يبحث يدوياً */
-function openNativeSettings(optionAndroid, label) {
-  if (!isNativeApp()) { alert('هذا الزر يعمل فقط داخل تطبيق الأندرويد.'); return; }
-  window.Capacitor.nativePromise('NativeSettings', 'open', { optionAndroid: optionAndroid }).catch(function() {
-    alert('تعذّر فتح إعدادات ' + (label || '') + ' تلقائياً. افتحها يدوياً من إعدادات الهاتف ← التطبيقات ← DIIR MATCH.');
-  });
-}
-function sendTokenToServer() {
-  if (!pushLastToken) return;
-  if (!SB_OK) { pushDbg('Supabase غير متصل'); return; }
-  var user = db.get('user', null), fid = getOrgFieldId(), ids = [];
-  if (user && user.id) ids.push({ user_id: Number(user.id), field_id: null });
-  if (fid) ids.push({ user_id: orgNotifId(fid), field_id: String(fid) });
-  if (!ids.length) return;
-  var sig = pushLastToken + '|' + ids.map(function(i) { return i.user_id; }).join(',');
-  if (sig === pushSentSig) return;
-  fetch(SB_URL + '/functions/v1/register-token', {
-    method: 'POST',
-    headers: sbHeaders(),
-    body: JSON.stringify({ token: pushLastToken, platform: 'android', identities: ids })
-  }).then(function(r) {
-    if (r.ok) { pushSentSig = sig; pushDbg('تم تسجيل الجهاز ✅'); return; }
-    return r.text().then(function(t) { pushDbg('register-token رد ' + r.status + ' ' + String(t).slice(0, 150)); });
-  }).catch(function(e) { pushDbg('register-token تعذّر الاتصال: ' + String((e && e.message) || e)); });
-}
-var pushRegisterState = 'idle', pushPromptTries = 0;
-function initPushNotifications() {
-  if (!isNativeApp()) return;
-  if (!pushListenersReady) {
-    pushListenersReady = true;
-    try {
-      window.Capacitor.nativeCallback('PushNotifications', 'addListener', { eventName: 'registration' }, function(t) {
-        if (t && t.value) { pushLastToken = t.value; pushDbg('وصل التوكن من Firebase'); sendTokenToServer(); }
-      });
-      window.Capacitor.nativeCallback('PushNotifications', 'addListener', { eventName: 'registrationError' }, function(e) {
-        pushRegisterState = 'idle';
-        pushDbg('registrationError ' + JSON.stringify(e).slice(0, 200));
-      });
-      window.Capacitor.nativeCallback('PushNotifications', 'addListener', { eventName: 'pushNotificationActionPerformed' }, function() {
-        try { openNotificationsModal(); } catch (e) {}
-      });
-    } catch (e) { pushDbg('listeners: ' + String((e && e.message) || e)); }
-  }
-  if (pushLastToken) { sendTokenToServer(); return; }
-  if (pushRegisterState !== 'idle') return;
-  pushRegisterState = 'checking';
-  /* نفحص الإذن في كل مزامنة (لا نطلبه مرتين معا مع LocalNotifications حتى لا يتعارض الطلبان) */
-  nativePush('checkPermissions').then(function(p) {
-    var st = p && p.receive;
-    if (st === 'granted') {
-      pushRegisterState = 'registered';
-      return nativePush('register');
-    }
-    pushRegisterState = 'idle';
-    if (st === 'denied') { pushDbg('الإشعارات مرفوضة: فعّلها من إعدادات الهاتف ← التطبيقات ← DIIR MATCH ← الإشعارات'); return; }
-    pushPromptTries++;
-    if (pushPromptTries === 3) { return nativePush('requestPermissions').catch(function() {}); }
-  }).catch(function(e) {
-    pushRegisterState = 'idle';
-    pushDbg('checkPermissions: ' + String((e && e.message) || e));
-  });
-}
-
 var fxAudio = null;
 var fxTimer = null;
 var lastSoundAt = 0;
@@ -3893,8 +3780,8 @@ function playAcceptFx(info) {
   var meta = document.getElementById('fxAcceptMeta');
   var seal = document.getElementById('fxAcceptSeal');
   if (seal) seal.textContent = currentLang === 'en' ? 'CONFIRMED' : 'مؤكد';
-  if (title) title.textContent = (info && info.title) || (currentLang === 'en' ? 'Booking accepted' : 'المنظم قبل الحجز');
-  if (body) body.textContent = (info && info.message) || (currentLang === 'en' ? 'The organizer confirmed the booking.' : 'المنظم أكّد الحجز للطرفين.');
+  if (title) title.textContent = currentLang === 'en' ? 'Booking accepted' : 'تم قبول الحجز';
+  if (body) body.textContent = currentLang === 'en' ? 'The organizer confirmed your slot. The pitch is reserved in your name.' : 'المنظم أكّد موعدك. الملعب محجوز باسمك.';
   if (meta) {
     if (info && info.fieldName) {
       meta.innerHTML = (info.fieldName || '') + (info.date ? ' · ' + info.date : '') + (info.time ? ' · <b>' + info.time + '</b>' : '');
@@ -3908,7 +3795,7 @@ function playAcceptFx(info) {
 }
 function isAcceptNotif(title) {
   var t = String(title || '');
-  return t.indexOf('قبول') !== -1 || t.indexOf('قبل الحجز') !== -1 || t.toLowerCase().indexOf('accepted') !== -1;
+  return t.indexOf('قبول') !== -1 || t.toLowerCase().indexOf('accepted') !== -1;
 }
 
 function notifyDevice(title, body) {
@@ -4104,15 +3991,6 @@ function restPatch(path, body, wantRows) {
   return fetch(SB_URL + '/rest/v1/' + path, { method: 'PATCH', headers: sbHeaders({ Prefer: wantRows ? 'return=representation' : 'return=minimal' }), body: JSON.stringify(body) })
     .then(function(r) { return wantRows ? r.json() : null; });
 }
-function notifyOtherPlayers(exceptId, item) {
-  var users = db.get('users', []) || [];
-  var n = 0, skip = Number(exceptId);
-  users.forEach(function(u) {
-    if (!u || !u.id || Number(u.id) === skip || n >= 40) return;
-    n += 1;
-    pushNotification(u.id, item);
-  });
-}
 function publishOpponentSearch(b) {
   if (!SB_OK) return;
   var now = Date.now(), start = slotStartMs(b.date, b.time), byWait = now + OPPONENT_WAIT_MS;
@@ -4124,148 +4002,10 @@ function publishOpponentSearch(b) {
     match_date: b.date, match_time: b.time, kind: 'opponent', note: String(b.notes || '').slice(0, 200),
     status: 'open', created_at: now, booking_id: b.id, expires_at: exp, auto_cancel: byWait < start
   };
-  sbUpsert('open_matches', [row]).then(function() { renderOpponentBoard(); }).catch(sbReportFail);
+  sbUpsert('open_matches', [row]).catch(sbReportFail);
 }
 function closeOpponentSearchForBooking(bid) {
   if (SB_OK) restPatch('open_matches?booking_id=eq.' + encodeURIComponent(bid) + '&status=eq.open', { status: 'closed' }).catch(function() {});
-  renderOpponentBoard();
-}
-/* تشغيل/إيقاف البحث عن خصم لحجز مقبول — لا يلغي الحجز نفسه، فقط ظهوره في لوحة "البحث عن خصم" */
-function toggleOpponentSearch(bid, on) {
-  on = !!on;
-  var list = db.get('bookings', []), b = null;
-  for (var i = 0; i < list.length; i++) { if (String(list[i].id) === String(bid)) { b = list[i]; break; } }
-  if (!b || b.status !== 'approved') return;
-  b.lookingForTeam = on;
-  db.set('bookings', list, true);
-  if (SB_OK) restPatch('bookings?id=eq.' + encodeURIComponent(b.id), { looking_for_team: on }).catch(sbReportFail);
-  if (on) publishOpponentSearch(b); else closeOpponentSearchForBooking(b.id);
-  renderBookings();
-}
-var oppRemoteBk = null, oppMatchState = {};
-function opponentListingsFromBookings() {
-  var now = Date.now(), today = todayLocal(), me = db.get('user', null);
-  var myId = me && me.id != null ? Number(me.id) : null;
-  return (db.get('bookings', []) || []).filter(function(b) {
-    if (!b || !b.lookingForTeam || b.status === 'rejected' || String(b.date || '') < today) return false;
-    var st = oppMatchState[b.id];
-    if (st && st !== 'open') return false;                       /* وُجد خصم أو أُغلق الإعلان */
-    if (myId !== null && Number(b.userId) === myId) return true;  /* حجزي: يظهر حتى لو ما زال قيد الانتظار */
-    if (b.status !== 'approved') return false;                   /* الآخرون يرون المقبول فقط */
-    if (oppRemoteBk && !oppRemoteBk[b.id]) return false;         /* تغيّر أو أُلغي على الخادم */
-    var start = slotStartMs(b.date, b.time);
-    if (isFinite(start) && start < now) return false;            /* انتهى موعد المباراة */
-    return true;
-  }).map(function(b) {
-    return {
-      id: 'mb_' + b.id,
-      booking_id: b.id,
-      field_id: b.fieldId,
-      field_name: b.fieldName,
-      creator_id: Number(b.userId) || 0,
-      creator_name: b.userName,
-      creator_phone: b.userPhone || '',
-      match_date: b.date,
-      match_time: b.time,
-      kind: 'opponent',
-      note: b.notes || '',
-      status: b.status === 'approved' ? 'open' : 'pending',
-      created_at: b.createdAt || 0
-    };
-  });
-}
-/* يجلب من الخادم الحجوزات المقبولة الباحثة عن خصم (من كل اللاعبين) وحالة إعلاناتها، فتظهر للجميع دون انتظار جهاز المنظم */
-function loadOppSources() {
-  var today = todayLocal();
-  return Promise.all([
-    sbGet('bookings', 'status=eq.approved&looking_for_team=eq.true&booking_date=gte.' + today + '&order=booking_date.asc&limit=80').catch(function() { return null; }),
-    sbGet('open_matches', 'booking_id=not.is.null&match_date=gte.' + today + '&select=booking_id,status&limit=200').catch(function() { return null; })
-  ]).then(function(res) {
-    if (res[0]) {
-      var mapped = mapBookingsFromSb(res[0]), local = db.get('bookings', []), by = {}, ids = {}, changed = false;
-      local.forEach(function(b) { by[b.id] = b; });
-      mapped.forEach(function(r) {
-        ids[r.id] = true;
-        var l = by[r.id];
-        if (!l) { local.push(r); changed = true; }
-        else if (l.status !== r.status || l.lookingForTeam !== r.lookingForTeam) { l.status = r.status; l.lookingForTeam = r.lookingForTeam; changed = true; }
-      });
-      oppRemoteBk = ids;
-      if (changed) db.set('bookings', local, true);
-    }
-    if (res[1]) {
-      oppMatchState = {};
-      res[1].forEach(function(r) { if (r && r.booking_id) oppMatchState[r.booking_id] = r.status; });
-    }
-  });
-}
-function renderOpponentBoard(remoteRows) {
-  var box = document.getElementById('opponentBoardList');
-  var countEl = document.getElementById('opponentBoardCount');
-  if (!box) return;
-  var me = db.get('user', null);
-  var by = {};
-  opponentListingsFromBookings().forEach(function(r) { by[r.booking_id || r.id] = r; });
-  (remoteRows || []).forEach(function(r) {
-    if (!r || (r.status && r.status !== 'open')) return;
-    if (Number(r.expires_at) && Number(r.expires_at) < Date.now()) return;
-    if (String(r.match_date || '') < todayLocal()) return;
-    var key = r.booking_id || r.id;
-    var cur = by[key] || {};
-    by[key] = {
-      id: r.id || cur.id,
-      booking_id: r.booking_id || cur.booking_id || '',
-      field_id: r.field_id || cur.field_id,
-      field_name: r.field_name || cur.field_name,
-      creator_id: Number(r.creator_id != null ? r.creator_id : cur.creator_id) || 0,
-      creator_name: r.creator_name || cur.creator_name,
-      creator_phone: r.creator_phone || cur.creator_phone || '',
-      match_date: r.match_date || cur.match_date,
-      match_time: r.match_time || cur.match_time,
-      kind: r.kind || cur.kind || 'opponent',
-      note: r.note || cur.note || '',
-      status: 'open',
-      created_at: Number(r.created_at) || cur.created_at || 0
-    };
-  });
-  var rows = Object.keys(by).map(function(k) { return by[k]; }).sort(function(a, b) {
-    return String(a.match_date || '').localeCompare(String(b.match_date || '')) || String(a.match_time || '').localeCompare(String(b.match_time || ''));
-  });
-  if (countEl) countEl.innerText = String(rows.length);
-  if (!rows.length) {
-    box.innerHTML = '<p class="opp-empty">لا توجد حجوزات مقبولة تبحث عن خصم حالياً. عند الحجز فعّل خيار «أبحث عن فريق منافس».</p>';
-    return;
-  }
-  box.innerHTML = rows.map(function(r) {
-    matchCache[r.id] = r;
-    var mine = me && Number(r.creator_id) === Number(me.id);
-    var pending = r.status === 'pending';
-    var msg = encodeURIComponent('مرحباً ' + (r.creator_name || '') + '، رأيت إعلانك في DIIR MATCH بعد حجز ' + (r.field_name || '') + ' يوم ' + (r.match_date || '') + (r.match_time ? ' الساعة ' + r.match_time : '') + '. هل ما زال البحث عن خصم متاحاً؟');
-    var wa = toWhatsappLink(r.creator_phone);
-    var action = '';
-    if (!mine && me && !pending) {
-      action = r.booking_id
-        ? '<button class="btn btn-emerald btn-sm" data-id="' + mEsc(r.id) + '" onclick="acceptOpenMatch(this.dataset.id)">أقبل التحدي</button>'
-        : '<button class="btn btn-emerald btn-sm" data-id="' + mEsc(r.id) + '" onclick="requestMatch(this.dataset.id)">أريد اللعب</button>';
-    }
-    return '<div class="opp-card">' +
-      '<div class="opp-name">' + mEsc(r.creator_name || 'لاعب') + (mine ? ' (أنت)' : '') + (pending ? ' — بانتظار موافقة المنظم' : '') + '</div>' +
-      '<div class="opp-meta">' + mEsc(r.field_name || '') + ' • ' + mEsc(r.match_date || '') + (r.match_time ? ' • ' + mEsc(r.match_time) : '') + '</div>' +
-      (r.note ? '<div class="opp-note">' + mEsc(r.note) + '</div>' : '') +
-      '<div class="opp-actions">' + action +
-      (wa && !mine ? '<a class="btn btn-outline btn-sm" style="text-decoration:none;" target="_blank" rel="noopener" href="' + wa + '?text=' + msg + '">تواصل واتساب</a>' : '') +
-      (mine ? '<span class="opp-tag">إعلانك ظاهر للاعبين</span>' : '') +
-      '</div></div>';
-  }).join('');
-}
-function refreshOpponentBoard() {
-  if (!SB_OK) { renderOpponentBoard(); return; }
-  Promise.all([
-    sbGet('open_matches', 'status=eq.open&match_date=gte.' + todayLocal() + '&order=match_date.asc,match_time.asc&limit=40').catch(function() { return []; }),
-    loadOppSources()
-  ]).then(function(res) {
-    renderOpponentBoard(res[0] || []);
-  }).catch(function() { renderOpponentBoard(); });
 }
 /* ينفّذه أول جهاز يلاحظ انتهاء المهلة: الشرط status=open يضمن أن ينفَّذ مرة واحدة فقط */
 function expireMatch(r) {
@@ -4323,59 +4063,20 @@ function syncOpenMatches() {
     }
     if (fresh.length === 1) notifyDevice('🔥 فريق يبحث عن خصم', fresh[0].creator_name + ' — ' + fresh[0].field_name + ' — ' + fresh[0].match_date + ' ' + (fresh[0].match_time || ''));
     else if (fresh.length > 1) notifyDevice('🔥 فرق تبحث عن خصم', fresh.length + ' إعلانات جديدة');
-    loadOppSources().then(function() { renderOpponentBoard(live); }).catch(function() { renderOpponentBoard(live); });
   }).catch(function() {});
 }
-function ensureOpenMatchRow(mid) {
-  var r = matchCache[mid];
-  if (!r || !r.booking_id || String(mid).indexOf('mb_') !== 0) return Promise.resolve();
-  var start = slotStartMs(r.match_date, r.match_time);
-  var row = { id: mid, field_id: r.field_id, field_name: r.field_name, creator_id: Number(r.creator_id) || 0, creator_name: r.creator_name, creator_phone: r.creator_phone || '',
-    match_date: r.match_date, match_time: r.match_time || '', kind: 'opponent', note: String(r.note || '').slice(0, 200), status: 'open', created_at: Date.now(),
-    booking_id: r.booking_id, expires_at: isFinite(start) ? start : null, auto_cancel: false };
-  return fetch(SB_URL + '/rest/v1/open_matches', { method: 'POST', headers: sbHeaders({ Prefer: 'resolution=ignore-duplicates,return=minimal' }), body: JSON.stringify([row]) }).catch(function() {});
-}
-var acceptBusy = {};
 function acceptOpenMatch(mid) {
   var me = db.get('user', null); if (!me || !SB_OK) return;
-  if (acceptBusy[mid]) return;                                   /* يمنع الضغط المزدوج */
-  var cached = matchCache[mid];
-  if (cached && Number(cached.creator_id) === Number(me.id)) { alert('هذا إعلانك أنت، لا يمكنك قبول تحدّي حجزك.'); return; }
-  acceptBusy[mid] = true;
-  var release = function() { setTimeout(function() { delete acceptBusy[mid]; }, 1500); };
-  var openRoom = function(m) {
+  restPatch('open_matches?id=eq.' + encodeURIComponent(mid) + '&status=eq.open', { status: 'matched', matched_by: Number(me.id) }, true).then(function(rows) {
+    if (!rows || !rows.length) { alert('سبقك لاعب آخر، تم العثور على خصم لهذا الحجز.'); syncOpenMatches(); return; }
+    var m = rows[0], room = 'mc_' + m.id + '_' + m.creator_id + '_' + me.id;
+    pushNotification(Number(m.creator_id), { type: 'match_ok', title: 'تم العثور على خصم ✅', body: me.name + ' قبل تحدّيك في ' + m.field_name + ' ' + m.match_date + ' ' + (m.match_time || '') + '. ادخل الدردشة للاتفاق.', bookingId: room });
     var key = 'notifs_' + me.id;
     db.set(key, db.get(key, []).filter(function(n) { return n.id !== 'mo_' + m.id; }), true);
     refreshNotificationBadges();
     closeModal('matchesModal');
-    openChat('mc_' + m.id + '_' + m.creator_id + '_' + me.id, m.creator_name || 'لاعب', m.creator_id);
-    refreshOpponentBoard();
-  };
-  /* دالة واحدة في قاعدة البيانات (atomic) تنشئ الإعلان من الحجز عند الحاجة وتقبله في خطوة شبكة واحدة،
-     بدل إرسال-ثم-تحديث المنفصلَين اللي كانا يسببان "هذا الطلب لم يعد متاحاً" بالخطأ */
-  fetch(SB_URL + '/rest/v1/rpc/accept_open_match', {
-    method: 'POST',
-    headers: sbHeaders({ Prefer: 'return=representation' }),
-    body: JSON.stringify({ p_mid: mid, p_user_id: Number(me.id) })
-  }).then(function(r) {
-    return r.text().then(function(t) {
-      var data; try { data = t ? JSON.parse(t) : []; } catch (e) { data = null; }
-      if (!r.ok || !Array.isArray(data)) { var e = new Error((data && (data.message || data.hint)) || t || ('http_' + r.status)); throw e; }
-      return data;
-    });
-  }).then(function(rows) {
-    if (!rows.length) {
-      return sbGet('open_matches', 'id=eq.' + encodeURIComponent(mid)).then(function(cur) {
-        var c = cur && cur[0];
-        if (c && c.status === 'matched' && Number(c.matched_by) === Number(me.id)) { openRoom(c); return; }
-        alert(c && c.status === 'matched' ? 'سبقك لاعب آخر، تم العثور على خصم لهذا الحجز.' : 'هذا الطلب لم يعد متاحاً. اضغط "إلغاء البحث عن خصم" ثم "ابحث عن خصم" من جديد على هذا الحجز وحاول مجدداً.');
-        syncOpenMatches();
-      });
-    }
-    var m = rows[0], room = 'mc_' + m.id + '_' + m.creator_id + '_' + me.id;
-    pushNotification(Number(m.creator_id), { type: 'match_ok', title: 'تم العثور على خصم ✅', body: me.name + ' قبل تحدّيك في ' + m.field_name + ' ' + m.match_date + ' ' + (m.match_time || '') + '. ادخل الدردشة للاتفاق.', bookingId: room });
-    openRoom(m);
-  }).catch(function(e) { sbReportFail(e); alert('تعذّر تنفيذ القبول: ' + String((e && e.message) || e).slice(0, 160)); }).then(release);
+    openChat(room, m.creator_name || 'لاعب', m.creator_id);
+  }).catch(function(e) { sbReportFail(e); alert('تعذّر تنفيذ القبول، حاول مجدداً.'); });
 }
 function requestMatchRemote(mid) {
   sbGet('open_matches', 'id=eq.' + encodeURIComponent(mid)).then(function(rows) {
@@ -4436,17 +4137,13 @@ function syncNotifications() {
   var user = db.get('user', null), fid = getOrgFieldId(), tasks = [];
   if (!user && !fid) return;
   initDeviceNotifications();
-  initPushNotifications();
   notifSyncBusy = true;
   if (user && user.id) {
     var key = 'notifs_' + user.id, local = db.get(key, []);
-    var isStaleBroadcast = function(n) { return String(n.bookingId || n.booking_id || '').indexOf('mopen|') === 0 && String(n.id).indexOf('mo_') !== 0; };
-    var cleaned = local.filter(function(n) { return !isStaleBroadcast(n); });
-    if (cleaned.length !== local.length) { local = cleaned; db.set(key, local, true); }
     tasks.push(pollNotifsFor(user.id, local).then(function(res) {
       var known = {}; local.forEach(function(n) { known[n.id] = true; });
       res.rows.forEach(function(r) {
-        if (known[r.id] || String(r.id).indexOf('mo_') === 0 || isStaleBroadcast({ id: r.id, bookingId: r.booking_id })) return;
+        if (known[r.id] || String(r.id).indexOf('mo_') === 0) return;
         local.push({ id: r.id, read: !!r.is_read, createdAt: Number(r.created_at) || 0, type: r.type || 'info', title: r.title || 'تنبيه', body: r.body || '', bookingId: r.booking_id || null });
       });
       if (res.rows.length) {
@@ -4465,7 +4162,7 @@ function syncNotifications() {
       refreshNotificationBadges();
       if (fresh.length === 1) {
         notifyDevice(fresh[0].title || 'تنبيه', fresh[0].body || '');
-        if (isAcceptNotif(fresh[0].title)) playAcceptFx({ title: fresh[0].title, message: fresh[0].body, body: fresh[0].body });
+        if (isAcceptNotif(fresh[0].title)) playAcceptFx({ body: fresh[0].body });
       } else notifyDevice('DIIR MATCH', 'لديك ' + fresh.length + ' إشعارات جديدة');
     }
     syncRemoteBookings();

@@ -13,3 +13,8 @@
 
 ## آيفون
 iOS لا يقبل APK. افتح الموقع في Safari ← مشاركة ← «إضافة إلى الشاشة الرئيسية».
+
+
+## إشعارات الهاتف
+
+راجع `PUSH-SETUP.md` لإعداد Edge Functions وVault وWebhook وأسرار Firebase. لا ترفع ملف Service Account إلى GitHub.

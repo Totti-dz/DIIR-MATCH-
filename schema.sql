@@ -121,9 +121,8 @@ CREATE TABLE IF NOT EXISTS admins (
   role VARCHAR(40) DEFAULT 'app_admin'
 );
 
-INSERT INTO admins (email, pass, role) VALUES
-('fireabdou9@gmail.com', 'condor123', 'app_admin')
-ON DUPLICATE KEY UPDATE pass = VALUES(pass);
+-- Create an administrator through a secure, out-of-band setup process.
+-- Never commit a default administrator password to this file.
 
 INSERT INTO stadiums (id, name, pin, capacity, quarter, image, lat, lng) VALUES
 ('befok', 'ملعب بيفوك', '1111', 9, 'حي بيفوك', '/fields/befok.svg', '35.1855', '1.4962'),
